@@ -1,7 +1,7 @@
 import type { NextPage, GetServerSideProps } from "next";
 import { App } from "@octokit/app";
 import { AuthBlock } from "@components/AuthBlock";
-import { getGithubPrivateKey } from "@utils/getGithubPrivateKey";
+import { getGitHubPrivateKey } from "@utils/getGitHubPrivateKey";
 
 export const Setup: NextPage<{
   icons: Array<Array<{ name: string; download_url: string; html_url: string }>>;
@@ -25,7 +25,7 @@ export const Setup: NextPage<{
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const privateKey = await getGithubPrivateKey();
+  const privateKey = await getGitHubPrivateKey();
 
   const app = new App({
     appId: Number(process.env.GITHUB_APP_ID),

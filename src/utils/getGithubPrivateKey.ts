@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-export function getGithubPrivateKey() {
+export function getGitHubPrivateKey() {
   return new Promise<string>((resolve, reject) => {
     if (!!process.env.GITHUB_APP_PRIVATE_KEY) {
       return resolve(process.env.GITHUB_APP_PRIVATE_KEY);
