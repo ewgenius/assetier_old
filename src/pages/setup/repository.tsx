@@ -60,25 +60,27 @@ export const Setup: NextPage<SetupProps> = ({ icons }) => {
         <p>Available icons under /{query.path}:</p>
         {!icons ||
           (!icons.length && <div className="mt-2">Nothing found...</div>)}
-        {icons.map(
-          (icon) =>
-            icon.download_url && (
-              <div key={icon.name} className="m-2">
-                <a
-                  className="flex flex-row align-middle items-center"
-                  href={icon._links.html}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <img
-                    className="w-[24px] h-[24px] mr-4"
-                    src={icon.download_url}
-                  />
-                  <p className="font-mono text-sm">{icon.name}</p>
-                </a>
-              </div>
-            )
-        )}
+        <div className="grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-1">
+          {icons.map(
+            (icon) =>
+              icon.download_url && (
+                <div key={icon.name} className="m-2">
+                  <a
+                    className="flex flex-col align-middle items-center"
+                    href={icon._links.html}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <img
+                      className="w-[24px] h-[24px] mr-4"
+                      src={icon.download_url}
+                    />
+                    <p className="font-mono text-xs">{icon.name}</p>
+                  </a>
+                </div>
+              )
+          )}
+        </div>
       </div>
     </div>
   );
