@@ -29,6 +29,7 @@ export const Setup: NextPage<SetupProps> = ({ icons }) => {
                   className="flex flex-row align-middle items-center"
                   href={icon._links.html}
                   target="_blank"
+                  rel="noreferrer"
                 >
                   <img
                     className="w-[24px] h-[24px] mr-4"
