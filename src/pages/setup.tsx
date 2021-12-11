@@ -51,7 +51,10 @@ export const Setup: NextPage<{
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const privateKey = await new Promise<string>((resolve, reject) =>
+  const privateKey = await new Promise<string>((resolve, reject) => {
+    if (!!process.env.GITHUB_APP_PRIVATE_KEY) {
+      return resolve(process.env.GITHUB_APP_PRIVATE_KEY);
+    }
     fs.readFile(
       path.resolve("./assetier-dev.2021-12-11.private-key-2.pem"),
       (err, data) => {
@@ -61,8 +64,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           resolve(data.toString());
         }
       }
-    )
-  );
+    );
+  });
 
   // const auth = createAppAuth({
   //   appId: Number(process.env.GITHUB_APP_ID),
