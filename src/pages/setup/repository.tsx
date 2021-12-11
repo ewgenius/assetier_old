@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -18,6 +19,9 @@ export interface SetupProps {
 
 export const Setup: NextPage<SetupProps> = ({ icons }) => {
   const { query } = useRouter();
+
+  const [path, setPath] = useState<string>(query.path as string);
+
   return (
     <div className="container mx-auto p-2">
       <AuthBlock />
@@ -33,7 +37,27 @@ export const Setup: NextPage<SetupProps> = ({ icons }) => {
             {query.owner}/{query.repository}
           </b>
         </div>
-        <p>Available icons under /svg:</p>
+
+        <div className="my-2 flex flex-row">
+          <input
+            type="string"
+            name="path"
+            id="path"
+            className="block sm:text-sm border-gray-800 border rounded-md rounded-r-none p-2"
+            placeholder="path to folder with svg files"
+            value={path}
+            onChange={({ target }) => setPath(target.value)}
+          />
+          <Link
+            href={`/setup/repository?installation_id=${query.installation_id}&owner=${query.owner}&repository=${query.repository}&path=${path}`}
+          >
+            <a className="flex p-2 border-gray-800 border rounded-md border-l-0 rounded-l-none hover:bg-gray-200">
+              use path
+            </a>
+          </Link>
+        </div>
+
+        <p>Available icons under /{query.path}:</p>
         {!icons ||
           (!icons.length && <div className="mt-2">Nothing found...</div>)}
         {icons.map(
@@ -82,7 +106,7 @@ export const getServerSideProps: GetServerSideProps<SetupProps> = async (
       {
         owner: context.query.owner as string,
         repo: context.query.repository as string,
-        path: "svg",
+        path: context.query.path as string,
       }
     );
 
@@ -94,6 +118,7 @@ export const getServerSideProps: GetServerSideProps<SetupProps> = async (
       },
     };
   } catch (e) {
+    console.log(e);
     return {
       props: {
         icons: [],

@@ -27,7 +27,7 @@ export const Setup: NextPage<SetupProps> = ({ repositories }) => {
         <div className="flex flex-col">
           {repositories.map((repo) => (
             <Link
-              href={`/setup/repository?installation_id=${query.installation_id}&owner=${repo.owner.login}&repository=${repo.name}`}
+              href={`/setup/repository?installation_id=${query.installation_id}&owner=${repo.owner.login}&repository=${repo.name}&path=icons`}
               key={repo.id}
             >
               <a className="underline hover:no-underline">
