@@ -36,7 +36,7 @@ export default async function handler(
     owner: body.owner,
     repo: body.repository,
     path: body.path,
-    message: "update",
+    message: "update from Assetier",
     content: Buffer.from(body.content).toString("base64"),
   });
 

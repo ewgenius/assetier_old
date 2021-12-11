@@ -45,6 +45,8 @@ export const NewFile = () => {
         path: query.path + "/" + name,
         content,
       }),
+    }).then(() => {
+      location.reload();
     });
   }, [name, content, query.owner, query.repo, query.path]);
 
