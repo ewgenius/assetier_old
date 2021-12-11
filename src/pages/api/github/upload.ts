@@ -1,6 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import * as fs from "fs";
-import * as path from "path";
 import { App } from "@octokit/app";
 import { getSession } from "next-auth/react";
 import { getGitHubPrivateKey } from "@utils/getGitHubPrivateKey";
@@ -30,7 +28,6 @@ export default async function handler(
   );
 
   const body = JSON.parse(req.body);
-  console.log(body);
 
   await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
     owner: body.owner,
