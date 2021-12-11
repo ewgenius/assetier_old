@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -16,6 +16,56 @@ export interface SetupProps {
     };
   }[];
 }
+
+export const NewFile = () => {
+  const { query } = useRouter();
+
+  const [name, setName] = useState<string>("new_icon.svg");
+  const [content, setContent] = useState<string>(`<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
+  <polygon points="12 15 17 21 7 21 12 15" />
+</svg>`);
+
+  const upload = useCallback(() => {
+    fetch(`/api/github/upload?installation_id=${query.installation_id}`, {
+      method: "POST",
+      body: JSON.stringify({
+        owner: query.owner,
+        repository: query.repository,
+        path: query.path + "/" + name,
+        content,
+      }),
+    });
+  }, [name, content, query.owner, query.repo, query.path]);
+
+  return (
+    <div className="my-2 flex flex-col">
+      <p>Add new file</p>
+
+      <input
+        className="border border-gray-800 rounded-md mb-1"
+        value={name}
+        onChange={({ target: { value } }) => setName(value)}
+      />
+      <textarea
+        className="border border-gray-800 rounded-md min-h-[180px] text-xs font-mono"
+        value={content}
+        onChange={({ target: { value } }) => setContent(value)}
+      />
+      <button onClick={upload}>upload</button>
+    </div>
+  );
+};
 
 export const Setup: NextPage<SetupProps> = ({ icons }) => {
   const { query } = useRouter();
@@ -56,6 +106,8 @@ export const Setup: NextPage<SetupProps> = ({ icons }) => {
             </a>
           </Link>
         </div>
+
+        <NewFile />
 
         <p>Available icons under /{query.path}:</p>
         {!icons ||
