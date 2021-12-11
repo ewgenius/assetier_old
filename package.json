@@ -10,7 +10,11 @@
   "dependencies": {
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
+    "@octokit/app": "^12.0.5",
+    "@octokit/auth-app": "^3.6.1",
+    "@octokit/core": "^3.5.1",
     "next": "12.0.7",
+    "next-auth": "^4.0.5",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
