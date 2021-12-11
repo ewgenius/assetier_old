@@ -1,4 +1,6 @@
 import type { NextPage, GetServerSideProps } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { App } from "@octokit/app";
 import { AuthBlock } from "@components/AuthBlock";
 import { getGitHubPrivateKey } from "@utils/getGitHubPrivateKey";
@@ -15,12 +17,25 @@ export interface SetupProps {
 }
 
 export const Setup: NextPage<SetupProps> = ({ icons }) => {
+  const { query } = useRouter();
   return (
     <div className="container mx-auto p-2">
       <AuthBlock />
 
       <div className="mt-8">
+        <Link href={`/setup?installation_id=${query.installation_id}`}>
+          <a className="underline hover:no-underline">Back to repo list</a>
+        </Link>
+
+        <div className="mt-2">
+          Repo:{" "}
+          <b>
+            {query.owner}/{query.repository}
+          </b>
+        </div>
         <p>Available icons under /svg:</p>
+        {!icons ||
+          (!icons.length && <div className="mt-2">Nothing found...</div>)}
         {icons.map(
           (icon) =>
             icon.download_url && (

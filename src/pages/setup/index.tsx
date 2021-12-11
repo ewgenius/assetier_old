@@ -24,16 +24,18 @@ export const Setup: NextPage<SetupProps> = ({ repositories }) => {
 
       <div className="mt-8">
         <p>Select repository:</p>
-        {repositories.map((repo) => (
-          <Link
-            href={`/setup/repository?installation_id=${query.installation_id}&owner=${repo.owner.login}&repository=${repo.name}`}
-            key={repo.id}
-          >
-            <a className="underline hover:no-underline">
-              {repo.owner.login}/{repo.name}
-            </a>
-          </Link>
-        ))}
+        <div className="flex flex-col">
+          {repositories.map((repo) => (
+            <Link
+              href={`/setup/repository?installation_id=${query.installation_id}&owner=${repo.owner.login}&repository=${repo.name}`}
+              key={repo.id}
+            >
+              <a className="underline hover:no-underline">
+                {repo.owner.login}/{repo.name}
+              </a>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
