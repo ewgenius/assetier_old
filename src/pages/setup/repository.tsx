@@ -96,6 +96,7 @@ export const Upload = () => {
             {files && files.length > 0
               ? files.map((file) => (
                   <img
+                    key={file.name}
                     className="w-5 h-5 mr-1"
                     src={URL.createObjectURL(file)}
                   />
@@ -155,7 +156,14 @@ export const NewFile = () => {
     }).then(() => {
       location.reload();
     });
-  }, [name, content, query.owner, query.repo, query.path]);
+  }, [
+    name,
+    content,
+    query.owner,
+    query.repository,
+    query.path,
+    query.installation_id,
+  ]);
 
   return (
     <div className="my-2 flex flex-col">
