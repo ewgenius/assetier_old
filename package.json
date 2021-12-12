@@ -13,6 +13,8 @@
     "@octokit/app": "^12.0.5",
     "@octokit/auth-app": "^3.6.1",
     "@octokit/core": "^3.5.1",
+    "@tailwindcss/forms": "^0.4.0",
+    "formidable": "^2.0.1",
     "next": "12.0.7",
     "next-auth": "^4.0.5",
     "react": "17.0.2",
@@ -20,6 +22,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/formidable": "^2.0.0",
     "@types/node": "16.11.12",
     "@types/react": "17.0.37",
     "@types/uuid": "^8.3.3",
