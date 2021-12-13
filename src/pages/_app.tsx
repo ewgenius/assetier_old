@@ -58,7 +58,7 @@ const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
-                    <Link href={item.href}>
+                    <Link key={item.id} href={item.href}>
                       <a
                         key={item.name}
                         className={classNames(
