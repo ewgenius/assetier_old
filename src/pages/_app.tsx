@@ -244,7 +244,7 @@ function App({ Component: Page, pageProps }: AppPropsExtended) {
   return (
     <div className="min-h-full">
       <AppTopBar currentNavId={Page.navId} />
-      <div className="py-10">
+      <div className="pb-10">
         <Page {...pageProps} />
       </div>
     </div>
