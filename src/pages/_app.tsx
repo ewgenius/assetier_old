@@ -19,11 +19,11 @@ export interface AppTopBarProps {
 }
 
 const navigation = [
-  { name: "Projects", id: "projects", href: "/dashboard" },
+  { name: "Projects", id: "projects", href: "/" },
   {
     name: "Project",
     id: "project",
-    href: "/dashboard/project",
+    href: "/project",
   },
 ];
 
