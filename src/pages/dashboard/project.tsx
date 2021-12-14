@@ -7,7 +7,7 @@ export const Project: NextPageExtended = () => {
   return (
     <Page
       title={() => (
-        <LayoutBlock>
+        <LayoutBlock mode="filled" border>
           <div>
             <nav className="sm:hidden" aria-label="Back">
               <a
@@ -15,7 +15,7 @@ export const Project: NextPageExtended = () => {
                 className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
               >
                 <ChevronLeftIcon
-                  className="flex-shrink-0 -ml-1 mr-1 h-5 w-5 text-gray-400"
+                  className="flex-shrink-0 -ml-1 mr-1 h-4 w-4 text-gray-400"
                   aria-hidden="true"
                 />
                 Back
@@ -36,7 +36,7 @@ export const Project: NextPageExtended = () => {
                 <li>
                   <div className="flex items-center">
                     <ChevronRightIcon
-                      className="flex-shrink-0 h-5 w-5 text-gray-400"
+                      className="flex-shrink-0 h-4 w-4 text-gray-400"
                       aria-hidden="true"
                     />
                     <a
@@ -74,9 +74,12 @@ export const Project: NextPageExtended = () => {
         </LayoutBlock>
       )}
     >
-      <div className="px-4 py-8 sm:px-0">
+      <LayoutBlock border>
         <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-      </div>
+      </LayoutBlock>
+      <LayoutBlock mode="filled">
+        <div className="border-4 border-dashed border-gray-200 rounded-lg h-[812px]" />
+      </LayoutBlock>
     </Page>
   );
 };
