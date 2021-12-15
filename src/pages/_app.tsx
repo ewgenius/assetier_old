@@ -1,5 +1,5 @@
 import "tailwindcss/tailwind.css";
-import { FC, Fragment } from "react";
+import { FC, Fragment, useEffect } from "react";
 import { SessionProvider } from "next-auth/react";
 import { useSession, signIn } from "next-auth/react";
 import { classNames } from "@utils/classNames";
@@ -245,6 +245,12 @@ function App({ Component: Page, pageProps }: AppPropsExtended) {
 
 function AppWithSession(props: AppPropsExtended) {
   const { session } = props.pageProps;
+
+  useEffect(() => {
+    console.log(process.env.VERCEL_URL);
+    console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
+  }, []);
+
   return (
     <SessionProvider session={session}>
       <App {...props} />
