@@ -247,10 +247,13 @@ function AppWithSession(props: AppPropsExtended) {
   const { session } = props.pageProps;
 
   useEffect(() => {
-    console.log(process.env.VERCEL_URL);
-    console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
-    console.log(process.env.NEXTAUTH_URL);
-    console.log(process.env.NEXT_PUBLIC_NEXTAUTH_URL);
+    console.log("VERCEL_URL", process.env.VERCEL_URL);
+    console.log("NEXT_PUBLIC_VERCEL_URL", process.env.NEXT_PUBLIC_VERCEL_URL);
+    console.log("NEXTAUTH_URL", process.env.NEXTAUTH_URL);
+    console.log(
+      "NEXT_PUBLIC_NEXTAUTH_URL",
+      process.env.NEXT_PUBLIC_NEXTAUTH_URL
+    );
   }, []);
 
   return (
