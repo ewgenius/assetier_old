@@ -249,6 +249,8 @@ function AppWithSession(props: AppPropsExtended) {
   useEffect(() => {
     console.log(process.env.VERCEL_URL);
     console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
+    console.log(process.env.NEXTAUTH_URL);
+    console.log(process.env.NEXT_PUBLIC_NEXTAUTH_URL);
   }, []);
 
   return (
