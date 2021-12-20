@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "prisma:generate": "npx prisma generate",
-    "prisma:migrate:dev": "npx prisma migrate dev --name init",
+    "prisma:migrate:dev": "npx prisma migrate dev",
     "prisma:migrate:deploy": "npx prisma migrate deploy"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "next-auth": "^4.0.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "swr": "^1.1.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
