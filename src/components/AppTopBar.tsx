@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { FC, Fragment, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { FC, Fragment, MouseEvent, useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
@@ -8,7 +8,14 @@ import { classNames } from "@utils/classNames";
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
-  { name: "Sign out", href: "#" },
+  {
+    name: "Sign out",
+    href: "#",
+    action: (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      signOut();
+    },
+  },
 ];
 
 export interface AppTopBarProps {
@@ -30,7 +37,15 @@ const ProfileDropdown: FC<{}> = () => {
   return (
     <Menu as="div" className="ml-3 relative">
       <div>
-        <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <div className="ml-2 mr-4">
+            <div className="font-medium text-sm text-gray-800">
+              {session?.user?.name}
+            </div>
+            <div className="text-xs font-medium text-gray-500">
+              {session?.user?.email}
+            </div>
+          </div>
           <span className="sr-only">Open user menu</span>
           {session?.user?.image && (
             <img
@@ -56,6 +71,7 @@ const ProfileDropdown: FC<{}> = () => {
               {({ active }) => (
                 <a
                   href={item.href}
+                  onClick={item.action}
                   className={classNames(
                     active ? "bg-gray-100" : "",
                     "block px-4 py-2 text-sm text-gray-700"
@@ -76,7 +92,10 @@ export const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
   const { data: session } = useSession();
 
   return (
-    <Disclosure as="nav" className="bg-white border-b border-gray-200">
+    <Disclosure
+      as="nav"
+      className="bg-white border-b border-gray-200 fixed top-0 left-0 right-0"
+    >
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -181,6 +200,7 @@ export const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
                       key={item.name}
                       as="a"
                       href={item.href}
+                      onClick={item.action}
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
                     >
                       {item.name}

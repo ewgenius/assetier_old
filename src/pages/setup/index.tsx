@@ -20,8 +20,6 @@ export const Setup: NextPage<SetupProps> = ({ repositories }) => {
 
   return (
     <div className="container mx-auto p-2">
-      <AuthBlock />
-
       <div className="mt-8">
         <p>Select repository:</p>
         <div className="flex flex-col">

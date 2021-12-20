@@ -8,9 +8,6 @@ export const Home: NextPageExtended = () => {
   return (
     <Page title={() => <PageHeader>Projects</PageHeader>}>
       <LayoutBlock>
-        <AuthBlock />
-      </LayoutBlock>
-      <LayoutBlock>
         <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
       </LayoutBlock>
     </Page>

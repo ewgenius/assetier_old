@@ -189,8 +189,6 @@ export const Setup: NextPage<SetupProps> = ({ icons }) => {
 
   return (
     <div className="container mx-auto p-2">
-      <AuthBlock />
-
       <div className="mt-8">
         <Link href={`/setup?installation_id=${query.installation_id}`}>
           <a className="underline hover:no-underline">Back to repo list</a>
