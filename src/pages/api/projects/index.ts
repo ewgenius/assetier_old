@@ -9,21 +9,27 @@ type Created = {
 
 export default withSession<Created | Project[] | ErrorResponse>(
   async (req, res, session) => {
-    if (req.method === "POST") {
-      res.status(200).json({ name: "John Doe" });
-    } else if (req.method === "GET") {
-      const projects = await prisma.project.findMany({
-        where: {
-          user: {
-            id: session?.userId,
+    switch (req.method) {
+      case "GET": {
+        const projects = await prisma.project.findMany({
+          where: {
+            user: {
+              id: session?.userId,
+            },
           },
-        },
-      });
-      res.status(200).send(projects);
-    }
+        });
+        return res.status(200).send(projects);
+      }
 
-    res.status(409).send({
-      error: "Not Allowed",
-    });
+      case "POST": {
+        return res.status(200).json({ name: "John Doe" });
+      }
+
+      default: {
+        return res.status(409).send({
+          error: "Not Allowed",
+        });
+      }
+    }
   }
 );
