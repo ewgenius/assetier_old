@@ -7,6 +7,14 @@ import { prisma } from "@utils/prisma";
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
+  callbacks: {
+    async session({ session, user }) {
+      return {
+        ...session,
+        userId: user.id,
+      };
+    },
+  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID,
