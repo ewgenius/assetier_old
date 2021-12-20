@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run prisma:generate && npm run next build && npm run prisma:migrate:deploy",
+    "build": "npm run prisma:generate && next build && npm run prisma:migrate:deploy",
     "start": "next start",
     "lint": "next lint",
     "prisma:generate": "npx prisma generate",
