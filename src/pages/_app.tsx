@@ -21,11 +21,11 @@ export interface AppTopBarProps {
 }
 
 const navigation = [
-  { name: "Projects", id: "projects", href: "/" },
+  { name: "Projects", id: "projects", href: "/app" },
   {
     name: "Project",
     id: "project",
-    href: "/project",
+    href: "/app/project",
   },
 ];
 
@@ -201,7 +201,7 @@ const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
   );
 };
 
-function App({ Component: Page, pageProps }: AppPropsExtended) {
+function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   const { data: session } = useSession();
 
   if (!session) {
@@ -222,14 +222,25 @@ function App({ Component: Page, pageProps }: AppPropsExtended) {
   );
 }
 
-function AppWithSession(props: AppPropsExtended) {
-  const { session } = props.pageProps;
-
+function AppForSite({ Component: Page, pageProps }: AppPropsExtended) {
   return (
-    <SessionProvider session={session}>
-      <App {...props} />
-    </SessionProvider>
+    <div className="min-h-full">
+      <Page {...pageProps} />
+    </div>
   );
 }
 
-export default AppWithSession;
+function App(props: AppPropsExtended) {
+  if (props.Component.type === "app") {
+    const { session } = props.pageProps;
+    return (
+      <SessionProvider session={session}>
+        <AppWithAuth {...props} />
+      </SessionProvider>
+    );
+  }
+
+  return <AppForSite {...props} />;
+}
+
+export default App;

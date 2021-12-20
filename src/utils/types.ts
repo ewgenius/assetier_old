@@ -2,6 +2,7 @@ import type { NextComponentType, NextPage, NextPageContext } from "next";
 import type { AppProps } from "next/app";
 
 export type WithNavId = {
+  type: "site" | "app";
   navId: string;
 };
 

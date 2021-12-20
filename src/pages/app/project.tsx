@@ -84,6 +84,7 @@ export const Project: NextPageExtended = () => {
   );
 };
 
+Project.type = "app";
 Project.navId = "project";
 
 export default Project;

@@ -1,22 +1,24 @@
 import type { NextPageExtended } from "@utils/types";
-import { Page } from "@components/Page";
-import { PageHeader } from "@components/PageHeader";
-import { LayoutBlock } from "@components/LayoutBlock";
-import { AuthBlock } from "@components/AuthBlock";
+import Head from "next/head";
 
-export const Home: NextPageExtended = () => {
+const Home: NextPageExtended = () => {
   return (
-    <Page title={() => <PageHeader>Projects</PageHeader>}>
-      <LayoutBlock>
-        <AuthBlock />
-      </LayoutBlock>
-      <LayoutBlock>
-        <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-      </LayoutBlock>
-    </Page>
+    <div className="min-h-screen w-screen flex flex-col">
+      <Head>
+        <title>Assetier</title>
+      </Head>
+      <main className="flex-grow flex flex-col items-center justify-center">
+        <h1 className="font-semibold text-4xl">📦 Assetier</h1>
+        <p className="text-gray-400 mt-2">coming soon...</p>
+      </main>
+      <footer className="flex flex-col items-center p-2 text-gray-400 text-sm">
+        <p>&copy; 2021 assetier.app</p>
+      </footer>
+    </div>
   );
 };
 
-Home.navId = "projects";
+Home.type = "site";
+Home.navId = "none";
 
 export default Home;
