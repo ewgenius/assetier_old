@@ -5,7 +5,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate:dev": "npx prisma migrate dev --name init",
+    "prisma:migrate:deploy": "npx prisma migrate deploy"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.2",
@@ -13,6 +16,7 @@
     "@octokit/app": "^12.0.5",
     "@octokit/auth-app": "^3.6.1",
     "@octokit/core": "^3.5.1",
+    "@prisma/client": "^3.6.0",
     "@tailwindcss/forms": "^0.4.0",
     "formidable": "^2.0.1",
     "next": "12.0.7",
