@@ -7,7 +7,7 @@ export const Project: NextPageExtended = () => {
   return (
     <Page
       title={() => (
-        <LayoutBlock mode="filled" border>
+        <LayoutBlock mode="primary" borderBottom>
           <div>
             <nav className="sm:hidden" aria-label="Back">
               <a
@@ -74,10 +74,10 @@ export const Project: NextPageExtended = () => {
         </LayoutBlock>
       )}
     >
-      <LayoutBlock border>
+      <LayoutBlock borderBottom>
         <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
       </LayoutBlock>
-      <LayoutBlock mode="filled">
+      <LayoutBlock mode="primary">
         <div className="border-4 border-dashed border-gray-200 rounded-lg h-[812px]" />
       </LayoutBlock>
     </Page>
