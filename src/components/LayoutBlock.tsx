@@ -5,13 +5,24 @@ export interface LayoutBlockProps {
   mode?: "primary" | "secondary";
   borderTop?: boolean;
   borderBottom?: boolean;
+  padding?: "none" | "sm" | "xs" | "lg";
+  sticky?: boolean;
 }
+
+const PaddingMap = {
+  none: "py-0",
+  xs: "py-2",
+  sm: "py-4",
+  lg: "py-8",
+};
 
 export const LayoutBlock: FC<PropsWithChildren<LayoutBlockProps>> = ({
   children,
   mode,
   borderTop,
   borderBottom,
+  padding,
+  sticky,
 }) => {
   return (
     <div
@@ -19,10 +30,16 @@ export const LayoutBlock: FC<PropsWithChildren<LayoutBlockProps>> = ({
         mode === "secondary" ? "bg-gray-100" : "bg-white",
         (borderTop || borderBottom) && "border-gray-200",
         borderTop && "border-t",
-        borderBottom && "border-b "
+        borderBottom && "border-b",
+        sticky && "sticky top-0"
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div
+        className={classNames(
+          "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8",
+          PaddingMap[padding || "xs"]
+        )}
+      >
         {children}
       </div>
     </div>

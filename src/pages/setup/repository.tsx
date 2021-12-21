@@ -36,7 +36,7 @@ export const PathInput = () => {
             type="text"
             name="path"
             id="path"
-            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md pl-10 sm:text-sm border border-gray-300"
+            className="focus:ring-zinc-500 focus:border-zinc-500 block w-full rounded-none rounded-l-md pl-10 sm:text-sm border border-gray-300"
             placeholder="path to folder with svg files"
             value={path}
             onChange={({ target }) => setPath(target.value)}
@@ -45,7 +45,7 @@ export const PathInput = () => {
         <Link
           href={`/setup/repository?installation_id=${query.installation_id}&owner=${query.owner}&repository=${query.repository}&path=${path}`}
         >
-          <a className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+          <a className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500">
             <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
           </a>
         </Link>
@@ -92,7 +92,7 @@ export const Upload = () => {
       </div>
       <div className="mt-1 flex rounded-md shadow-sm">
         <div className="relative flex items-stretch flex-grow focus-within:z-10">
-          <div className="focus:ring-indigo-500 focus:border-indigo-500 w-full rounded-none rounded-l-md pl-2 pt-2 text-gray-500 sm:text-sm border border-gray-300 flex flex-row">
+          <div className="focus:ring-zinc-500 focus:border-zinc-500 w-full rounded-none rounded-l-md pl-2 pt-2 text-gray-500 sm:text-sm border border-gray-300 flex flex-row">
             {files && files.length > 0
               ? files.map((file) => (
                   <img
@@ -116,7 +116,7 @@ export const Upload = () => {
 
         <button
           onClick={upload}
-          className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500"
         >
           <UploadIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
         </button>

@@ -22,7 +22,7 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   }
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen">
       <AppTopBar currentNavId={Page.navId} />
       <Page {...pageProps} />
     </div>

@@ -43,7 +43,7 @@ export const Home: NextPageExtended = () => {
                   <div className="flex-shrink-0 pr-2">
                     <button
                       type="button"
-                      className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
                     >
                       <span className="sr-only">Open options</span>
                       <DotsVerticalIcon
