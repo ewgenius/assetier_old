@@ -7,7 +7,8 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { classNames } from "@utils/classNames";
 
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
+  { name: "Profile", href: "#" },
+  { name: "Settings", href: "#" },
   {
     name: "Sign out",
     href: "#",
@@ -90,7 +91,7 @@ export const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
-                  <span className="font-bold">Assetier</span>
+                  <span className="font-bold text-zinc-800">Assetier</span>
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">

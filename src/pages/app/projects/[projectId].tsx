@@ -14,7 +14,7 @@ export const Project: NextPageExtended = () => {
   return (
     <Page
       title={() => (
-        <LayoutBlock mode="primary" borderBottom padding="lg" sticky>
+        <LayoutBlock mode="primary" borderBottom padding="lg">
           <div>
             <nav className="sm:hidden" aria-label="Back">
               <Link href="/app">
