@@ -7,10 +7,13 @@ import { useProject } from "@hooks/useProject";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { Spinner } from "@components/Spinner";
+import { useAppContext } from "@hooks/useAppContext";
 
 export const Project: NextPageExtended = () => {
   const { query } = useRouter();
-  const { project } = useProject(query.projectId as string);
+  const { organization } = useAppContext();
+  const { project } = useProject(organization.id, query.projectId as string);
+
   return (
     <Page
       title={() => (

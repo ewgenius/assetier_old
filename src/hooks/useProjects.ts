@@ -2,9 +2,13 @@ import useSWR, { useSWRConfig } from "swr";
 import type { Project } from "@prisma/client";
 import { fetcher } from "@utils/fetcher";
 import { useCallback, useState } from "react";
+import { useAppContext } from "./useAppContext";
 
-export function useProjects() {
-  const { data, error } = useSWR<Project[]>("/api/projects", fetcher);
+export function useProjects(organizationId: string) {
+  const { data, error } = useSWR<Project[]>(
+    `/api/organizations/${organizationId}/projects`,
+    fetcher
+  );
   const [creating, setCreating] = useState(false);
   const { mutate } = useSWRConfig();
 
@@ -12,8 +16,8 @@ export function useProjects() {
     (project: Partial<Project>) => {
       setCreating(true);
       return mutate(
-        "/api/projects",
-        fetch("/api/projects", {
+        `/api/organizations/${organizationId}/projects`,
+        fetch(`/api/organizations/${organizationId}/projects`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

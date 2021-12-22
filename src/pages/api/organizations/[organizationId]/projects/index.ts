@@ -1,16 +1,15 @@
 import type { Project } from "@prisma/client";
+import type { ErrorResponse } from "@utils/types";
 import { prisma } from "@utils/prisma";
-import { withSession, ErrorResponse } from "@utils/withSession";
+import { withOrganization } from "@utils/withOrganization";
 
-export default withSession<Project | Project[] | ErrorResponse>(
-  async (req, res, session) => {
+export default withOrganization<Project | Project[] | ErrorResponse>(
+  async (req, res, { organization }) => {
     switch (req.method) {
       case "GET": {
         const projects = await prisma.project.findMany({
           where: {
-            user: {
-              id: session?.userId,
-            },
+            organization,
           },
         });
         return res.status(200).send(projects);
@@ -20,7 +19,7 @@ export default withSession<Project | Project[] | ErrorResponse>(
         const newProject = await prisma.project.create({
           data: {
             name: req.body.name as string,
-            userId: session.userId,
+            organizationId: organization.id,
           },
         });
         return res.status(200).json(newProject);

@@ -1,14 +1,6 @@
-import type { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import type { Session } from "next-auth/core/types";
-
-export type ErrorResponse = {
-  error: string;
-};
-
-export type SessionWithId = Session & {
-  userId: string;
-};
+import type { ErrorResponse, SessionWithId } from "@utils/types";
 
 export type NextApiHandlerWithSession<T = any> = (
   req: NextApiRequest,

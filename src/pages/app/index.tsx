@@ -14,9 +14,11 @@ import {
   SlideOverProps,
   SlideOverHeading,
 } from "@components/SlideOver";
+import { useAppContext } from "@hooks/useAppContext";
 
 const ProjectsList = () => {
-  const { projects } = useProjects();
+  const { organization } = useAppContext();
+  const { projects } = useProjects(organization.id);
   return projects ? (
     <ul
       role="list"
@@ -68,7 +70,8 @@ const ProjectsList = () => {
 };
 
 const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
-  const { createProject, creating } = useProjects();
+  const { organization } = useAppContext();
+  const { createProject, creating } = useProjects(organization.id);
   const [projectName, setProjectName, resetProjectName] = useInputState();
 
   const close = () => {

@@ -1,12 +1,6 @@
 import useSWR from "swr";
-import type { Organization, User } from "@prisma/client";
 import { fetcher } from "@utils/fetcher";
-
-export type UserResponse = User & {
-  UserToOrganization: {
-    organization: Organization;
-  }[];
-};
+import { UserResponse } from "@utils/types";
 
 export function useMe() {
   const { data, error } = useSWR<UserResponse>("/api/user/me", fetcher);

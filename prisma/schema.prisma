@@ -48,7 +48,6 @@ model User {
 
   accounts           Account[]
   sessions           Session[]
-  projects           Project[]
   UserToOrganization UserToOrganization[]
 }
 
@@ -89,15 +88,16 @@ model Organization {
   type OrganizationType @default(PERSONAL)
 
   UserToOrganization UserToOrganization[]
+  Project            Project[]
 }
 
 // Projects
 
 model Project {
-  id        String   @id @default(cuid())
-  userId    String
-  name      String
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  createdAt      DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
 }
