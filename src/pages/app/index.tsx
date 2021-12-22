@@ -106,6 +106,7 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                 <div className="mt-1">
                   <input
                     type="text"
+                    placeholder="My Awesome Project"
                     disabled={creating}
                     name="project-name"
                     value={projectName}
@@ -134,8 +135,8 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           disabled={creating}
           className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
-          <span>Save</span>
-          {<Spinner className="ml-2" />}
+          <span>Create</span>
+          {creating && <Spinner className="ml-2" />}
         </button>
       </div>
     </SlideOver>
