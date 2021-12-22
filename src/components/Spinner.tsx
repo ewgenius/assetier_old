@@ -3,7 +3,7 @@ import { classNames } from "@utils/classNames";
 
 export const Spinner: FC<SVGProps<SVGSVGElement>> = ({ className }) => (
   <svg
-    className={classNames(className, "animate-spin h-5 w-5")}
+    className={classNames(className, "animate-spin h-5 w-5 opacity-75")}
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
