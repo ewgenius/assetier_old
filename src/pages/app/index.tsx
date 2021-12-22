@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { DotsVerticalIcon } from "@heroicons/react/outline";
 
@@ -69,20 +69,29 @@ const ProjectsList = () => {
 
 const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { createProject, creating } = useProjects();
-  const [projectName, setProjectName] = useInputState();
+  const [projectName, setProjectName, resetProjectName] = useInputState();
+
+  const close = () => {
+    setTimeout(() => {
+      resetProjectName();
+    }, 700);
+    onClose();
+  };
+
+  useEffect(() => {
+    resetProjectName();
+  }, []);
+
+  const submit = useCallback(() => {
+    createProject({
+      name: projectName,
+    }).then(close);
+  }, [projectName]);
 
   return (
-    <SlideOver
-      open={open}
-      onClose={onClose}
-      onSubmit={() =>
-        createProject({
-          name: projectName,
-        }).then(onClose)
-      }
-    >
+    <SlideOver open={open} onClose={close} onSubmit={submit}>
       <div className="flex-1 h-0 overflow-y-auto">
-        <SlideOverHeading onClose={onClose} title="New Project" />
+        <SlideOverHeading onClose={close} title="New Project" />
 
         <div className="flex-1 flex flex-col justify-between">
           <div className="px-4 divide-y divide-gray-200 sm:px-6">
@@ -102,7 +111,7 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                     value={projectName}
                     onChange={setProjectName}
                     id="project-name"
-                    className="block w-full shadow-sm sm:text-sm focus:ring-zinc-500 focus:border-zinc-500 border-gray-300 rounded-md"
+                    className="block w-full shadow-sm disabled:opacity-50 sm:text-sm focus:ring-zinc-500 focus:border-zinc-500 border-gray-300 rounded-md"
                   />
                 </div>
               </div>
@@ -114,18 +123,19 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
       <div className="flex-shrink-0 px-4 py-4 flex justify-end">
         <button
           type="button"
-          className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+          className="bg-white py-2 px-4 border disabled:opacity-50 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
           disabled={creating}
-          onClick={onClose}
+          onClick={close}
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={creating}
-          className="ml-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+          className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
-          Save
+          <span>Save</span>
+          {<Spinner className="ml-2" />}
         </button>
       </div>
     </SlideOver>
