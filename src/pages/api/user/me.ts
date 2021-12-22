@@ -17,6 +17,9 @@ export default withSession<UserResponse | ErrorResponse>(
           },
           include: {
             UserToOrganization: {
+              where: {
+                isPersonal: true,
+              },
               include: {
                 organization: true,
               },
@@ -26,9 +29,8 @@ export default withSession<UserResponse | ErrorResponse>(
 
         return res.status(200).send({
           user: user as UserWithOrganizations,
-          personalOrganization: user?.UserToOrganization.find(
-            (org) => org.isPersonal
-          )?.organization as Organization,
+          personalOrganization: user?.UserToOrganization[0]
+            .organization as Organization,
         });
       }
 
