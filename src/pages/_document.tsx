@@ -6,6 +6,8 @@ class MyDocument extends Document {
       <Html className="h-full bg-gray-100">
         <Head>
           <meta name="description" content="Assetier" />
+          <meta name="theme-color" content="#f3f4f6" />
+
           <link rel="icon" href="/favicon.ico" />
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         </Head>
