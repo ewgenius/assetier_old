@@ -25,11 +25,11 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
           <Transition.Child
             className="absolute inset-0 bg-black"
             as={Dialog.Overlay}
-            enter="opacity ease-in-out duration-500 sm:duration-700"
+            enter="opacity ease-in-out duration-500"
             enterFrom="opacity-0"
             enterTo="opacity-25"
             entered="opacity-25"
-            leave="opacity transition ease-in-out duration-500 sm:duration-700"
+            leave="opacity transition ease-in-out duration-500"
             leaveFrom="opacity-25"
             leaveTo="opacity-0"
           />
@@ -37,10 +37,10 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
           <div className="fixed inset-y-0 pl-16 max-w-full right-0 flex">
             <Transition.Child
               as={Fragment}
-              enter="transform transition ease-in-out duration-500 sm:duration-700"
+              enter="transform transition ease-in-out duration-500"
               enterFrom="translate-x-full"
               enterTo="translate-x-0"
-              leave="transform transition ease-in-out duration-500 sm:duration-700"
+              leave="transform transition ease-in-out duration-500"
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
