@@ -26,7 +26,7 @@ const ProjectsList = () => {
         (project) =>
           project && (
             <li
-              key={project.name}
+              key={project.id}
               className="col-span-1 flex shadow-sm rounded-md"
             >
               <div

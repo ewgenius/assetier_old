@@ -7,9 +7,12 @@ import { LayoutBlock } from "@components/LayoutBlock";
 import { AuthBlock } from "@components/AuthBlock";
 import { AppTopBar } from "@components/AppTopBar";
 import { Footer } from "@components/Footer";
+import { useMe } from "@hooks/useMe";
 
 function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   const { data: session } = useSession();
+  const { user } = useMe();
+  console.log(user);
 
   if (!session) {
     return (
