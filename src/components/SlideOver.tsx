@@ -22,7 +22,17 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
         onClose={onClose}
       >
         <div className="absolute inset-0 overflow-hidden">
-          <Dialog.Overlay className="absolute inset-0" />
+          <Transition.Child
+            className="absolute inset-0 bg-black"
+            as={Dialog.Overlay}
+            enter="opacity ease-in-out duration-500 sm:duration-700"
+            enterFrom="opacity-0"
+            enterTo="opacity-25"
+            entered="opacity-25"
+            leave="opacity transition ease-in-out duration-500 sm:duration-700"
+            leaveFrom="opacity-25"
+            leaveTo="opacity-0"
+          />
 
           <div className="fixed inset-y-0 pl-16 max-w-full right-0 flex">
             <Transition.Child
