@@ -2,11 +2,7 @@ import type { Project } from "@prisma/client";
 import { prisma } from "@utils/prisma";
 import { withSession, ErrorResponse } from "@utils/withSession";
 
-type Created = {
-  name: string;
-};
-
-export default withSession<Created | Project[] | ErrorResponse>(
+export default withSession<Project | Project[] | ErrorResponse>(
   async (req, res, session) => {
     switch (req.method) {
       case "GET": {
@@ -21,7 +17,13 @@ export default withSession<Created | Project[] | ErrorResponse>(
       }
 
       case "POST": {
-        return res.status(200).json({ name: "John Doe" });
+        const newProject = await prisma.project.create({
+          data: {
+            name: req.body.name as string,
+            userId: session.userId,
+          },
+        });
+        return res.status(200).json(newProject);
       }
 
       default: {

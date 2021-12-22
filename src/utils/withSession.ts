@@ -13,7 +13,7 @@ export type SessionWithId = Session & {
 export type NextApiHandlerWithSession<T = any> = (
   req: NextApiRequest,
   res: NextApiResponse<T>,
-  session: SessionWithId | null
+  session: SessionWithId
 ) => void | Promise<void>;
 
 export const withSession =

@@ -1,11 +1,8 @@
 import { FC, useState } from "react";
 import Link from "next/link";
-import {
-  LinkIcon,
-  QuestionMarkCircleIcon,
-  DotsVerticalIcon,
-} from "@heroicons/react/outline";
+import { DotsVerticalIcon } from "@heroicons/react/outline";
 
+import { useInputState } from "@hooks/useInputState";
 import { useProjects } from "@hooks/useProjects";
 import type { NextPageExtended } from "@utils/types";
 import { classNames } from "@utils/classNames";
@@ -25,37 +22,43 @@ const ProjectsList = () => {
       role="list"
       className="mt-3 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
     >
-      {projects.map((project) => (
-        <li key={project.name} className="col-span-1 flex shadow-sm rounded-md">
-          <div
-            className={classNames(
-              "bg-pink-400",
-              "uppercase flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md"
-            )}
-          >
-            {project.name.substring(0, 3)}
-          </div>
-          <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-            <div className="flex-1 px-4 py-2 text-sm truncate">
-              <Link href={`/app/projects/${project.id}`}>
-                <a className="text-gray-900 font-medium hover:text-gray-600">
-                  {project.name}
-                </a>
-              </Link>
-              <p className="text-gray-500 text-xs">{project.createdAt}</p>
-            </div>
-            <div className="flex-shrink-0 pr-2">
-              <button
-                type="button"
-                className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+      {projects.map(
+        (project) =>
+          project && (
+            <li
+              key={project.name}
+              className="col-span-1 flex shadow-sm rounded-md"
+            >
+              <div
+                className={classNames(
+                  "bg-pink-400",
+                  "uppercase flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md"
+                )}
               >
-                <span className="sr-only">Open options</span>
-                <DotsVerticalIcon className="w-5 h-5" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </li>
-      ))}
+                {project.name.substring(0, 3)}
+              </div>
+              <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+                <div className="flex-1 px-4 py-2 text-sm truncate">
+                  <Link href={`/app/projects/${project.id}`}>
+                    <a className="text-gray-900 font-medium hover:text-gray-600">
+                      {project.name}
+                    </a>
+                  </Link>
+                  <p className="text-gray-500 text-xs">{project.createdAt}</p>
+                </div>
+                <div className="flex-shrink-0 pr-2">
+                  <button
+                    type="button"
+                    className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                  >
+                    <span className="sr-only">Open options</span>
+                    <DotsVerticalIcon className="w-5 h-5" aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+            </li>
+          )
+      )}
     </ul>
   ) : (
     <div className="flex justify-center py-4">
@@ -65,8 +68,19 @@ const ProjectsList = () => {
 };
 
 const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
+  const { createProject, creating } = useProjects();
+  const [projectName, setProjectName] = useInputState();
+
   return (
-    <SlideOver open={open} onClose={onClose}>
+    <SlideOver
+      open={open}
+      onClose={onClose}
+      onSubmit={() =>
+        createProject({
+          name: projectName,
+        }).then(onClose)
+      }
+    >
       <div className="flex-1 h-0 overflow-y-auto">
         <SlideOverHeading onClose={onClose} title="New Project" />
 
@@ -83,142 +97,14 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                 <div className="mt-1">
                   <input
                     type="text"
+                    disabled={creating}
                     name="project-name"
+                    value={projectName}
+                    onChange={setProjectName}
                     id="project-name"
                     className="block w-full shadow-sm sm:text-sm focus:ring-zinc-500 focus:border-zinc-500 border-gray-300 rounded-md"
                   />
                 </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium text-gray-900"
-                >
-                  Description
-                </label>
-                <div className="mt-1">
-                  <textarea
-                    id="description"
-                    name="description"
-                    rows={4}
-                    className="block w-full shadow-sm sm:text-sm focus:ring-zinc-500 focus:border-zinc-500 border border-gray-300 rounded-md"
-                    defaultValue={""}
-                  />
-                </div>
-              </div>
-
-              <fieldset>
-                <legend className="text-sm font-medium text-gray-900">
-                  Privacy
-                </legend>
-                <div className="mt-2 space-y-5">
-                  <div className="relative flex items-start">
-                    <div className="absolute flex items-center h-5">
-                      <input
-                        id="privacy-public"
-                        name="privacy"
-                        aria-describedby="privacy-public-description"
-                        type="radio"
-                        className="focus:ring-zinc-500 h-4 w-4 text-zinc-600 border-gray-300"
-                        defaultChecked
-                      />
-                    </div>
-                    <div className="pl-7 text-sm">
-                      <label
-                        htmlFor="privacy-public"
-                        className="font-medium text-gray-900"
-                      >
-                        Public access
-                      </label>
-                      <p
-                        id="privacy-public-description"
-                        className="text-gray-500"
-                      >
-                        Everyone with the link will see this project.
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="relative flex items-start">
-                      <div className="absolute flex items-center h-5">
-                        <input
-                          id="privacy-private-to-project"
-                          name="privacy"
-                          aria-describedby="privacy-private-to-project-description"
-                          type="radio"
-                          className="focus:ring-zinc-500 h-4 w-4 text-zinc-600 border-gray-300"
-                        />
-                      </div>
-                      <div className="pl-7 text-sm">
-                        <label
-                          htmlFor="privacy-private-to-project"
-                          className="font-medium text-gray-900"
-                        >
-                          Private to project members
-                        </label>
-                        <p
-                          id="privacy-private-to-project-description"
-                          className="text-gray-500"
-                        >
-                          Only members of this project would be able to access.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="relative flex items-start">
-                      <div className="absolute flex items-center h-5">
-                        <input
-                          id="privacy-private"
-                          name="privacy"
-                          aria-describedby="privacy-private-to-project-description"
-                          type="radio"
-                          className="focus:ring-zinc-500 h-4 w-4 text-zinc-600 border-gray-300"
-                        />
-                      </div>
-                      <div className="pl-7 text-sm">
-                        <label
-                          htmlFor="privacy-private"
-                          className="font-medium text-gray-900"
-                        >
-                          Private to you
-                        </label>
-                        <p
-                          id="privacy-private-description"
-                          className="text-gray-500"
-                        >
-                          You are the only one able to access this project.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-            <div className="pt-4 pb-6">
-              <div className="flex text-sm">
-                <a
-                  href="#"
-                  className="group inline-flex items-center font-medium text-zinc-600 hover:text-zinc-900"
-                >
-                  <LinkIcon
-                    className="h-5 w-5 text-zinc-500 group-hover:text-zinc-900"
-                    aria-hidden="true"
-                  />
-                  <span className="ml-2">Copy link</span>
-                </a>
-              </div>
-              <div className="mt-4 flex text-sm">
-                <a
-                  href="#"
-                  className="group inline-flex items-center text-gray-500 hover:text-gray-900"
-                >
-                  <QuestionMarkCircleIcon
-                    className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                    aria-hidden="true"
-                  />
-                  <span className="ml-2">Learn more about sharing</span>
-                </a>
               </div>
             </div>
           </div>
@@ -229,12 +115,14 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         <button
           type="button"
           className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+          disabled={creating}
           onClick={onClose}
         >
           Cancel
         </button>
         <button
           type="submit"
+          disabled={creating}
           className="ml-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
           Save

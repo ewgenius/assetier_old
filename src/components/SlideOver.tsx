@@ -5,11 +5,13 @@ import { XIcon } from "@heroicons/react/outline";
 export interface SlideOverProps {
   open: boolean;
   onClose: () => void;
+  onSubmit?: () => void;
 }
 
 export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
   open,
   onClose,
+  onSubmit,
   children,
 }) => {
   return (
@@ -33,7 +35,14 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
               leaveTo="translate-x-full"
             >
               <div className="w-screen max-w-md">
-                <form className="h-full divide-y divide-gray-200 flex flex-col bg-white shadow-xl">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    onSubmit && onSubmit();
+                    return false;
+                  }}
+                  className="h-full divide-y divide-gray-200 flex flex-col bg-white shadow-xl"
+                >
                   {children}
                 </form>
               </div>
