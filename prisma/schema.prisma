@@ -87,8 +87,17 @@ model Organization {
   id   String           @id @default(cuid())
   type OrganizationType @default(PERSONAL)
 
-  users    UserToOrganization[]
-  projects Project[]
+  users               UserToOrganization[]
+  projects            Project[]
+  githubInstallations GithubInstallation[]
+}
+
+model GithubInstallation {
+  id             String @id @default(cuid())
+  installationId Int
+  organizationId String
+
+  organization Organization @relation(fields: [organizationId], references: [id])
 }
 
 // Projects
