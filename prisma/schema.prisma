@@ -98,12 +98,12 @@ enum GithubAccountType {
 }
 
 model GithubInstallation {
-  id             String @id @default(cuid())
-  installationId Int    @unique
-  organizationId String
-  // accountLogin   String
-  // accountType    GithubAccountType
-  // avatarUrl      String
+  id               String            @id @default(cuid())
+  installationId   Int               @unique
+  organizationId   String
+  accountLogin     String            @default("")
+  accountAvatarUrl String            @default("")
+  accountType      GithubAccountType @default(USER)
 
   organization Organization @relation(fields: [organizationId], references: [id])
 }

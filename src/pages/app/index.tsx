@@ -16,6 +16,7 @@ import {
 } from "@components/SlideOver";
 import { useAppContext } from "@hooks/useAppContext";
 import { RepositorySelector } from "@components/RepositorySelector";
+import { useGithubAccounts } from "@hooks/useGithubAccounts";
 
 const ProjectsList = () => {
   const { organization } = useAppContext();
@@ -74,6 +75,9 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
   const { createProject, creating } = useProjects(organization.id);
   const [projectName, setProjectName, resetProjectName] = useInputState();
+
+  const { accounts } = useGithubAccounts(organization.id);
+  console.log(accounts);
 
   const close = () => {
     setTimeout(() => {

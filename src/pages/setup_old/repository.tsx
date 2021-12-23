@@ -6,6 +6,7 @@ import { App } from "@octokit/app";
 import { AuthBlock } from "@components/AuthBlock";
 import { getGitHubPrivateKey } from "@utils/getGitHubPrivateKey";
 import { FolderIcon, SearchIcon, UploadIcon } from "@heroicons/react/outline";
+import { getOctokit } from "@utils/getOctokit";
 export interface SetupProps {
   icons: {
     name: string | null;
@@ -238,18 +239,7 @@ export const Setup: NextPage<SetupProps> = ({ icons }) => {
 export const getServerSideProps: GetServerSideProps<SetupProps> = async (
   context
 ) => {
-  const privateKey = await getGitHubPrivateKey();
-
-  const app = new App({
-    appId: Number(process.env.GITHUB_APP_ID),
-    privateKey,
-    clientId: process.env.GITHUB_APP_CLIENT_ID,
-    clientSecret: process.env.GITHUB_APP_CLIENT_SECRET,
-  });
-
-  const octokit = await app.getInstallationOctokit(
-    Number(context.query.installation_id)
-  );
+  const octokit = await getOctokit(Number(context.query.installation_id));
 
   try {
     const contents = await octokit.request(

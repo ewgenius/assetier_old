@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 
 import type { SessionWithId } from "@utils/types";
 import { prisma } from "@utils/prisma";
 import { Spinner } from "@components/Spinner";
+import { getOctokit } from "@utils/getOctokit";
+import { GithubAccountType } from "@prisma/client";
 
 export const Setup: NextPage = () => {
   useEffect(() => {
@@ -58,10 +59,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       // TODO
     }
 
+    const octokit = await getOctokit(installationId);
+    const installation = await octokit.request(
+      "GET /app/installations/{installation_id}",
+      {
+        installation_id: installationId,
+      }
+    );
+
+    console.log("INFO", installation.data.account);
+
     await prisma.githubInstallation.create({
       data: {
         installationId,
         organizationId,
+        accountLogin: installation.data.account?.login || "",
+        accountAvatarUrl: installation.data.account?.avatar_url || "",
+        accountType:
+          installation.data.account?.type === "User"
+            ? GithubAccountType.USER
+            : GithubAccountType.ORGANIZATION,
       },
     });
   }
