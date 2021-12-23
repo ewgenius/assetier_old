@@ -23,7 +23,7 @@ export type SessionWithId = Session & {
 };
 
 export type UserWithOrganizations = User & {
-  UserToOrganization: {
+  organizations: {
     organization: Organization;
   }[];
 };

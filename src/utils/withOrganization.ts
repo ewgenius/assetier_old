@@ -23,7 +23,7 @@ export const withOrganization = <T = any>(
         id: session.userId,
       },
       include: {
-        UserToOrganization: true,
+        organizations: true,
       },
     });
 
@@ -36,7 +36,7 @@ export const withOrganization = <T = any>(
 
       if (organization) {
         if (
-          user.UserToOrganization.some(
+          user.organizations.some(
             (org) => org.organizationId === organization.id
           )
         ) {

@@ -46,9 +46,9 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  accounts           Account[]
-  sessions           Session[]
-  UserToOrganization UserToOrganization[]
+  accounts      Account[]
+  sessions      Session[]
+  organizations UserToOrganization[]
 }
 
 model VerificationToken {
@@ -87,8 +87,8 @@ model Organization {
   id   String           @id @default(cuid())
   type OrganizationType @default(PERSONAL)
 
-  UserToOrganization UserToOrganization[]
-  Project            Project[]
+  users    UserToOrganization[]
+  projects Project[]
 }
 
 // Projects

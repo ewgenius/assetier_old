@@ -16,7 +16,7 @@ export default withSession<UserResponse | ErrorResponse>(
             id: session.userId,
           },
           include: {
-            UserToOrganization: {
+            organizations: {
               where: {
                 isPersonal: true,
               },
@@ -29,7 +29,7 @@ export default withSession<UserResponse | ErrorResponse>(
 
         return res.status(200).send({
           user: user as UserWithOrganizations,
-          personalOrganization: user?.UserToOrganization[0]
+          personalOrganization: user?.organizations[0]
             .organization as Organization,
         });
       }

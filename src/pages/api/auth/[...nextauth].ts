@@ -11,7 +11,7 @@ async function createPersonalOrganization(userId: string) {
       id: userId,
     },
     data: {
-      UserToOrganization: {
+      organizations: {
         create: {
           isPersonal: true,
           role: Role.ADMIN,
@@ -46,7 +46,7 @@ export default NextAuth({
           id,
         },
         select: {
-          UserToOrganization: {
+          organizations: {
             where: {
               isPersonal: true,
             },
@@ -54,7 +54,7 @@ export default NextAuth({
         },
       });
 
-      if (!user?.UserToOrganization || !user?.UserToOrganization?.length) {
+      if (!user?.organizations || !user?.organizations?.length) {
         await createPersonalOrganization(id);
       }
     },

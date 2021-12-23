@@ -15,6 +15,7 @@ import {
   SlideOverHeading,
 } from "@components/SlideOver";
 import { useAppContext } from "@hooks/useAppContext";
+import { RepositorySelector } from "@components/RepositorySelector";
 
 const ProjectsList = () => {
   const { organization } = useAppContext();
@@ -97,7 +98,7 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         <SlideOverHeading onClose={close} title="New Project" />
 
         <div className="flex-1 flex flex-col justify-between">
-          <div className="px-4 divide-y divide-gray-200 sm:px-6">
+          <div className="px-4 sm:px-6">
             <div className="space-y-6 pt-6 pb-5">
               <div>
                 <label
@@ -120,6 +121,7 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                 </div>
               </div>
             </div>
+            <RepositorySelector />
           </div>
         </div>
       </div>
