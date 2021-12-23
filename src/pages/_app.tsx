@@ -68,13 +68,15 @@ function App(props: AppPropsExtended) {
     }
 
     case "site":
-    default: {
       return (
         <>
           <AppDefault {...props} />
           <Footer mode="secondary" />
         </>
       );
+
+    default: {
+      return <AppDefault {...props} />;
     }
   }
 }

@@ -121,6 +121,21 @@ const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                 </div>
               </div>
             </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => {
+                  const state = organization.id;
+                  window.open(
+                    `https://github.com/apps/${process.env.NEXT_PUBLIC_GITHUB_APP_NAME}/installations/new?state=${state}`,
+                    "winname",
+                    "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800,height=600"
+                  );
+                }}
+              >
+                Connect GH repo {process.env.NEXT_PUBLIC_GITHUB_APP_NAME}
+              </button>
+            </div>
             <RepositorySelector />
           </div>
         </div>
