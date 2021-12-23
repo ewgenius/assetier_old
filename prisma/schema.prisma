@@ -92,10 +92,18 @@ model Organization {
   githubInstallations GithubInstallation[]
 }
 
+enum GithubAccountType {
+  USER
+  ORGANIZATION
+}
+
 model GithubInstallation {
   id             String @id @default(cuid())
-  installationId Int
+  installationId Int    @unique
   organizationId String
+  // accountLogin   String
+  // accountType    GithubAccountType
+  // avatarUrl      String
 
   organization Organization @relation(fields: [organizationId], references: [id])
 }
