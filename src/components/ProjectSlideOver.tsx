@@ -1,4 +1,5 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import type { Project } from "@prisma/client";
 
 import { useInputState } from "@hooks/useInputState";
 import { useProjects } from "@hooks/useProjects";
@@ -9,13 +10,16 @@ import {
   SlideOverHeading,
 } from "@components/SlideOver";
 import { useAppContext } from "@hooks/useAppContext";
-import { RepositorySelector } from "@components/RepositorySelector";
 import { GithubAccountSelector } from "./GithubAccountSelector";
 
 export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
   const { createProject, creating } = useProjects(organization.id);
   const [projectName, setProjectName, resetProjectName] = useInputState();
+  const [githubInstallation, setGithubInstallation] = useState<Pick<
+    Project,
+    "githubInstallationId" | "repositoryId"
+  > | null>(null);
 
   const close = () => {
     setTimeout(() => {
@@ -28,11 +32,23 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
     resetProjectName();
   }, []);
 
+  const isValid = useMemo(
+    () =>
+      projectName &&
+      githubInstallation?.githubInstallationId &&
+      githubInstallation?.repositoryId,
+    [projectName, githubInstallation]
+  );
+
   const submit = useCallback(() => {
-    createProject({
-      name: projectName,
-    }).then(close);
-  }, [projectName]);
+    if (isValid) {
+      createProject({
+        name: projectName,
+        githubInstallationId: githubInstallation?.githubInstallationId,
+        repositoryId: githubInstallation?.repositoryId,
+      }).then(close);
+    }
+  }, [projectName, githubInstallation, isValid]);
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
@@ -65,7 +81,7 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
 
               <div className="border-b border-gray-200" />
 
-              <GithubAccountSelector />
+              <GithubAccountSelector onChange={setGithubInstallation} />
             </div>
           </div>
         </div>
@@ -75,14 +91,14 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         <button
           type="button"
           className="bg-white py-2 px-4 border disabled:opacity-50 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-          disabled={creating}
+          disabled={creating || !isValid}
           onClick={close}
         >
           Cancel
         </button>
         <button
           type="submit"
-          disabled={creating}
+          disabled={creating || !isValid}
           className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
           <span>Create</span>

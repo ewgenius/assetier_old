@@ -1,12 +1,12 @@
 import { FC, Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import type { GithubInstallation, Project } from "@prisma/client";
 
 import { classNames } from "@utils/classNames";
 import { useAppContext } from "@hooks/useAppContext";
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
 import { Spinner } from "./Spinner";
-import { GithubInstallation } from "@prisma/client";
 import { PlusCircleIcon, PlusSmIcon } from "@heroicons/react/outline";
 import { RepositorySelector } from "@components/RepositorySelector";
 
@@ -44,12 +44,31 @@ const AddGithubAccountButton: FC<AddGithubAccountButtonProps> = ({ mode }) => {
   );
 };
 
-interface GithubAccountSelectorProps {}
+interface GithubAccountSelectorProps {
+  onChange?: (
+    data: Pick<Project, "githubInstallationId" | "repositoryId"> | null
+  ) => void;
+}
 
-export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({}) => {
+export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
+  onChange,
+}) => {
   const { organization } = useAppContext();
   const { accounts } = useGithubAccounts(organization.id);
   const [selected, setSelected] = useState<GithubInstallation | null>(null);
+
+  const selectRepository = (repositoryId: number | null) => {
+    if (onChange) {
+      onChange(
+        repositoryId && selected
+          ? {
+              githubInstallationId: selected.id,
+              repositoryId: repositoryId,
+            }
+          : null
+      );
+    }
+  };
 
   useEffect(() => {
     if (!accounts || accounts.length === 0) {
@@ -182,7 +201,10 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({}) => {
 
       {selected && (
         <div>
-          <RepositorySelector installationId={selected.installationId} />
+          <RepositorySelector
+            installationId={selected.installationId}
+            onChange={selectRepository}
+          />
         </div>
       )}
     </div>

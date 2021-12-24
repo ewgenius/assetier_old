@@ -20,6 +20,8 @@ export default withOrganization<Project | Project[] | ErrorResponse>(
           data: {
             name: req.body.name as string,
             organizationId: organization.id,
+            githubInstallationId: req.body.githubInstallationId,
+            repositoryId: req.body.repositoryId,
           },
         });
         return res.status(200).json(newProject);

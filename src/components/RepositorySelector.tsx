@@ -1,32 +1,45 @@
 import { FC, Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import type { Project } from "@prisma/client";
 
 import { classNames } from "@utils/classNames";
-import { useGithubAccountRepositories } from "@hooks/useGithubAccountRepositories";
+import {
+  Repository,
+  useGithubAccountRepositories,
+} from "@hooks/useGithubAccountRepositories";
 import { useAppContext } from "@hooks/useAppContext";
 import { Spinner } from "./Spinner";
 
 export interface RepositorySelectorProps {
   installationId: number;
+  onChange?: (repositoryId: number | null) => void;
 }
 
 export const RepositorySelector: FC<RepositorySelectorProps> = ({
   installationId,
+  onChange,
 }) => {
   const { organization } = useAppContext();
-  const [selected, setSelected] = useState<any | null>(null);
+  const [selected, setSelected] = useState<Repository | null>(null);
   const { repositories } = useGithubAccountRepositories(
     organization.id,
     installationId
   );
 
   useEffect(() => {
-    setSelected(null);
+    select(null);
   }, [installationId]);
 
+  const select = (repository: Repository | null) => {
+    setSelected(repository);
+    if (onChange) {
+      onChange(repository ? repository.id : null);
+    }
+  };
+
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox value={selected} onChange={select}>
       {({ open }) => (
         <>
           <Listbox.Label className="block text-sm font-medium text-gray-700">
