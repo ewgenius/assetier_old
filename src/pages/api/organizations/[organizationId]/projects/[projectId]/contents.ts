@@ -1,6 +1,6 @@
 import { getOctokit } from "@utils/getOctokit";
 import { prisma } from "@utils/prisma";
-import { ErrorResponse } from "@utils/types";
+import type { ErrorResponse, GithubFile } from "@utils/types";
 import { withProject } from "@utils/withProject";
 
 export default withProject<any[] | ErrorResponse>(
@@ -39,7 +39,9 @@ export default withProject<any[] | ErrorResponse>(
           }
         );
 
-        const assets = contents.data as any[];
+        const assets = (contents.data as GithubFile[]).filter((f) =>
+          f.name.endsWith(".svg")
+        );
 
         return res.status(200).send(assets);
       }
