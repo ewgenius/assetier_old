@@ -23,17 +23,17 @@ export const withProject = <T = any>(handler: NextApiHandlerWithProject<T>) =>
       },
     });
 
-    if (project) {
-      if (project.organizationId === organization.id) {
-        return handler(req, res, { session, user, organization, project });
-      }
+    if (!project) {
+      return res.status(404).send({
+        error: "Project not found.",
+      });
+    }
 
+    if (project.organizationId !== organization.id) {
       return res.status(403).send({
         error: "Unauthorized",
       });
     }
 
-    return res.status(404).send({
-      error: "Project not found.",
-    });
+    return handler(req, res, { session, user, organization, project });
   });

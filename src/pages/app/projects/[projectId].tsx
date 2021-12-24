@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 
 import type { NextPageExtended } from "@utils/types";
 import { useProject } from "@hooks/useProject";
+import { useProjectContents } from "@hooks/useProjectContents";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { Spinner } from "@components/Spinner";
@@ -13,6 +14,10 @@ export const Project: NextPageExtended = () => {
   const { query } = useRouter();
   const { organization } = useAppContext();
   const { project } = useProject(organization.id, query.projectId as string);
+  const { contents } = useProjectContents(
+    organization.id,
+    query.projectId as string
+  );
 
   return (
     <Page
@@ -63,20 +68,6 @@ export const Project: NextPageExtended = () => {
                 {project?.name}
               </h2>
             </div>
-            <div className="mt-4 flex-shrink-0 flex md:mt-0 md:ml-4">
-              <button
-                type="button"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                className="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-              >
-                Publish
-              </button>
-            </div>
           </div>
         </LayoutBlock>
       )}
@@ -84,10 +75,36 @@ export const Project: NextPageExtended = () => {
       <LayoutBlock>
         {project ? (
           <>
-            <div className="h-72">{JSON.stringify(project)}</div>
-            <div className="h-72">{JSON.stringify(project)}</div>
-            <div className="h-72">{JSON.stringify(project)}</div>
+            <div className="text-mono break-words">
+              {JSON.stringify(project)}
+            </div>
           </>
+        ) : (
+          <Spinner />
+        )}
+
+        {contents ? (
+          <div className="mt-4 grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-1">
+            {contents.map(
+              (asset) =>
+                asset.download_url && (
+                  <div key={asset.name} className="m-2">
+                    <a
+                      className="flex flex-col align-middle items-center"
+                      href={asset._links.html}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <img
+                        className="w-[24px] h-[24px] mb-1"
+                        src={asset.download_url}
+                      />
+                      <p className="font-mono text-xs">{asset.name}</p>
+                    </a>
+                  </div>
+                )
+            )}
+          </div>
         ) : (
           <Spinner />
         )}

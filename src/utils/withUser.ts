@@ -18,11 +18,11 @@ export const withUser = <T = any>(handler: NextApiHandlerWithUser<T>) =>
       },
     });
 
-    if (user) {
-      return handler(req, res, { session, user });
+    if (!user) {
+      return res.status(404).send({
+        error: "User not found.",
+      });
     }
 
-    return res.status(404).send({
-      error: "User not found.",
-    });
+    return handler(req, res, { session, user });
   });

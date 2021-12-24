@@ -27,33 +27,31 @@ export const withOrganization = <T = any>(
       },
     });
 
-    if (user) {
-      const organization = await prisma.organization.findUnique({
-        where: {
-          id: req.query.organizationId as string,
-        },
+    if (!user) {
+      return res.status(404).send({
+        error: "User not found.",
       });
+    }
 
-      if (organization) {
-        if (
-          user.organizations.some(
-            (org) => org.organizationId === organization.id
-          )
-        ) {
-          return handler(req, res, { session, user, organization });
-        }
+    const organization = await prisma.organization.findUnique({
+      where: {
+        id: req.query.organizationId as string,
+      },
+    });
 
-        return res.status(403).send({
-          error: "Unauthorized access.",
-        });
-      }
-
+    if (!organization) {
       return res.status(404).send({
         error: "Organization not found.",
       });
     }
 
-    return res.status(404).send({
-      error: "User not found.",
-    });
+    if (
+      !user.organizations.some((org) => org.organizationId === organization.id)
+    ) {
+      return res.status(403).send({
+        error: "Unauthorized access.",
+      });
+    }
+
+    return handler(req, res, { session, user, organization });
   });
