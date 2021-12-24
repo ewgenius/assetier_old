@@ -3,7 +3,7 @@ import type { GithubInstallation, Project } from "@prisma/client";
 import { fetcher } from "@utils/fetcher";
 
 export function useGithubAccounts(organizationId: string) {
-  const { data, error } = useSWR<GithubInstallation>(
+  const { data, error } = useSWR<GithubInstallation[]>(
     `/api/organizations/${organizationId}/accounts`,
     fetcher
   );
