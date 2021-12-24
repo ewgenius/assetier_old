@@ -41,7 +41,7 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
 
         <div className="flex-1 flex flex-col justify-between">
           <div className="px-4 sm:px-6">
-            <div className="space-y-4 pt-6 pb-5">
+            <div className="space-y-6 pt-6 pb-5">
               <div>
                 <label
                   htmlFor="project-name"
@@ -62,6 +62,8 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                   />
                 </div>
               </div>
+
+              <div className="border-b border-gray-200" />
 
               <GithubAccountSelector />
             </div>
