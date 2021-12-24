@@ -73,16 +73,6 @@ export const Project: NextPageExtended = () => {
       )}
     >
       <LayoutBlock>
-        {project ? (
-          <>
-            <div className="text-mono break-words">
-              {JSON.stringify(project)}
-            </div>
-          </>
-        ) : (
-          <Spinner />
-        )}
-
         {contents ? (
           <div className="mt-4 grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-1">
             {contents.map(
