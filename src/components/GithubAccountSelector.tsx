@@ -1,4 +1,4 @@
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 
@@ -50,6 +50,12 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({}) => {
   const { organization } = useAppContext();
   const { accounts } = useGithubAccounts(organization.id);
   const [selected, setSelected] = useState<GithubInstallation | null>(null);
+
+  useEffect(() => {
+    if (!accounts || accounts.length === 0) {
+      setSelected(null);
+    }
+  }, [accounts]);
 
   return (
     <div className="space-y-4">
