@@ -63,12 +63,7 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                 </div>
               </div>
 
-              <div>
-                <GithubAccountSelector />
-              </div>
-              <div>
-                <RepositorySelector />
-              </div>
+              <GithubAccountSelector />
             </div>
           </div>
         </div>
