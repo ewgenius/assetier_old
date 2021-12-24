@@ -22,7 +22,7 @@ export const Setup: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = (await getSession(context)) as SessionWithId;
-  // const privateKey = await getGitHubPrivateKey();
+  // const privateKey = await getGithubPrivateKey();
 
   // const app = new App({
   //   appId: Number(process.env.GITHUB_APP_ID),

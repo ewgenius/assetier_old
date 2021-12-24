@@ -1,8 +1,8 @@
 import { App } from "@octokit/app";
-import { getGitHubPrivateKey } from "@utils/getGitHubPrivateKey";
+import { getGithubPrivateKey } from "@utils/getGithubPrivateKey";
 
 export async function getGithubApp() {
-  const privateKey = await getGitHubPrivateKey();
+  const privateKey = await getGithubPrivateKey();
 
   const app = new App({
     appId: Number(process.env.GITHUB_APP_ID),

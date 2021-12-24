@@ -1,10 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import * as fs from "fs";
-import * as path from "path";
 import { App } from "@octokit/app";
-import { Octokit } from "@octokit/core";
-import { createAppAuth } from "@octokit/auth-app";
-import { getGitHubPrivateKey } from "@utils/getGitHubPrivateKey";
+import { getGithubPrivateKey } from "@utils/getGithubPrivateKey";
 
 type Data = {
   name: string;
@@ -14,7 +10,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const privateKey = await getGitHubPrivateKey();
+  const privateKey = await getGithubPrivateKey();
 
   const app = new App({
     appId: Number(process.env.GITHUB_APP_ID),

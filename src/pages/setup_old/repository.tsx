@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { App } from "@octokit/app";
 import { AuthBlock } from "@components/AuthBlock";
-import { getGitHubPrivateKey } from "@utils/getGitHubPrivateKey";
+import { getGithubPrivateKey } from "@utils/getGithubPrivateKey";
 import { FolderIcon, SearchIcon, UploadIcon } from "@heroicons/react/outline";
 import { getOctokit } from "@utils/getOctokit";
 export interface SetupProps {

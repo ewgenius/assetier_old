@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { App } from "@octokit/app";
 import { getSession } from "next-auth/react";
 import formidable, { Files, Fields, File as FFile } from "formidable";
-import { getGitHubPrivateKey } from "@utils/getGitHubPrivateKey";
+import { getGithubPrivateKey } from "@utils/getGithubPrivateKey";
 import PersistentFile from "formidable/PersistentFile";
 
 export const config = {
@@ -17,7 +17,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const privateKey = await getGitHubPrivateKey();
+  const privateKey = await getGithubPrivateKey();
   const session = await getSession({ req });
 
   if (!session) {
