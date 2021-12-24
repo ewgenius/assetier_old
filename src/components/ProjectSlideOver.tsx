@@ -16,6 +16,7 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
   const { createProject, creating } = useProjects(organization.id);
   const [projectName, setProjectName, resetProjectName] = useInputState();
+  const [assetsPath, setAssetsPath, resetAssetsPath] = useInputState();
   const [githubInstallation, setGithubInstallation] = useState<Pick<
     Project,
     "githubInstallationId" | "repositoryId"
@@ -24,12 +25,14 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const close = () => {
     setTimeout(() => {
       resetProjectName();
+      resetAssetsPath();
     }, 700);
     onClose();
   };
 
   useEffect(() => {
     resetProjectName();
+    resetAssetsPath();
   }, []);
 
   const isValid = useMemo(
@@ -46,9 +49,10 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         name: projectName,
         githubInstallationId: githubInstallation?.githubInstallationId,
         repositoryId: githubInstallation?.repositoryId,
+        assetsPath: assetsPath,
       }).then(close);
     }
-  }, [projectName, githubInstallation, isValid]);
+  }, [projectName, githubInstallation, assetsPath, isValid]);
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
@@ -82,6 +86,27 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
               <div className="border-b border-gray-200" />
 
               <GithubAccountSelector onChange={setGithubInstallation} />
+
+              <div>
+                <label
+                  htmlFor="assets-path"
+                  className="block text-sm font-medium text-gray-900"
+                >
+                  Assets path
+                </label>
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    placeholder="/path/to/icons"
+                    disabled={creating}
+                    name="assets-path"
+                    value={assetsPath}
+                    onChange={setAssetsPath}
+                    id="assets-path"
+                    className="block w-full shadow-sm disabled:opacity-50 sm:text-sm focus:ring-zinc-500 focus:border-zinc-500 border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
