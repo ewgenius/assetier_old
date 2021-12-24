@@ -45,6 +45,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  createdAt     DateTime  @default(now())
 
   accounts      Account[]
   sessions      Session[]
@@ -84,8 +85,9 @@ enum OrganizationType {
 }
 
 model Organization {
-  id   String           @id @default(cuid())
-  type OrganizationType @default(PERSONAL)
+  id        String           @id @default(cuid())
+  type      OrganizationType @default(PERSONAL)
+  createdAt DateTime         @default(now())
 
   users               UserToOrganization[]
   projects            Project[]
@@ -104,6 +106,7 @@ model GithubInstallation {
   accountLogin     String            @default("")
   accountAvatarUrl String            @default("")
   accountType      GithubAccountType @default(USER)
+  createdAt        DateTime          @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id])
 }
