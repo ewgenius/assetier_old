@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { ErrorResponse, SessionWithId } from "@utils/types";
-import { Organization, User } from "@prisma/client";
+import type { Organization, User } from "@prisma/client";
 import { prisma } from "@utils/prisma";
 import { withSession } from "@utils/withSession";
 
@@ -43,17 +43,17 @@ export const withOrganization = <T = any>(
           return handler(req, res, { session, user, organization });
         }
 
-        res.status(403).send({
+        return res.status(403).send({
           error: "Unauthorized access.",
         });
       }
 
-      res.status(404).send({
+      return res.status(404).send({
         error: "Organization not found.",
       });
     }
 
-    res.status(404).send({
+    return res.status(404).send({
       error: "User not found.",
     });
   });

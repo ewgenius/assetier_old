@@ -14,7 +14,7 @@ export const withSession =
     const session = (await getSession({ req })) as SessionWithId;
 
     if (!session) {
-      res.status(401).send({
+      return res.status(401).send({
         error:
           "You must be signed in to view the protected content on this page.",
       });

@@ -22,7 +22,7 @@ export const withUser = <T = any>(handler: NextApiHandlerWithUser<T>) =>
       return handler(req, res, { session, user });
     }
 
-    res.status(404).send({
+    return res.status(404).send({
       error: "User not found.",
     });
   });
