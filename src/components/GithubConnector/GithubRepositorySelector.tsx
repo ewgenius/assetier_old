@@ -9,14 +9,14 @@ import {
   useGithubAccountRepositories,
 } from "@hooks/useGithubAccountRepositories";
 import { useAppContext } from "@hooks/useAppContext";
-import { Spinner } from "./Spinner";
+import { Spinner } from "../Spinner";
 
-export interface RepositorySelectorProps {
+export interface GithubRepositorySelectorProps {
   installationId: number;
   onChange?: (repositoryId: number | null) => void;
 }
 
-export const RepositorySelector: FC<RepositorySelectorProps> = ({
+export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
   installationId,
   onChange,
 }) => {

@@ -10,7 +10,7 @@ import {
   SlideOverHeading,
 } from "@components/SlideOver";
 import { useAppContext } from "@hooks/useAppContext";
-import { GithubAccountSelector } from "./GithubAccountSelector";
+import { GithubConnector } from "./GithubConnector";
 
 export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
@@ -85,7 +85,7 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
 
               <div className="border-b border-gray-200" />
 
-              <GithubAccountSelector onChange={setGithubInstallation} />
+              <GithubConnector onChange={setGithubInstallation} />
 
               <div>
                 <label
