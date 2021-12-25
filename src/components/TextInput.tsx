@@ -1,3 +1,4 @@
+import { classNames } from "@utils/classNames";
 import { FC, InputHTMLAttributes } from "react";
 
 export interface TextInputProps
@@ -5,19 +6,21 @@ export interface TextInputProps
     InputHTMLAttributes<HTMLInputElement>,
     "disabled" | "name" | "id" | "value" | "onChange" | "placeholder"
   > {
-  label: string;
+  label?: string;
 }
 
 export const TextInput: FC<TextInputProps> = ({ label, ...inputProps }) => {
   return (
     <div>
-      <label
-        htmlFor={inputProps.id}
-        className="block text-sm font-medium text-gray-900"
-      >
-        {label}
-      </label>
-      <div className="mt-1">
+      {label && (
+        <label
+          htmlFor={inputProps.id}
+          className="block text-sm font-medium text-gray-900"
+        >
+          {label}
+        </label>
+      )}
+      <div className={classNames(label && "mt-1")}>
         <input
           {...inputProps}
           type="text"
