@@ -34,7 +34,7 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
             leaveTo="opacity-0"
           />
 
-          <div className="fixed inset-y-0 pl-16 max-w-full right-0 flex">
+          <div className="fixed inset-y-0 max-w-full right-0 flex">
             <Transition.Child
               as={Fragment}
               enter="transform transition ease-in-out duration-500"
@@ -44,14 +44,14 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
-              <div className="w-screen max-w-md">
+              <div className="w-screen h-screen max-w-md p-2">
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     onSubmit && onSubmit();
                     return false;
                   }}
-                  className="h-full divide-y divide-gray-200 flex flex-col bg-white shadow-xl"
+                  className="divide-y h-full box-border overflow-hidden rounded-xl divide-gray-200 flex flex-col bg-white shadow-xl"
                 >
                   {children}
                 </form>
@@ -75,15 +75,15 @@ export const SlideOverHeading: FC<SlideOverHeadingProps> = ({
   onClose,
 }) => {
   return (
-    <div className="py-6 px-4 bg-zinc-700 sm:px-6">
+    <div className="py-6 px-4 bg-gray-100 sm:px-6">
       <div className="flex items-center justify-between">
-        <Dialog.Title className="text-lg font-medium text-white">
+        <Dialog.Title className="text-lg font-medium text-gray-900">
           {title}
         </Dialog.Title>
         <div className="ml-3 h-7 flex items-center">
           <button
             type="button"
-            className="bg-zinc-700 rounded-md text-zinc-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+            className="rounded-md text-gray-400 hover:text-gray-500"
             onClick={onClose}
           >
             <span className="sr-only">Close panel</span>
