@@ -51,7 +51,7 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
                     onSubmit && onSubmit();
                     return false;
                   }}
-                  className="divide-y h-full box-border overflow-hidden rounded-xl divide-gray-200 flex flex-col bg-white shadow-xl"
+                  className="h-full box-border overflow-hidden rounded-xl flex flex-col bg-white shadow-xl"
                 >
                   {children}
                 </form>
@@ -75,7 +75,7 @@ export const SlideOverHeading: FC<SlideOverHeadingProps> = ({
   onClose,
 }) => {
   return (
-    <div className="py-6 px-4 bg-gray-100 sm:px-6">
+    <div className="py-6 px-4 sm:px-6 rounded-t-lg border-b border-gray-200">
       <div className="flex items-center justify-between">
         <Dialog.Title className="text-lg font-medium text-gray-900">
           {title}
@@ -93,9 +93,10 @@ export const SlideOverHeading: FC<SlideOverHeadingProps> = ({
       </div>
       {subtitle && (
         <div className="mt-1">
-          <p className="text-sm text-zinc-300">subtitle</p>
+          <p className="text-sm text-gray-500">subtitle</p>
         </div>
       )}
+      {/* <div className="mt-6 flex-grow " /> */}
     </div>
   );
 };

@@ -57,9 +57,8 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
+      <SlideOverHeading onClose={close} title="New Project" />
       <div className="flex-1 h-0 overflow-y-auto">
-        <SlideOverHeading onClose={close} title="New Project" />
-
         <div className="flex-1 flex flex-col justify-between">
           <div className="px-4 sm:px-6">
             <div className="space-y-6 pt-6 pb-5">
@@ -93,7 +92,7 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         </div>
       </div>
 
-      <div className="flex-shrink-0 px-4 py-4 flex justify-end">
+      <div className="flex-shrink-0 px-4 py-4 flex justify-end border-t border-gray-200">
         <button
           type="button"
           className="bg-white py-2 px-4 border disabled:opacity-50 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
