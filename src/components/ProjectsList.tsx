@@ -2,9 +2,9 @@ import Link from "next/link";
 import { DotsVerticalIcon } from "@heroicons/react/outline";
 
 import { useProjects } from "@hooks/useProjects";
-import { classNames } from "@utils/classNames";
 import { Spinner } from "@components/Spinner";
 import { useAppContext } from "@hooks/useAppContext";
+import { stringToColor } from "@utils/stringToColor";
 
 export const ProjectsList = () => {
   const { organization } = useAppContext();
@@ -22,10 +22,10 @@ export const ProjectsList = () => {
               className="col-span-1 flex shadow-sm rounded-md"
             >
               <div
-                className={classNames(
-                  "bg-pink-400",
-                  "uppercase flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md"
-                )}
+                className="uppercase flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md"
+                style={{
+                  backgroundColor: stringToColor(project.name),
+                }}
               >
                 {project.name.substring(0, 3)}
               </div>
