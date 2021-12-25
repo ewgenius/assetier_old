@@ -10,7 +10,8 @@ import {
   SlideOverHeading,
 } from "@components/SlideOver";
 import { useAppContext } from "@hooks/useAppContext";
-import { GithubConnector } from "./GithubConnector";
+import { TextInput } from "@components/TextInput";
+import { GithubConnector } from "@components/GithubConnector";
 
 export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
@@ -62,51 +63,31 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         <div className="flex-1 flex flex-col justify-between">
           <div className="px-4 sm:px-6">
             <div className="space-y-6 pt-6 pb-5">
-              <div>
-                <label
-                  htmlFor="project-name"
-                  className="block text-sm font-medium text-gray-900"
-                >
-                  Project name
-                </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    placeholder="My Awesome Project"
-                    disabled={creating}
-                    name="project-name"
-                    value={projectName}
-                    onChange={setProjectName}
-                    id="project-name"
-                    className="block w-full shadow-sm disabled:opacity-50 sm:text-sm focus:ring-zinc-500 focus:border-zinc-500 border-gray-300 rounded-md"
-                  />
-                </div>
-              </div>
+              <TextInput
+                id="project-name"
+                name="project-name"
+                label="Project name"
+                placeholder="My Awesome Project"
+                disabled={creating}
+                value={projectName}
+                onChange={setProjectName}
+              />
 
               <div className="border-b border-gray-200" />
 
               <GithubConnector onChange={setGithubInstallation} />
 
-              <div>
-                <label
-                  htmlFor="assets-path"
-                  className="block text-sm font-medium text-gray-900"
-                >
-                  Assets path
-                </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    placeholder="/path/to/icons"
-                    disabled={creating}
-                    name="assets-path"
-                    value={assetsPath}
-                    onChange={setAssetsPath}
-                    id="assets-path"
-                    className="block w-full shadow-sm disabled:opacity-50 sm:text-sm focus:ring-zinc-500 focus:border-zinc-500 border-gray-300 rounded-md"
-                  />
-                </div>
-              </div>
+              <div className="border-b border-gray-200" />
+
+              <TextInput
+                id="assets-path"
+                name="assets-path"
+                label="Assets path"
+                placeholder="/path/to/icons"
+                disabled={creating}
+                value={assetsPath}
+                onChange={setAssetsPath}
+              />
             </div>
           </div>
         </div>
