@@ -122,8 +122,10 @@ model Project {
   repositoryId         Int
   githubInstallationId String
 
-  assetsPath    String @default("")
-  defaultBranch String @default("main")
+  alias             String? @unique @default(cuid())
+  publicPageEnabled Boolean @default(false)
+  assetsPath        String  @default("")
+  defaultBranch     String  @default("main")
 
   organization       Organization       @relation(fields: [organizationId], references: [id])
   githubInstallation GithubInstallation @relation(fields: [githubInstallationId], references: [id])
