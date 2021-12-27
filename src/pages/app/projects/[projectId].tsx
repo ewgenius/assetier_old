@@ -69,7 +69,7 @@ export const Project: NextPageExtended = () => {
         </LayoutBlock>
       )}
     >
-      <LayoutBlock>{project && <AssetsGrid project={project} />}</LayoutBlock>
+      {project && <AssetsGrid project={project} />}
       {project && (
         <EditProjectSlideOver
           open={editProjectOpen}
