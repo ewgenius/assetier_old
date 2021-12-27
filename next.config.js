@@ -8,7 +8,7 @@ module.exports = {
         {
           source: "/:path*",
           has: [{ type: "host", value: ":appDomain(.*).assetier.app" }],
-          destination: "www.assetier.app/public/:appDomain/:path*",
+          destination: "https://www.assetier.app/public/:appDomain/:path*",
         },
       ],
     };
