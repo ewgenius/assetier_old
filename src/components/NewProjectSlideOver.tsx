@@ -1,8 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import type { Project } from "@prisma/client";
 
-import { useInputState } from "@hooks/useInputState";
-import { useProjects } from "@hooks/useProjects";
+import { useProjectsCreator } from "@hooks/useProjectsCreator";
 import { Spinner } from "@components/Spinner";
 import {
   SlideOver,
@@ -18,60 +16,35 @@ import { Toggle } from "@components/Toggle";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
-  const { createProject, creating } = useProjects(organization.id);
-  const [projectName, setProjectName, resetProjectName] = useInputState();
-  const [projectAlias, setProjectAlias, resetProjectAlias] = useInputState();
-  const [assetsPath, setAssetsPath, resetAssetsPath] = useInputState();
-  const [publicPageEnabled, setPublicPageEnabled] = useState(false);
-  const [githubInstallation, setGithubInstallation] = useState<Pick<
-    Project,
-    "githubInstallationId" | "repositoryId"
-  > | null>(null);
+  const {
+    createProject,
+    creating,
+    reset,
+    isValid,
+    name,
+    alias,
+    assetsPath,
+    publicPageEnabled,
+    githubInstallation,
+    setName,
+    setAlias,
+    setAssetsPath,
+    setPublicPageEnabled,
+    setGithubInstallation,
+  } = useProjectsCreator(organization.id);
 
   const close = () => {
-    setTimeout(() => {
-      resetProjectName();
-      resetProjectAlias();
-      resetAssetsPath();
-      setPublicPageEnabled(false);
-    }, 700);
+    setTimeout(() => reset(), 700);
     onClose();
   };
 
-  useEffect(() => {
-    resetProjectName();
-    resetProjectAlias();
-    resetAssetsPath();
-    setPublicPageEnabled(false);
-  }, []);
-
-  const isValid = useMemo(
-    () =>
-      projectName &&
-      githubInstallation?.githubInstallationId &&
-      githubInstallation?.repositoryId,
-    [projectName, githubInstallation]
-  );
+  useEffect(() => reset(), []);
 
   const submit = useCallback(() => {
     if (isValid) {
-      createProject({
-        name: projectName,
-        alias: projectAlias,
-        githubInstallationId: githubInstallation?.githubInstallationId,
-        repositoryId: githubInstallation?.repositoryId,
-        assetsPath: assetsPath,
-        publicPageEnabled: publicPageEnabled,
-      }).then(close);
+      createProject().then(close);
     }
-  }, [
-    projectName,
-    projectAlias,
-    githubInstallation,
-    assetsPath,
-    publicPageEnabled,
-    isValid,
-  ]);
+  }, [name, alias, githubInstallation, assetsPath, publicPageEnabled, isValid]);
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
@@ -84,8 +57,8 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           label="Project name"
           placeholder="My Awesome Project"
           disabled={creating}
-          value={projectName}
-          onChange={setProjectName}
+          value={name}
+          onChange={setName}
         />
 
         <TextInput
@@ -94,8 +67,8 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           label="Project alias"
           placeholder="if not set, will be generated"
           disabled={creating}
-          value={projectAlias}
-          onChange={setProjectAlias}
+          value={alias}
+          onChange={setAlias}
         />
 
         <div className="border-b border-gray-200" />
