@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import type { Project } from "@prisma/client";
-import { Switch } from "@headlessui/react";
 
 import { useInputState } from "@hooks/useInputState";
 import { useProjects } from "@hooks/useProjects";
@@ -9,11 +8,13 @@ import {
   SlideOver,
   SlideOverProps,
   SlideOverHeading,
+  SlideOverFooter,
+  SlideOverBody,
 } from "@components/SlideOver";
 import { useAppContext } from "@hooks/useAppContext";
 import { TextInput } from "@components/TextInput";
 import { GithubConnector } from "@components/GithubConnector";
-import { classNames } from "@utils/classNames";
+import { Toggle } from "@components/Toggle";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
@@ -75,88 +76,52 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
       <SlideOverHeading onClose={close} title="New Project" />
-      <div className="flex-1 h-0 overflow-y-auto">
-        <div className="flex-1 flex flex-col justify-between">
-          <div className="px-4 sm:px-6">
-            <div className="space-y-6 pt-6 pb-5">
-              <TextInput
-                id="project-name"
-                name="project-name"
-                label="Project name"
-                placeholder="My Awesome Project"
-                disabled={creating}
-                value={projectName}
-                onChange={setProjectName}
-              />
 
-              <TextInput
-                id="project-alias"
-                name="project-alias"
-                label="Project alias"
-                placeholder="if not set, will be generated"
-                disabled={creating}
-                value={projectAlias}
-                onChange={setProjectAlias}
-              />
+      <SlideOverBody>
+        <TextInput
+          id="project-name"
+          name="project-name"
+          label="Project name"
+          placeholder="My Awesome Project"
+          disabled={creating}
+          value={projectName}
+          onChange={setProjectName}
+        />
 
-              <div className="border-b border-gray-200" />
+        <TextInput
+          id="project-alias"
+          name="project-alias"
+          label="Project alias"
+          placeholder="if not set, will be generated"
+          disabled={creating}
+          value={projectAlias}
+          onChange={setProjectAlias}
+        />
 
-              <GithubConnector onChange={setGithubInstallation} />
+        <div className="border-b border-gray-200" />
 
-              <div className="border-b border-gray-200" />
+        <GithubConnector onChange={setGithubInstallation} />
 
-              <TextInput
-                id="assets-path"
-                name="assets-path"
-                label="Assets path"
-                placeholder="/path/to/icons"
-                disabled={creating}
-                value={assetsPath}
-                onChange={setAssetsPath}
-              />
+        <div className="border-b border-gray-200" />
 
-              <Switch.Group
-                as="div"
-                className="flex items-center justify-between"
-              >
-                <span className="flex-grow flex flex-col">
-                  <Switch.Label
-                    as="span"
-                    className="text-sm font-medium text-gray-900"
-                    passive
-                  >
-                    Enable public page?
-                  </Switch.Label>
-                  <Switch.Description
-                    as="span"
-                    className="text-sm text-gray-500"
-                  >
-                    Public site for your project
-                  </Switch.Description>
-                </span>
-                <Switch
-                  checked={publicPageEnabled}
-                  onChange={setPublicPageEnabled}
-                  className={classNames(
-                    publicPageEnabled ? "bg-zinc-600" : "bg-gray-200",
-                    "relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-                  )}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={classNames(
-                      publicPageEnabled ? "translate-x-5" : "translate-x-0",
-                      "pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
-                    )}
-                  />
-                </Switch>
-              </Switch.Group>
-            </div>
-          </div>
-        </div>
-      </div>
+        <TextInput
+          id="assets-path"
+          name="assets-path"
+          label="Assets path"
+          placeholder="/path/to/icons"
+          disabled={creating}
+          value={assetsPath}
+          onChange={setAssetsPath}
+        />
 
-      <div className="flex-shrink-0 px-4 py-4 flex justify-end border-t border-gray-200">
+        <Toggle
+          label="Enable public page?"
+          checked={publicPageEnabled}
+          onChange={setPublicPageEnabled}
+        />
+      </SlideOverBody>
+
+      <SlideOverFooter>
         <button
           type="button"
           className="bg-white py-2 px-4 border disabled:opacity-50 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
@@ -173,7 +138,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           <span>Create</span>
           {creating && <Spinner className="ml-2" />}
         </button>
-      </div>
+      </SlideOverFooter>
     </SlideOver>
   );
 };

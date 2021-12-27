@@ -100,3 +100,19 @@ export const SlideOverHeading: FC<SlideOverHeadingProps> = ({
     </div>
   );
 };
+
+export const SlideOverFooter: FC<PropsWithChildren<{}>> = ({ children }) => (
+  <div className="flex-shrink-0 px-4 py-4 flex justify-end border-t border-gray-200">
+    {children}
+  </div>
+);
+
+export const SlideOverBody: FC<PropsWithChildren<{}>> = ({ children }) => (
+  <div className="flex-1 h-0 overflow-y-auto">
+    <div className="flex-1 flex flex-col justify-between">
+      <div className="px-4 sm:px-6">
+        <div className="space-y-6 pt-6 pb-5">{children}</div>
+      </div>
+    </div>
+  </div>
+);
