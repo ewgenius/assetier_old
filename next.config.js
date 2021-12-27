@@ -7,7 +7,7 @@ module.exports = {
       beforeFiles: [
         {
           source: "/:path*",
-          has: { type: "host", value: ":appDomain(.*).assetier.app" },
+          has: [{ type: "host", value: ":appDomain(.*).assetier.app" }],
           destination: "www.assetier.app/public/:appDomain/:path*",
         },
       ],
