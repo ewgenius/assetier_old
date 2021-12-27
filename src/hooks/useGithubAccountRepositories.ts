@@ -16,7 +16,6 @@ export function useGithubAccountRepositories(installationId: number) {
   const { data, error } = useSWR<Repository[]>(
     [
       `/api/organizations/${organization.id}/accounts/${installationId}/repositories`,
-      // TODO: why id doesn't work?
       organization,
       installationId,
     ],

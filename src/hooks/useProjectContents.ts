@@ -8,7 +8,6 @@ export function useProjectContents(projectId: string) {
   const { data, error } = useSWR<GithubFile[]>(
     [
       `/api/organizations/${organization.id}/projects/${projectId}/contents`,
-      // TODO: why id doesn't work?
       organization,
       projectId,
     ],
