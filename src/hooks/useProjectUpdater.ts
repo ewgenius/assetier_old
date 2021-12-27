@@ -6,46 +6,38 @@ import { fetcher } from "@utils/fetcher";
 import { useOrganization } from "@hooks/useOrganization";
 import { useProjectForm } from "@hooks/useProjectForm";
 
-export function useProjectsFactory() {
+export function useProjectUpdater(project: Partial<Project>) {
   const organization = useOrganization();
   const apiKey = [
-    `/api/organizations/${organization.id}/projects`,
+    `/api/organizations/${organization.id}/projects/${project.id}`,
     organization,
+    project,
   ];
 
   const { data, error } = useSWR<Project[]>(apiKey, fetcher);
-  const [creating, setCreating] = useState(false);
+  const [updating, setUpdating] = useState(false);
   const { mutate } = useSWRConfig();
 
-  const form = useProjectForm();
+  const form = useProjectForm(project);
 
-  const createProject = useCallback(() => {
-    setCreating(true);
+  const updateProject = useCallback(() => {
+    setUpdating(true);
 
     return mutate(
       apiKey,
-      fetch(`/api/organizations/${organization.id}/projects`, {
-        method: "POST",
+      fetch(`/api/organizations/${organization.id}/projects/${project.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(form.projectData),
       })
         .then((r) => r.json())
-        .then((newProject) =>
-          mutate(
-            `/api/organizations/${organization.id}/projects/${newProject.id}`,
-            newProject
-          )
-        )
-        .then((newProject) => {
-          return [...(data || []), newProject];
-        })
-        .finally(() => setCreating(false))
+        .finally(() => setUpdating(false))
     );
   }, [
     organization,
-
+    project,
     data,
     form.name,
     form.alias,
@@ -55,10 +47,10 @@ export function useProjectsFactory() {
   ]);
 
   return {
-    projects: data,
+    project: data,
     error,
-    createProject,
-    creating,
+    updateProject,
+    updating,
     form,
   };
 }

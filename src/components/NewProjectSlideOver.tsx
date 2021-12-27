@@ -14,11 +14,7 @@ import { GithubConnector } from "@components/GithubConnector";
 import { Toggle } from "@components/Toggle";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
-  const {
-    processProject: createProject,
-    processing: creating,
-    form,
-  } = useProjectsFactory();
+  const { createProject, creating, form } = useProjectsFactory();
 
   const close = () => {
     setTimeout(() => form.reset(), 700);

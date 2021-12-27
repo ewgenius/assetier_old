@@ -12,6 +12,7 @@ import {
 } from "@components/SlideOver";
 import { TextInput } from "@components/TextInput";
 import { Toggle } from "@components/Toggle";
+import { useProjectUpdater } from "@hooks/useProjectUpdater";
 
 export interface EditProjectSlideOverProps extends SlideOverProps {
   project: Partial<Project>;
@@ -22,18 +23,12 @@ export const EditProjectSlideOver: FC<EditProjectSlideOverProps> = ({
   onClose,
   project,
 }) => {
-  const {
-    processProject: updateProject,
-    processing: updating,
-    form,
-  } = useProjectsFactory(project);
+  const { updateProject, updating, form } = useProjectUpdater(project);
 
   const close = () => {
     setTimeout(() => form.reset(), 700);
     onClose();
   };
-
-  // useEffect(() => form.reset(), []);
 
   const submit = useCallback(() => {
     if (form.isValid) {
