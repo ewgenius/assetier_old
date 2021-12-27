@@ -6,9 +6,9 @@ module.exports = {
     return {
       beforeFiles: [
         {
-          source: "/:path*",
+          source: "/",
           has: [{ type: "host", value: "feather.assetier.app" }],
-          destination: "https://www.assetier.app/public/feather/:path*",
+          destination: "https://www.assetier.app/public/feather",
         },
         {
           source: "/:path*",
