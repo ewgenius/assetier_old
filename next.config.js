@@ -13,7 +13,7 @@ module.exports = {
         {
           source: "/",
           has: [{ type: "host", value: "(.*).assetier.app" }],
-          destination: "https://www.assetier.app/public/$0",
+          destination: "https://www.assetier.app/public/$1",
         },
       ],
     };
