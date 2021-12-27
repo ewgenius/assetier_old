@@ -1,9 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import type { Project } from "@prisma/client";
 
 import { fetcher } from "@utils/fetcher";
-import { useInputState } from "@hooks/useInputState";
+import { useProjectForm } from "@hooks/useProjectForm";
 
 export function useProjectsCreator(organizationId: string) {
   const { data, error } = useSWR<Project[]>(
@@ -13,41 +13,19 @@ export function useProjectsCreator(organizationId: string) {
   const [creating, setCreating] = useState(false);
   const { mutate } = useSWRConfig();
 
-  const [name, setName, resetName] = useInputState();
-  const [alias, setAlias, resetAlias] = useInputState();
-  const [assetsPath, setAssetsPath, resetAssetsPath] = useInputState();
-  const [publicPageEnabled, setPublicPageEnabled] = useState(false);
-  const [githubInstallation, setGithubInstallation] = useState<Pick<
-    Project,
-    "githubInstallationId" | "repositoryId"
-  > | null>(null);
-
-  const reset = () => {
-    resetName();
-    resetAlias();
-    resetAssetsPath();
-    setPublicPageEnabled(false);
-    setGithubInstallation(null);
-  };
-
-  const isValid = useMemo(
-    () =>
-      name &&
-      githubInstallation?.githubInstallationId &&
-      githubInstallation?.repositoryId,
-    [name, githubInstallation]
-  );
+  const form = useProjectForm();
 
   const createProject = useCallback(() => {
     setCreating(true);
 
     const project: Partial<Project> = {
-      name,
-      alias,
-      assetsPath,
-      publicPageEnabled,
-      githubInstallationId: githubInstallation?.githubInstallationId as string,
-      repositoryId: githubInstallation?.repositoryId as number,
+      name: form.name,
+      alias: form.alias,
+      assetsPath: form.assetsPath,
+      publicPageEnabled: form.publicPageEnabled,
+      githubInstallationId: form.githubInstallation
+        ?.githubInstallationId as string,
+      repositoryId: form.githubInstallation?.repositoryId as number,
     };
 
     return mutate(
@@ -66,11 +44,11 @@ export function useProjectsCreator(organizationId: string) {
   }, [
     data,
     organizationId,
-    name,
-    alias,
-    assetsPath,
-    publicPageEnabled,
-    githubInstallation,
+    form.name,
+    form.alias,
+    form.assetsPath,
+    form.publicPageEnabled,
+    form.githubInstallation,
   ]);
 
   return {
@@ -78,20 +56,6 @@ export function useProjectsCreator(organizationId: string) {
     error,
     createProject,
     creating,
-
-    reset,
-    isValid,
-
-    name,
-    alias,
-    assetsPath,
-    publicPageEnabled,
-    githubInstallation,
-
-    setName,
-    setAlias,
-    setAssetsPath,
-    setPublicPageEnabled,
-    setGithubInstallation,
+    form,
   };
 }

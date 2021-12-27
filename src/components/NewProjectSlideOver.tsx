@@ -16,35 +16,27 @@ import { Toggle } from "@components/Toggle";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
-  const {
-    createProject,
-    creating,
-    reset,
-    isValid,
-    name,
-    alias,
-    assetsPath,
-    publicPageEnabled,
-    githubInstallation,
-    setName,
-    setAlias,
-    setAssetsPath,
-    setPublicPageEnabled,
-    setGithubInstallation,
-  } = useProjectsCreator(organization.id);
+  const { createProject, creating, form } = useProjectsCreator(organization.id);
 
   const close = () => {
-    setTimeout(() => reset(), 700);
+    setTimeout(() => form.reset(), 700);
     onClose();
   };
 
-  useEffect(() => reset(), []);
+  useEffect(() => form.reset(), []);
 
   const submit = useCallback(() => {
-    if (isValid) {
+    if (form.isValid) {
       createProject().then(close);
     }
-  }, [name, alias, githubInstallation, assetsPath, publicPageEnabled, isValid]);
+  }, [
+    form.name,
+    form.alias,
+    form.githubInstallation,
+    form.assetsPath,
+    form.publicPageEnabled,
+    form.isValid,
+  ]);
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
@@ -57,8 +49,8 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           label="Project name"
           placeholder="My Awesome Project"
           disabled={creating}
-          value={name}
-          onChange={setName}
+          value={form.name}
+          onChange={form.setName}
         />
 
         <TextInput
@@ -67,13 +59,13 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           label="Project alias"
           placeholder="if not set, will be generated"
           disabled={creating}
-          value={alias}
-          onChange={setAlias}
+          value={form.alias}
+          onChange={form.setAlias}
         />
 
         <div className="border-b border-gray-200" />
 
-        <GithubConnector onChange={setGithubInstallation} />
+        <GithubConnector onChange={form.setGithubInstallation} />
 
         <div className="border-b border-gray-200" />
 
@@ -83,14 +75,14 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           label="Assets path"
           placeholder="/path/to/icons"
           disabled={creating}
-          value={assetsPath}
-          onChange={setAssetsPath}
+          value={form.assetsPath}
+          onChange={form.setAssetsPath}
         />
 
         <Toggle
           label="Enable public page?"
-          checked={publicPageEnabled}
-          onChange={setPublicPageEnabled}
+          checked={form.publicPageEnabled}
+          onChange={form.setPublicPageEnabled}
         />
       </SlideOverBody>
 
@@ -105,7 +97,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         </button>
         <button
           type="submit"
-          disabled={creating || !isValid}
+          disabled={creating || !form.isValid}
           className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
           <span>Create</span>
