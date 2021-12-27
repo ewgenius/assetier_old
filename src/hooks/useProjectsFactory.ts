@@ -45,7 +45,6 @@ export function useProjectsFactory() {
     );
   }, [
     organization,
-
     data,
     form.name,
     form.alias,
