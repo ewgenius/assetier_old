@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { Project } from "@prisma/client";
 
@@ -26,14 +26,24 @@ export function useProjectForm(project?: Partial<Project>) {
       : null
   );
 
-  useEffect(() => {
+  const reset = useCallback(() => {
     if (project) {
       project.name && setNameValue(project.name);
       project.alias && setAliasValue(project.alias);
       project.assetsPath && setAssetsPathValue(project.assetsPath);
       project.publicPageEnabled !== undefined &&
         setPublicPageEnabled(project.publicPageEnabled);
+    } else {
+      resetName();
+      resetAlias();
+      resetAssetsPath();
+      setPublicPageEnabled(false);
+      setGithubInstallation(null);
     }
+  }, [project]);
+
+  useEffect(() => {
+    reset();
   }, [project]);
 
   const projectData: Partial<Project> = {
@@ -43,14 +53,6 @@ export function useProjectForm(project?: Partial<Project>) {
     publicPageEnabled,
     githubInstallationId: githubInstallation?.githubInstallationId as string,
     repositoryId: githubInstallation?.repositoryId as number,
-  };
-
-  const reset = () => {
-    resetName();
-    resetAlias();
-    resetAssetsPath();
-    setPublicPageEnabled(false);
-    setGithubInstallation(null);
   };
 
   const isValid = useMemo(
