@@ -5,17 +5,15 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import type { NextPageExtended } from "@utils/types";
 import { useProject } from "@hooks/useProject";
-import { useProjectContents } from "@hooks/useProjectContents";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
-import { Spinner } from "@components/Spinner";
 import { EditProjectSlideOver } from "@components/EditProjectSlideOver";
+import { AssetsGrid } from "@components/AssetsGrid";
 
 export const Project: NextPageExtended = () => {
   const { query } = useRouter();
   const [editProjectOpen, setEditProjectOpen] = useState(false);
   const { project } = useProject(query.projectId as string);
-  const { contents } = useProjectContents(query.projectId as string);
 
   return (
     <Page
@@ -71,33 +69,7 @@ export const Project: NextPageExtended = () => {
         </LayoutBlock>
       )}
     >
-      <LayoutBlock>
-        {contents ? (
-          <div className="mt-4 grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-1">
-            {contents.map(
-              (asset) =>
-                asset.download_url && (
-                  <div key={asset.name} className="m-2">
-                    <a
-                      className="flex flex-col align-middle items-center"
-                      href={asset._links.html}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <img
-                        className="w-[24px] h-[24px] mb-1"
-                        src={asset.download_url}
-                      />
-                      <p className="font-mono text-xs">{asset.name}</p>
-                    </a>
-                  </div>
-                )
-            )}
-          </div>
-        ) : (
-          <Spinner />
-        )}
-      </LayoutBlock>
+      <LayoutBlock>{project && <AssetsGrid project={project} />}</LayoutBlock>
       {project && (
         <EditProjectSlideOver
           open={editProjectOpen}
