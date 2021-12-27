@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import type { GithubInstallation, Project } from "@prisma/client";
 
 import { useAppContext } from "@hooks/useAppContext";
@@ -8,12 +8,16 @@ import { GithubAccountSelector } from "./GithubAccountSelector";
 import { GithubRepositorySelector } from "./GithubRepositorySelector";
 
 export interface GithubConnectorProps {
+  value?: Pick<Project, "githubInstallationId" | "repositoryId">;
   onChange: (
     data: Pick<Project, "githubInstallationId" | "repositoryId"> | null
   ) => void;
 }
 
-export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
+export const GithubConnector: FC<GithubConnectorProps> = ({
+  value,
+  onChange,
+}) => {
   const { organization } = useAppContext();
 
   const { accounts } = useGithubAccounts(organization.id);
@@ -33,6 +37,13 @@ export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
     },
     [selectedAccount]
   );
+
+  useEffect(() => {
+    if (accounts && value?.githubInstallationId) {
+      const account = accounts.find((a) => a.id === value.githubInstallationId);
+      account && setSelectedAccount(account);
+    }
+  }, [accounts, value]);
 
   return (
     <div className="space-y-4">

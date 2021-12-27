@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 
+import { useState } from "react";
 import type { NextPageExtended } from "@utils/types";
 import { useProject } from "@hooks/useProject";
 import { useProjectContents } from "@hooks/useProjectContents";
@@ -9,10 +10,12 @@ import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { Spinner } from "@components/Spinner";
 import { useAppContext } from "@hooks/useAppContext";
+import { EditProjectSlideOver } from "@components/EditProjectSlideOver";
 
 export const Project: NextPageExtended = () => {
   const { query } = useRouter();
   const { organization } = useAppContext();
+  const [editProjectOpen, setEditProjectOpen] = useState(false);
   const { project } = useProject(organization.id, query.projectId as string);
   const { contents } = useProjectContents(
     organization.id,
@@ -69,6 +72,7 @@ export const Project: NextPageExtended = () => {
               </h2>
             </div>
           </div>
+          <button onClick={() => setEditProjectOpen(true)}>edit</button>
         </LayoutBlock>
       )}
     >
@@ -99,6 +103,13 @@ export const Project: NextPageExtended = () => {
           <Spinner />
         )}
       </LayoutBlock>
+      {project && (
+        <EditProjectSlideOver
+          open={editProjectOpen}
+          project={project}
+          onClose={() => setEditProjectOpen(false)}
+        />
+      )}
     </Page>
   );
 };

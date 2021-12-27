@@ -1,9 +1,10 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, Dispatch, SetStateAction, useState } from "react";
 
 export type UseInputState = [
   string,
   ChangeEventHandler<HTMLInputElement>,
-  () => void
+  () => void,
+  Dispatch<SetStateAction<string>>
 ];
 
 export function useInputState(defaultValue = ""): UseInputState {
@@ -12,5 +13,5 @@ export function useInputState(defaultValue = ""): UseInputState {
     target: { value },
   }) => setValue(value);
 
-  return [value, setValueHandler, () => setValue("")];
+  return [value, setValueHandler, () => setValue(""), setValue];
 }

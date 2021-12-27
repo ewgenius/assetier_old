@@ -1,4 +1,5 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback } from "react";
+import type { Project } from "@prisma/client";
 
 import { useProjectsFactory } from "@hooks/useProjectsFactory";
 import { Spinner } from "@components/Spinner";
@@ -11,27 +12,34 @@ import {
 } from "@components/SlideOver";
 import { useAppContext } from "@hooks/useAppContext";
 import { TextInput } from "@components/TextInput";
-import { GithubConnector } from "@components/GithubConnector";
 import { Toggle } from "@components/Toggle";
 
-export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
+export interface EditProjectSlideOverProps extends SlideOverProps {
+  project: Partial<Project>;
+}
+
+export const EditProjectSlideOver: FC<EditProjectSlideOverProps> = ({
+  open,
+  onClose,
+  project,
+}) => {
   const { organization } = useAppContext();
   const {
-    processProject: createProject,
-    processing: creating,
+    processProject: updateProject,
+    processing: updating,
     form,
-  } = useProjectsFactory(organization.id);
+  } = useProjectsFactory(organization.id, project);
 
   const close = () => {
     setTimeout(() => form.reset(), 700);
     onClose();
   };
 
-  useEffect(() => form.reset(), []);
+  // useEffect(() => form.reset(), []);
 
   const submit = useCallback(() => {
     if (form.isValid) {
-      createProject().then(close);
+      updateProject().then(close);
     }
   }, [
     form.name,
@@ -52,7 +60,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           name="project-name"
           label="Project name"
           placeholder="My Awesome Project"
-          disabled={creating}
+          disabled={updating}
           value={form.name}
           onChange={form.setName}
         />
@@ -62,14 +70,10 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           name="project-alias"
           label="Project alias"
           placeholder="if not set, will be generated"
-          disabled={creating}
+          disabled={updating}
           value={form.alias}
           onChange={form.setAlias}
         />
-
-        <div className="border-b border-gray-200" />
-
-        <GithubConnector onChange={form.setGithubInstallation} />
 
         <div className="border-b border-gray-200" />
 
@@ -78,7 +82,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           name="assets-path"
           label="Assets path"
           placeholder="/path/to/icons"
-          disabled={creating}
+          disabled={updating}
           value={form.assetsPath}
           onChange={form.setAssetsPath}
         />
@@ -94,18 +98,18 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         <button
           type="button"
           className="bg-white py-2 px-4 border disabled:opacity-50 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-          disabled={creating}
+          disabled={updating}
           onClick={close}
         >
           Cancel
         </button>
         <button
           type="submit"
-          disabled={creating || !form.isValid}
+          disabled={updating || !form.isValid}
           className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
           <span>Create</span>
-          {creating && <Spinner className="ml-2" />}
+          {updating && <Spinner className="ml-2" />}
         </button>
       </SlideOverFooter>
     </SlideOver>

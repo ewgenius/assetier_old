@@ -1,18 +1,49 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { Project } from "@prisma/client";
 
 import { useInputState } from "@hooks/useInputState";
 
-export function useProjectForm() {
-  const [name, setName, resetName] = useInputState();
-  const [alias, setAlias, resetAlias] = useInputState();
-  const [assetsPath, setAssetsPath, resetAssetsPath] = useInputState();
-  const [publicPageEnabled, setPublicPageEnabled] = useState(false);
+export function useProjectForm(project?: Partial<Project>) {
+  const [name, setName, resetName, setNameValue] = useInputState(project?.name);
+  const [alias, setAlias, resetAlias, setAliasValue] = useInputState(
+    project?.alias || undefined
+  );
+  const [assetsPath, setAssetsPath, resetAssetsPath, setAssetsPathValue] =
+    useInputState(project?.assetsPath);
+  const [publicPageEnabled, setPublicPageEnabled] = useState(
+    project?.publicPageEnabled !== undefined ? project.publicPageEnabled : false
+  );
   const [githubInstallation, setGithubInstallation] = useState<Pick<
     Project,
     "githubInstallationId" | "repositoryId"
-  > | null>(null);
+  > | null>(
+    project && project.githubInstallationId && project.repositoryId
+      ? {
+          githubInstallationId: project.githubInstallationId,
+          repositoryId: project.repositoryId,
+        }
+      : null
+  );
+
+  useEffect(() => {
+    if (project) {
+      project.name && setNameValue(project.name);
+      project.alias && setAliasValue(project.alias);
+      project.assetsPath && setAssetsPathValue(project.assetsPath);
+      project.publicPageEnabled !== undefined &&
+        setPublicPageEnabled(project.publicPageEnabled);
+    }
+  }, [project]);
+
+  const projectData: Partial<Project> = {
+    name,
+    alias,
+    assetsPath,
+    publicPageEnabled,
+    githubInstallationId: githubInstallation?.githubInstallationId as string,
+    repositoryId: githubInstallation?.repositoryId as number,
+  };
 
   const reset = () => {
     resetName();
@@ -24,15 +55,24 @@ export function useProjectForm() {
 
   const isValid = useMemo(
     () =>
-      name &&
-      githubInstallation?.githubInstallationId &&
+      project
+        ? name
+        : name &&
+          githubInstallation?.githubInstallationId &&
+          githubInstallation?.repositoryId,
+    [
+      name,
+      project,
       githubInstallation?.repositoryId,
-    [name, githubInstallation]
+      githubInstallation?.githubInstallationId,
+    ]
   );
 
   return {
     reset,
     isValid,
+
+    projectData,
 
     name,
     alias,
