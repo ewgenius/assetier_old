@@ -52,7 +52,10 @@ export const EditProjectSlideOver: FC<EditProjectSlideOverProps> = ({
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
-      <SlideOverHeading onClose={close} title="New Project" />
+      <SlideOverHeading
+        onClose={close}
+        title={`Edit Project: "${project.name}"`}
+      />
 
       <SlideOverBody>
         <TextInput
@@ -108,7 +111,7 @@ export const EditProjectSlideOver: FC<EditProjectSlideOverProps> = ({
           disabled={updating || !form.isValid}
           className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
-          <span>Create</span>
+          <span>Update</span>
           {updating && <Spinner className="ml-2" />}
         </button>
       </SlideOverFooter>

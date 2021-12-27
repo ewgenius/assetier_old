@@ -13,13 +13,11 @@ import { Spinner } from "../Spinner";
 
 export interface GithubRepositorySelectorProps {
   installationId: number;
-  value?: number | null;
   onChange?: (repositoryId: number | null) => void;
 }
 
 export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
   installationId,
-  value,
   onChange,
 }) => {
   const { organization } = useAppContext();
@@ -32,13 +30,6 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
   useEffect(() => {
     select(null);
   }, [installationId]);
-
-  useEffect(() => {
-    if (repositories && value) {
-      const repository = repositories.find((r) => r.id === value);
-      repository && select(repository);
-    }
-  }, [repositories, value]);
 
   const select = (repository: Repository | null) => {
     setSelected(repository);

@@ -9,10 +9,10 @@ export function useProjectsFactory(
   organizationId: string,
   project?: Partial<Project>
 ) {
-  const { data, error } = useSWR<Project[]>(
-    `/api/organizations/${organizationId}/projects`,
-    fetcher
-  );
+  const apiKey = `/api/organizations/${organizationId}/projects${
+    project ? `/${project.id}` : ""
+  }`;
+  const { data, error } = useSWR<Project[]>(apiKey, fetcher);
   const [processing, setProcessing] = useState(false);
   const { mutate } = useSWRConfig();
 
@@ -22,24 +22,22 @@ export function useProjectsFactory(
     setProcessing(true);
 
     return mutate(
-      `/api/organizations/${organizationId}/projects`,
-      fetch(
-        `/api/organizations/${organizationId}/projects${
-          project ? `/${project.id}` : ""
-        }`,
-        {
-          method: project ? "PATCH" : "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form.projectData),
-        }
-      )
+      apiKey,
+      fetch(apiKey, {
+        method: project ? "PATCH" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form.projectData),
+      })
         .then((r) => r.json())
-        .then((newProject) => [...(data || []), newProject])
+        .then((newProject) =>
+          project ? newProject : [...(data || []), newProject]
+        )
         .finally(() => setProcessing(false))
     );
   }, [
+    project,
     data,
     organizationId,
     form.name,
