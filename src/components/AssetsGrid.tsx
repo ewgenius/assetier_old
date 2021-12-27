@@ -23,7 +23,7 @@ export const AssetsGrid: FC<AssetsGridProps> = ({ project }) => {
               type="text"
               name="account-number"
               id="account-number"
-              className="focus:ring-zinc-500 focus:border-zinc-500 block w-full pr-10 sm:text-sm border-gray-300 shadow-sm rounded-md"
+              className="focus:ring-zinc-500 focus:border-zinc-500 block w-full pr-10 sm:text-sm border-gray-300  rounded-md"
               placeholder="Search for an asset..."
               value={query}
               onChange={setQuery}
@@ -42,7 +42,7 @@ export const AssetsGrid: FC<AssetsGridProps> = ({ project }) => {
 
           <button
             type="button"
-            className="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium shadow-sm rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
           >
             Upload Assets
           </button>
