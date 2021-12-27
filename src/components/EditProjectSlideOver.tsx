@@ -1,7 +1,6 @@
 import { FC, useCallback } from "react";
 import type { Project } from "@prisma/client";
 
-import { useProjectsFactory } from "@hooks/useProjectsFactory";
 import { Spinner } from "@components/Spinner";
 import {
   SlideOver,

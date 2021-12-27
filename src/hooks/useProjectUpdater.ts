@@ -10,8 +10,8 @@ export function useProjectUpdater(project: Partial<Project>) {
   const organization = useOrganization();
   const apiKey = [
     `/api/organizations/${organization.id}/projects/${project.id}`,
-    organization,
-    project,
+    organization.id,
+    project.id,
   ];
 
   const { data, error } = useSWR<Project[]>(apiKey, fetcher);
@@ -24,7 +24,11 @@ export function useProjectUpdater(project: Partial<Project>) {
     setUpdating(true);
 
     return mutate(
-      apiKey,
+      [
+        `/api/organizations/${organization.id}/projects/${project.id}`,
+        organization.id,
+        project.id,
+      ],
       fetch(`/api/organizations/${organization.id}/projects/${project.id}`, {
         method: "PATCH",
         headers: {
@@ -36,7 +40,7 @@ export function useProjectUpdater(project: Partial<Project>) {
         .finally(() => setUpdating(false))
     );
   }, [
-    organization,
+    organization.id,
     project,
     data,
     form.name,

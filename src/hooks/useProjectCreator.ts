@@ -1,19 +1,13 @@
 import { useCallback, useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
-import type { Project } from "@prisma/client";
+import { useSWRConfig } from "swr";
 
-import { fetcher } from "@utils/fetcher";
 import { useOrganization } from "@hooks/useOrganization";
 import { useProjectForm } from "@hooks/useProjectForm";
+import { useProjects } from "@hooks/useProjects";
 
-export function useProjectsFactory() {
+export function useProjectCreator() {
   const organization = useOrganization();
-  const apiKey = [
-    `/api/organizations/${organization.id}/projects`,
-    organization,
-  ];
-
-  const { data, error } = useSWR<Project[]>(apiKey, fetcher);
+  const { projects } = useProjects();
   const [creating, setCreating] = useState(false);
   const { mutate } = useSWRConfig();
 
@@ -23,7 +17,7 @@ export function useProjectsFactory() {
     setCreating(true);
 
     return mutate(
-      apiKey,
+      [`/api/organizations/${organization.id}/projects`, organization],
       fetch(`/api/organizations/${organization.id}/projects`, {
         method: "POST",
         headers: {
@@ -34,18 +28,27 @@ export function useProjectsFactory() {
         .then((r) => r.json())
         .then((newProject) =>
           mutate(
-            `/api/organizations/${organization.id}/projects/${newProject.id}`,
-            newProject
+            [
+              `/api/organizations/${organization.id}/projects/${newProject.id}`,
+              organization.id,
+              newProject.id,
+            ],
+            newProject,
+            false
           )
         )
         .then((newProject) => {
-          return [...(data || []), newProject];
+          console.log(newProject, projects);
+          return {
+            ...projects,
+            [newProject.id]: newProject,
+          };
         })
-        .finally(() => setCreating(false))
+        .finally(() => setCreating(false)),
+      false
     );
   }, [
-    organization,
-    data,
+    organization.id,
     form.name,
     form.alias,
     form.assetsPath,
@@ -54,8 +57,6 @@ export function useProjectsFactory() {
   ]);
 
   return {
-    projects: data,
-    error,
     createProject,
     creating,
     form,

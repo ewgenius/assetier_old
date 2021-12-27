@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
-import { useProjectsFactory } from "@hooks/useProjectsFactory";
 import { Spinner } from "@components/Spinner";
 import {
   SlideOver,
@@ -12,9 +11,10 @@ import {
 import { TextInput } from "@components/TextInput";
 import { GithubConnector } from "@components/GithubConnector";
 import { Toggle } from "@components/Toggle";
+import { useProjectCreator } from "@hooks/useProjectCreator";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
-  const { createProject, creating, form } = useProjectsFactory();
+  const { createProject, creating, form } = useProjectCreator();
 
   const close = () => {
     setTimeout(() => form.reset(), 700);
