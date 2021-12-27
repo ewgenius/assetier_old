@@ -12,8 +12,8 @@ module.exports = {
         // },
         {
           source: "/",
-          has: [{ type: "host", value: ":appDomain(.*).assetier.app" }],
-          destination: "https://www.assetier.app/public/:appDomain",
+          has: [{ type: "host", value: "(.*).assetier.app" }],
+          destination: "https://www.assetier.app/public/$1",
         },
       ],
     };
