@@ -12,8 +12,8 @@ module.exports = {
         // },
         {
           source: "/",
-          has: [{ type: "host", value: ":project(.*).assetier.app" }],
-          destination: "https://www.assetier.app/public/:project",
+          has: [{ type: "host", value: "(.*).assetier.app" }],
+          destination: "https://www.assetier.app/public/$0",
         },
       ],
     };
