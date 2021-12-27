@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import type { Project } from "@prisma/client";
+import { Switch } from "@headlessui/react";
 
 import { useInputState } from "@hooks/useInputState";
 import { useProjects } from "@hooks/useProjects";
@@ -12,12 +13,15 @@ import {
 import { useAppContext } from "@hooks/useAppContext";
 import { TextInput } from "@components/TextInput";
 import { GithubConnector } from "@components/GithubConnector";
+import { classNames } from "@utils/classNames";
 
-export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
+export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useAppContext();
   const { createProject, creating } = useProjects(organization.id);
   const [projectName, setProjectName, resetProjectName] = useInputState();
+  const [projectAlias, setProjectAlias, resetProjectAlias] = useInputState();
   const [assetsPath, setAssetsPath, resetAssetsPath] = useInputState();
+  const [publicPageEnabled, setPublicPageEnabled] = useState(false);
   const [githubInstallation, setGithubInstallation] = useState<Pick<
     Project,
     "githubInstallationId" | "repositoryId"
@@ -26,14 +30,18 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const close = () => {
     setTimeout(() => {
       resetProjectName();
+      resetProjectAlias();
       resetAssetsPath();
+      setPublicPageEnabled(false);
     }, 700);
     onClose();
   };
 
   useEffect(() => {
     resetProjectName();
+    resetProjectAlias();
     resetAssetsPath();
+    setPublicPageEnabled(false);
   }, []);
 
   const isValid = useMemo(
@@ -48,12 +56,21 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
     if (isValid) {
       createProject({
         name: projectName,
+        alias: projectAlias,
         githubInstallationId: githubInstallation?.githubInstallationId,
         repositoryId: githubInstallation?.repositoryId,
         assetsPath: assetsPath,
+        publicPageEnabled: publicPageEnabled,
       }).then(close);
     }
-  }, [projectName, githubInstallation, assetsPath, isValid]);
+  }, [
+    projectName,
+    projectAlias,
+    githubInstallation,
+    assetsPath,
+    publicPageEnabled,
+    isValid,
+  ]);
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
@@ -72,6 +89,16 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                 onChange={setProjectName}
               />
 
+              <TextInput
+                id="project-alias"
+                name="project-alias"
+                label="Project alias"
+                placeholder="if not set, will be generated"
+                disabled={creating}
+                value={projectAlias}
+                onChange={setProjectAlias}
+              />
+
               <div className="border-b border-gray-200" />
 
               <GithubConnector onChange={setGithubInstallation} />
@@ -87,6 +114,43 @@ export const ProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
                 value={assetsPath}
                 onChange={setAssetsPath}
               />
+
+              <Switch.Group
+                as="div"
+                className="flex items-center justify-between"
+              >
+                <span className="flex-grow flex flex-col">
+                  <Switch.Label
+                    as="span"
+                    className="text-sm font-medium text-gray-900"
+                    passive
+                  >
+                    Enable public page?
+                  </Switch.Label>
+                  <Switch.Description
+                    as="span"
+                    className="text-sm text-gray-500"
+                  >
+                    Public site for your project
+                  </Switch.Description>
+                </span>
+                <Switch
+                  checked={publicPageEnabled}
+                  onChange={setPublicPageEnabled}
+                  className={classNames(
+                    publicPageEnabled ? "bg-zinc-600" : "bg-gray-200",
+                    "relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={classNames(
+                      publicPageEnabled ? "translate-x-5" : "translate-x-0",
+                      "pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
+                    )}
+                  />
+                </Switch>
+              </Switch.Group>
             </div>
           </div>
         </div>

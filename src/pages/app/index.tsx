@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { NextPageExtended } from "@utils/types";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
-import { ProjectSlideOver } from "@components/ProjectSlideOver";
+import { NewProjectSlideOver } from "@components/NewProjectSlideOver";
 import { ProjectsList } from "@components/ProjectsList";
 
 export const Home: NextPageExtended = () => {
@@ -22,7 +22,7 @@ export const Home: NextPageExtended = () => {
         </div>
         <ProjectsList />
       </LayoutBlock>
-      <ProjectSlideOver
+      <NewProjectSlideOver
         open={newProjectOpen}
         onClose={() => setNewProjectOpen(false)}
       />
