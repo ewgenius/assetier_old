@@ -10,7 +10,6 @@ import {
   SlideOverFooter,
   SlideOverBody,
 } from "@components/SlideOver";
-import { useAppContext } from "@hooks/useAppContext";
 import { TextInput } from "@components/TextInput";
 import { Toggle } from "@components/Toggle";
 
@@ -23,12 +22,11 @@ export const EditProjectSlideOver: FC<EditProjectSlideOverProps> = ({
   onClose,
   project,
 }) => {
-  const { organization } = useAppContext();
   const {
     processProject: updateProject,
     processing: updating,
     form,
-  } = useProjectsFactory(organization.id, project);
+  } = useProjectsFactory(project);
 
   const close = () => {
     setTimeout(() => form.reset(), 700);

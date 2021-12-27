@@ -3,15 +3,19 @@ import useSWR, { useSWRConfig } from "swr";
 import type { Project } from "@prisma/client";
 
 import { fetcher } from "@utils/fetcher";
+import { useOrganization } from "@hooks/useOrganization";
 import { useProjectForm } from "@hooks/useProjectForm";
 
-export function useProjectsFactory(
-  organizationId: string,
-  project?: Partial<Project>
-) {
-  const apiKey = `/api/organizations/${organizationId}/projects${
-    project ? `/${project.id}` : ""
-  }`;
+export function useProjectsFactory(project?: Partial<Project>) {
+  const organization = useOrganization();
+  const apiKey = project
+    ? [
+        `/api/organizations/${organization.id}/projects/${project.id}`,
+        organization,
+        project,
+      ]
+    : [`/api/organizations/${organization.id}/projects`, organization];
+
   const { data, error } = useSWR<Project[]>(apiKey, fetcher);
   const [processing, setProcessing] = useState(false);
   const { mutate } = useSWRConfig();
@@ -23,13 +27,18 @@ export function useProjectsFactory(
 
     return mutate(
       apiKey,
-      fetch(apiKey, {
-        method: project ? "PATCH" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form.projectData),
-      })
+      fetch(
+        project
+          ? `/api/organizations/${organization.id}/projects/${project.id}`
+          : `/api/organizations/${organization.id}/projects`,
+        {
+          method: project ? "PATCH" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form.projectData),
+        }
+      )
         .then((r) => r.json())
         .then((newProject) =>
           project ? newProject : [...(data || []), newProject]
@@ -37,9 +46,9 @@ export function useProjectsFactory(
         .finally(() => setProcessing(false))
     );
   }, [
+    organization,
     project,
     data,
-    organizationId,
     form.name,
     form.alias,
     form.assetsPath,

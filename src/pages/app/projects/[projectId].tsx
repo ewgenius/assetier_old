@@ -9,18 +9,13 @@ import { useProjectContents } from "@hooks/useProjectContents";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { Spinner } from "@components/Spinner";
-import { useAppContext } from "@hooks/useAppContext";
 import { EditProjectSlideOver } from "@components/EditProjectSlideOver";
 
 export const Project: NextPageExtended = () => {
   const { query } = useRouter();
-  const { organization } = useAppContext();
   const [editProjectOpen, setEditProjectOpen] = useState(false);
-  const { project } = useProject(organization.id, query.projectId as string);
-  const { contents } = useProjectContents(
-    organization.id,
-    query.projectId as string
-  );
+  const { project } = useProject(query.projectId as string);
+  const { contents } = useProjectContents(query.projectId as string);
 
   return (
     <Page

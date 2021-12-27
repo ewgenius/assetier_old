@@ -1,18 +1,6 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import type { Project } from "@prisma/client";
+import { FC } from "react";
 import { Switch } from "@headlessui/react";
 
-import { useInputState } from "@hooks/useInputState";
-import { useProjects } from "@hooks/useProjects";
-import { Spinner } from "@components/Spinner";
-import {
-  SlideOver,
-  SlideOverProps,
-  SlideOverHeading,
-} from "@components/SlideOver";
-import { useAppContext } from "@hooks/useAppContext";
-import { TextInput } from "@components/TextInput";
-import { GithubConnector } from "@components/GithubConnector";
 import { classNames } from "@utils/classNames";
 
 export interface ToggleProps {

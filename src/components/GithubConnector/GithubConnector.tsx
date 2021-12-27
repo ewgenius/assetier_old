@@ -1,7 +1,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import type { GithubInstallation, Project } from "@prisma/client";
 
-import { useAppContext } from "@hooks/useAppContext";
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
 
 import { GithubAccountSelector } from "./GithubAccountSelector";
@@ -14,9 +13,7 @@ export interface GithubConnectorProps {
 }
 
 export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
-  const { organization } = useAppContext();
-
-  const { accounts } = useGithubAccounts(organization.id);
+  const { accounts } = useGithubAccounts();
   const [selectedAccount, setSelectedAccount] =
     useState<GithubInstallation | null>(null);
 

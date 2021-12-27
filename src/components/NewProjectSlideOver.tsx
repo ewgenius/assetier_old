@@ -9,18 +9,16 @@ import {
   SlideOverFooter,
   SlideOverBody,
 } from "@components/SlideOver";
-import { useAppContext } from "@hooks/useAppContext";
 import { TextInput } from "@components/TextInput";
 import { GithubConnector } from "@components/GithubConnector";
 import { Toggle } from "@components/Toggle";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
-  const { organization } = useAppContext();
   const {
     processProject: createProject,
     processing: creating,
     form,
-  } = useProjectsFactory(organization.id);
+  } = useProjectsFactory();
 
   const close = () => {
     setTimeout(() => form.reset(), 700);

@@ -3,12 +3,10 @@ import { DotsVerticalIcon } from "@heroicons/react/outline";
 
 import { useProjects } from "@hooks/useProjects";
 import { Spinner } from "@components/Spinner";
-import { useAppContext } from "@hooks/useAppContext";
 import { stringToColor } from "@utils/stringToColor";
 
 export const ProjectsList = () => {
-  const { organization } = useAppContext();
-  const { projects } = useProjects(organization.id);
+  const { projects } = useProjects();
   return projects ? (
     <ul
       role="list"

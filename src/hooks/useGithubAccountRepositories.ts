@@ -1,6 +1,8 @@
 import useSWR from "swr";
 import { fetcher } from "@utils/fetcher";
 
+import { useOrganization } from "@hooks/useOrganization";
+
 export interface Repository {
   id: number;
   name: string;
@@ -9,12 +11,14 @@ export interface Repository {
   };
 }
 
-export function useGithubAccountRepositories(
-  organizationId: string,
-  installationId: number
-) {
+export function useGithubAccountRepositories(installationId: number) {
+  const organization = useOrganization();
   const { data, error } = useSWR<Repository[]>(
-    `/api/organizations/${organizationId}/accounts/${installationId}/repositories`,
+    [
+      `/api/organizations/${organization.id}/accounts/${installationId}/repositories`,
+      organization,
+      installationId,
+    ],
     fetcher
   );
 

@@ -1,14 +1,12 @@
 import { FC, Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import type { Project } from "@prisma/client";
 
 import { classNames } from "@utils/classNames";
 import {
   Repository,
   useGithubAccountRepositories,
 } from "@hooks/useGithubAccountRepositories";
-import { useAppContext } from "@hooks/useAppContext";
 import { Spinner } from "../Spinner";
 
 export interface GithubRepositorySelectorProps {
@@ -20,12 +18,8 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
   installationId,
   onChange,
 }) => {
-  const { organization } = useAppContext();
   const [selected, setSelected] = useState<Repository | null>(null);
-  const { repositories } = useGithubAccountRepositories(
-    organization.id,
-    installationId
-  );
+  const { repositories } = useGithubAccountRepositories(installationId);
 
   useEffect(() => {
     select(null);

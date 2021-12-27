@@ -5,15 +5,15 @@ import { PlusSmIcon } from "@heroicons/react/outline";
 import type { GithubInstallation } from "@prisma/client";
 
 import { classNames } from "@utils/classNames";
-import { useAppContext } from "@hooks/useAppContext";
 import { Spinner } from "../Spinner";
+import { useOrganization } from "@hooks/useOrganization";
 
 interface AddGithubAccountButtonProps {
   mode: "button" | "option";
 }
 
 const AddGithubAccountButton: FC<AddGithubAccountButtonProps> = ({ mode }) => {
-  const { organization } = useAppContext();
+  const organization = useOrganization();
   return (
     <button
       type="button"

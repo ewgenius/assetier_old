@@ -1,10 +1,13 @@
 import useSWR from "swr";
-import type { GithubInstallation, Project } from "@prisma/client";
-import { fetcher } from "@utils/fetcher";
+import type { GithubInstallation } from "@prisma/client";
 
-export function useGithubAccounts(organizationId: string) {
+import { fetcher } from "@utils/fetcher";
+import { useOrganization } from "@hooks/useOrganization";
+
+export function useGithubAccounts() {
+  const organization = useOrganization();
   const { data, error } = useSWR<GithubInstallation[]>(
-    `/api/organizations/${organizationId}/accounts`,
+    [`/api/organizations/${organization.id}/accounts`, organization],
     fetcher
   );
 
