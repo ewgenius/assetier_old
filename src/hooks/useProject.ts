@@ -8,7 +8,7 @@ export function useProject(projectId: string) {
   const { data, error } = useSWR<Project>(
     [
       `/api/organizations/${organization.id}/projects/${projectId}`,
-      organization.id,
+      organization,
       projectId,
     ],
     fetcher

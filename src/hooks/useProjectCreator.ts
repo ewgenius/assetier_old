@@ -30,7 +30,7 @@ export function useProjectCreator() {
           mutate(
             [
               `/api/organizations/${organization.id}/projects/${newProject.id}`,
-              organization.id,
+              organization,
               newProject.id,
             ],
             newProject,
@@ -48,7 +48,7 @@ export function useProjectCreator() {
       false
     );
   }, [
-    organization.id,
+    organization,
     form.name,
     form.alias,
     form.assetsPath,
