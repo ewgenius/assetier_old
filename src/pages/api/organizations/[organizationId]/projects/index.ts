@@ -1,10 +1,9 @@
 import type { Project } from "@prisma/client";
-import type { ErrorResponse } from "@utils/types";
 import { prisma } from "@utils/prisma";
 import { withOrganization } from "@utils/withOrganization";
 import { NotAllowedError } from "@utils/httpErrors";
 
-export default withOrganization<Project | Project[] | ErrorResponse>(
+export default withOrganization<Project | Project[]>(
   async ({ method, body, organization }, res) => {
     switch (method) {
       case "GET": {

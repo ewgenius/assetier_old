@@ -1,5 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { ErrorResponse, SessionWithId } from "@utils/types";
+import type { NextApiResponse } from "next";
 import { User } from "@prisma/client";
 import { prisma } from "@utils/prisma";
 import { withSession, NextApiRequestWithSession } from "@utils/withSession";

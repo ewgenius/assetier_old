@@ -1,10 +1,10 @@
 import type { GithubInstallation, Project } from "@prisma/client";
-import type { ErrorResponse } from "@utils/types";
+
 import { prisma } from "@utils/prisma";
 import { withOrganization } from "@utils/withOrganization";
 import { NotAllowedError } from "@utils/httpErrors";
 
-export default withOrganization<GithubInstallation[] | ErrorResponse>(
+export default withOrganization<GithubInstallation[]>(
   async ({ method, organization }, res) => {
     switch (method) {
       case "GET": {

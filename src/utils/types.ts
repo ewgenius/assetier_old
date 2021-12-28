@@ -14,10 +14,6 @@ export type AppPropsExtended<P = {}> = AppProps<P> & {
   Component: NextComponentType<NextPageContext, any, P> & WithNavId;
 };
 
-export type ErrorResponse = {
-  error: string;
-};
-
 export type SessionWithId = Session & {
   userId: string;
 };
