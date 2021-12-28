@@ -32,6 +32,7 @@ export const ProjectSettingsPage: NextPageExtended<
     form.assetsPath,
     form.publicPageEnabled,
     form.isValid,
+    updateProject,
   ]);
 
   if (!project) {

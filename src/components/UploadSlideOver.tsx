@@ -41,68 +41,70 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
       <SlideOverHeading onClose={onClose} title="Upload assets" />
 
       <SlideOverBody>
-        <h2 className="font-medium">
-          {files?.length > 0
-            ? `${files.length} files selected for upload`
-            : "Select files for upload"}
-        </h2>
+        <div>
+          <h2 className="font-medium mb-2">
+            {files?.length > 0
+              ? `${files.length} files selected for upload:`
+              : "Select files for upload"}
+          </h2>
 
-        <div
-          className="p-2 min-h-0 max-h-80 overflow-y-auto rounded-md border-2 bg-gray-100 border-zinc-200 border-dotted"
-          {...getRootProps()}
-        >
-          <input {...getInputProps()} />
+          <div
+            className="p-2 min-h-0 max-h-80 overflow-y-auto rounded-md bg-gray-100 border border-zinc-200"
+            {...getRootProps()}
+          >
+            <input {...getInputProps()} />
 
-          <div className="mb-2 last:mb-0 border-2 border-dotted border-gray-300 hover:border-gray-400 py-2 px-4 rounded-md cursor-pointer">
-            {isDragActive ? (
-              <div className="text-zinc-400">Drop the files here ...</div>
-            ) : (
-              <div className="text-zinc-400">
-                Drag 'n' drop some files here, or click to select files
+            <div className="mb-2 last:mb-0 border-2 border-dotted border-gray-300 hover:border-gray-400 py-2 px-4 rounded-md cursor-pointer">
+              {isDragActive ? (
+                <div className="text-zinc-400">Drop the files here ...</div>
+              ) : (
+                <div className="text-zinc-4 00">
+                  Drag 'n' drop some files here, or click to select files
+                </div>
+              )}
+            </div>
+
+            {files && files.length > 0 && (
+              <div className="flex flex-grow flex-col gap-2">
+                {files.map((file, i) => {
+                  return (
+                    <div
+                      className="flex box-border p-2 bg-white rounded-md justify-center items-center"
+                      key={`file-${i}`}
+                    >
+                      <div className="flex-shrink-0 rounded-lg p-2 border border-gray-100">
+                        <img
+                          key={file.name}
+                          className="w-4 h-4"
+                          src={URL.createObjectURL(file)}
+                        />
+                      </div>
+
+                      <div className="flex-grow flex flex-col justify-center px-4">
+                        <p className="text-xs text-mono text-gray-700">
+                          {file.name}
+                        </p>
+                        <p className="text-xs text-mono text-gray-400">
+                          {file.size}B
+                        </p>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          deleteFile(i);
+                          return false;
+                        }}
+                        className="hover:text-zinc-500 text-zinc-400 p-2"
+                      >
+                        <XIcon className="w-4 h-4" />
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
-
-          {files && files.length > 0 && (
-            <div className="flex flex-grow flex-col gap-2">
-              {files.map((file, i) => {
-                return (
-                  <div
-                    className="flex box-border p-2 bg-white rounded-md justify-center items-center"
-                    key={`file-${i}`}
-                  >
-                    <div className="flex-shrink-0 rounded-lg p-2 border border-gray-100">
-                      <img
-                        key={file.name}
-                        className="w-4 h-4"
-                        src={URL.createObjectURL(file)}
-                      />
-                    </div>
-
-                    <div className="flex-grow flex flex-col justify-center px-4">
-                      <p className="text-xs text-mono text-gray-700">
-                        {file.name}
-                      </p>
-                      <p className="text-xs text-mono text-gray-400">
-                        {file.size}B
-                      </p>
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        deleteFile(i);
-                        return false;
-                      }}
-                      className="hover:text-zinc-500 text-zinc-400 p-2"
-                    >
-                      <XIcon className="w-4 h-4" />
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </div>
       </SlideOverBody>
 
