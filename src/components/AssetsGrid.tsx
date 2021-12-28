@@ -25,7 +25,7 @@ export const AssetsGrid: FC<AssetsGridProps> = ({ assets }) => {
                     className="w-[24px] h-[24px] mb-2"
                     src={asset.download_url}
                   />
-                  <p className="font-mono text-xs">{asset.name}</p>
+                  <p className="font-mono text-[10px]">{asset.name}</p>
                 </a>
               </div>
             ))}

@@ -12,6 +12,7 @@ import {
 } from "@components/SlideOver";
 import { Spinner } from "./Spinner";
 import { useProjectContents } from "@hooks/useProjectContents";
+import { Toggle } from "@components/Toggle";
 
 export interface UploadSlideOverProps extends SlideOverProps {
   project: Project;
@@ -23,6 +24,8 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
   project,
 }) => {
   const [files, setFiles] = useState<File[]>([]);
+  const [merge, setMerge] = useState(false);
+
   const { refresh } = useProjectContents(project.id);
   const [uploading, setUploading] = useState(false);
   const onDrop = useCallback(
@@ -40,6 +43,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
   const close = () => {
     setFiles([]);
     setUploading(false);
+    setMerge(false);
     onClose();
   };
 
@@ -50,7 +54,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
       data.set(`${file.name}_i`, file);
     });
 
-    data.set("merge", "true");
+    data.set("merge", merge ? "true" : "false");
 
     fetch(
       `/api/organizations/${project.organizationId}/projects/${project.id}/upload`,
@@ -58,14 +62,13 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
         method: "POST",
         body: data,
       }
-    ).finally(() => {
-      refresh();
-      close();
-    });
-  }, [files]);
+    )
+      .then(refresh)
+      .finally(close);
+  }, [files, merge]);
 
   return (
-    <SlideOver open={open} onClose={onClose} onSubmit={submit} size="2xl">
+    <SlideOver open={open} onClose={onClose} onSubmit={submit} size="xl">
       <SlideOverHeading onClose={onClose} title="Upload assets" />
 
       <SlideOverBody>
@@ -135,6 +138,12 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
             )}
           </div>
         </div>
+
+        <Toggle
+          label="Merge Pull Request instantly?"
+          checked={merge}
+          onChange={setMerge}
+        />
       </SlideOverBody>
 
       <SlideOverFooter>
