@@ -46,45 +46,49 @@ export const ProjectSettingsPage: NextPageExtended<
           submit();
           return false;
         }}
-        className="h-full box-border overflow-hidden flex flex-col "
+        className="h-full box-border overflow-hidden flex flex-col space-y-4"
       >
-        <TextInput
-          id="project-name"
-          name="project-name"
-          label="Project name"
-          placeholder="My Awesome Project"
-          disabled={updating}
-          value={form.name}
-          onChange={form.setName}
-        />
+        <div className="py-4 flex flex-col sm:flex-row sm:space-x-8 space-y-4 sm:space-y-0">
+          <div className="flex-1 space-y-4">
+            <TextInput
+              id="project-name"
+              name="project-name"
+              label="Project name"
+              placeholder="My Awesome Project"
+              disabled={updating}
+              value={form.name}
+              onChange={form.setName}
+            />
 
-        <TextInput
-          id="project-alias"
-          name="project-alias"
-          label="Project alias"
-          placeholder="if not set, will be generated"
-          disabled={updating}
-          value={form.alias}
-          onChange={form.setAlias}
-        />
+            <TextInput
+              id="project-alias"
+              name="project-alias"
+              label="Project alias"
+              placeholder="if not set, will be generated"
+              disabled={updating}
+              value={form.alias}
+              onChange={form.setAlias}
+            />
+          </div>
+          <div className="border-b border-gray-200 sm:hidden" />
 
-        <div className="border-b border-gray-200" />
-
-        <TextInput
-          id="assets-path"
-          name="assets-path"
-          label="Assets path"
-          placeholder="/path/to/icons"
-          disabled={updating}
-          value={form.assetsPath}
-          onChange={form.setAssetsPath}
-        />
-
-        <Toggle
-          label="Enable public page?"
-          checked={form.publicPageEnabled}
-          onChange={form.setPublicPageEnabled}
-        />
+          <div className="flex-1 space-y-4">
+            <TextInput
+              id="assets-path"
+              name="assets-path"
+              label="Assets path"
+              placeholder="/path/to/icons"
+              disabled={updating}
+              value={form.assetsPath}
+              onChange={form.setAssetsPath}
+            />
+            <Toggle
+              label="Enable public page?"
+              checked={form.publicPageEnabled}
+              onChange={form.setPublicPageEnabled}
+            />
+          </div>
+        </div>
 
         <div>
           <button
