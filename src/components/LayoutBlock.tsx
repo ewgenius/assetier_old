@@ -2,6 +2,7 @@ import { classNames } from "@utils/classNames";
 import { FC, PropsWithChildren } from "react";
 
 export interface LayoutBlockProps {
+  className?: string;
   mode?: "primary" | "secondary";
   borderTop?: boolean;
   borderBottom?: boolean;
@@ -17,6 +18,7 @@ const PaddingMap = {
 };
 
 export const LayoutBlock: FC<PropsWithChildren<LayoutBlockProps>> = ({
+  className,
   children,
   mode,
   borderTop,
@@ -27,6 +29,7 @@ export const LayoutBlock: FC<PropsWithChildren<LayoutBlockProps>> = ({
   return (
     <div
       className={classNames(
+        className,
         mode === "secondary" ? "bg-gray-100" : "bg-white",
         (borderTop || borderBottom) && "border-gray-200",
         borderTop && "border-t",

@@ -46,7 +46,7 @@ export const ProjectSettingsPage: NextPageExtended<
           submit();
           return false;
         }}
-        className="h-full box-border overflow-hidden flex flex-col space-y-4"
+        className="flex flex-col space-y-4"
       >
         <div className="py-4 flex flex-col sm:flex-row sm:space-x-8 space-y-4 sm:space-y-0">
           <div className="flex-1 space-y-4">

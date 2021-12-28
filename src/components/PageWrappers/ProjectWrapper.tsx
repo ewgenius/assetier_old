@@ -15,11 +15,12 @@ export interface ProjectPageTab {
   id: ProjectPageTabId;
   name: string;
   href: string;
+  count?: number;
 }
 
 const tabs: ProjectPageTab[] = [
   { id: "index", name: "Contents", href: "" },
-  { id: "uploads", name: "Uploads", href: "" },
+  { id: "uploads", name: "Uploads", href: "uploads", count: 3 },
   { id: "settings", name: "Settings", href: "settings" },
 ];
 
@@ -96,6 +97,18 @@ export const ProjectPageWrapper: FC<
                         aria-current={isCurrent ? "page" : undefined}
                       >
                         {tab.name}
+                        {tab.count ? (
+                          <span
+                            className={classNames(
+                              isCurrent
+                                ? "bg-zinc-100 text-zinc-600"
+                                : "bg-gray-100 text-gray-900",
+                              "hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"
+                            )}
+                          >
+                            {tab.count}
+                          </span>
+                        ) : null}
                       </a>
                     </Link>
                   );
