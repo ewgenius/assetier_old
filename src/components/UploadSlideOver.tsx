@@ -58,8 +58,9 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
               {isDragActive ? (
                 <div className="text-zinc-400">Drop the files here ...</div>
               ) : (
-                <div className="text-zinc-4 00">
-                  Drag 'n' drop some files here, or click to select files
+                <div className="text-zinc-400">
+                  Drag &apos;n&apos; drop some files here, or click to select
+                  files
                 </div>
               )}
             </div>
