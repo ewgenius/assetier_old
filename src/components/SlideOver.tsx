@@ -1,9 +1,11 @@
 import { FC, Fragment, PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
+import { classNames } from "@utils/classNames";
 
 export interface SlideOverProps {
   open: boolean;
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   onClose: () => void;
   onSubmit?: () => void;
 }
@@ -13,6 +15,7 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
   onClose,
   onSubmit,
   children,
+  size,
 }) => {
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -44,7 +47,17 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
-              <div className="w-screen h-screen max-w-md p-2">
+              <div
+                className={classNames(
+                  "w-screen h-screen p-2",
+                  size === "sm" && "max-w-sm",
+                  size === "md" && "max-w-md",
+                  size === "lg" && "max-w-lg",
+                  size === "xl" && "max-w-xl",
+                  size === "2xl" && "max-w-2xl"
+                  // `max-w-${size}`
+                )}
+              >
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -62,6 +75,10 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
       </Dialog>
     </Transition.Root>
   );
+};
+
+SlideOver.defaultProps = {
+  size: "md",
 };
 
 export interface SlideOverHeadingProps extends Pick<SlideOverProps, "onClose"> {
