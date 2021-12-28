@@ -2,6 +2,7 @@ import { Project } from "@prisma/client";
 import { getOctokit } from "@utils/getOctokit";
 import { prisma } from "@utils/prisma";
 import type { GithubFile } from "@utils/types";
+import { NotFoundError } from "./httpErrors";
 
 export async function getProjectRepositoryContents(project: Project) {
   const installation = await prisma.githubInstallation.findUnique({
@@ -11,10 +12,7 @@ export async function getProjectRepositoryContents(project: Project) {
   });
 
   if (!installation) {
-    throw {
-      status: 404,
-      error: "GH Installation not found",
-    };
+    throw new NotFoundError("GH Installation not found");
   }
 
   const octokit = await getOctokit(installation.installationId);
@@ -23,10 +21,7 @@ export async function getProjectRepositoryContents(project: Project) {
   });
 
   if (!repository) {
-    throw {
-      status: 404,
-      error: "GH Repository not found",
-    };
+    throw new NotFoundError("GH Repository not found");
   }
 
   const contents = await octokit.request(

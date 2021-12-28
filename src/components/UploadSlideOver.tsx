@@ -10,6 +10,8 @@ import {
   SlideOverFooter,
   SlideOverBody,
 } from "@components/SlideOver";
+import { Spinner } from "./Spinner";
+import { useProjectContents } from "@hooks/useProjectContents";
 
 export interface UploadSlideOverProps extends SlideOverProps {
   project: Project;
@@ -18,26 +20,52 @@ export interface UploadSlideOverProps extends SlideOverProps {
 export const UploadSlideOver: FC<UploadSlideOverProps> = ({
   open,
   onClose,
+  project,
 }) => {
   const [files, setFiles] = useState<File[]>([]);
-  const deleteFile = useCallback(
-    (index: number) => {
-      setFiles([...files.slice(0, index), ...files.slice(index + 1)]);
-    },
-    [files]
-  );
-
+  const { refresh } = useProjectContents(project.id);
+  const [uploading, setUploading] = useState(false);
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const length = Object.keys(files).length;
-      setFiles([...files, ...acceptedFiles]);
-    },
+    (acceptedFiles: File[]) => setFiles([...files, ...acceptedFiles]),
     [files]
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+  const deleteFile = useCallback(
+    (index: number) =>
+      setFiles([...files.slice(0, index), ...files.slice(index + 1)]),
+    [files]
+  );
+
+  const close = () => {
+    setFiles([]);
+    setUploading(false);
+    onClose();
+  };
+
+  const submit = useCallback(() => {
+    setUploading(true);
+    const data = new FormData();
+    files.forEach((file, i) => {
+      data.set(`${file.name}_i`, file);
+    });
+
+    data.set("merge", "true");
+
+    fetch(
+      `/api/organizations/${project.organizationId}/projects/${project.id}/upload`,
+      {
+        method: "POST",
+        body: data,
+      }
+    ).finally(() => {
+      refresh();
+      close();
+    });
+  }, [files]);
+
   return (
-    <SlideOver open={open} onClose={onClose} size="2xl">
+    <SlideOver open={open} onClose={onClose} onSubmit={submit} size="2xl">
       <SlideOverHeading onClose={onClose} title="Upload assets" />
 
       <SlideOverBody>
@@ -86,7 +114,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
                           {file.name}
                         </p>
                         <p className="text-xs text-mono text-gray-400">
-                          {file.size}B
+                          {file.size}
                         </p>
                       </div>
                       <button
@@ -113,18 +141,18 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
         <button
           type="button"
           className="bg-white py-2 px-4 border disabled:opacity-50 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-          // disabled={updating}
+          disabled={uploading}
           onClick={onClose}
         >
           Cancel
         </button>
         <button
           type="submit"
-          disabled={!files?.length}
+          disabled={uploading || !files?.length}
           className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
           <span>Upload</span>
-          {/* {updating && <Spinner className="ml-2" />} */}
+          {uploading && <Spinner className="ml-2" />}
         </button>
       </SlideOverFooter>
     </SlideOver>
