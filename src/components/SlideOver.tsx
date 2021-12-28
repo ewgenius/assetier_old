@@ -125,10 +125,12 @@ export const SlideOverFooter: FC<PropsWithChildren<{}>> = ({ children }) => (
 );
 
 export const SlideOverBody: FC<PropsWithChildren<{}>> = ({ children }) => (
-  <div className="flex-1 h-0 overflow-y-auto">
-    <div className="flex-1 flex flex-col justify-between">
-      <div className="px-4 sm:px-6">
-        <div className="space-y-6 pt-6 pb-5">{children}</div>
+  <div className="flex-1 flex flex-col h-0 overflow-y-auto">
+    <div className="flex-1 flex flex-col flex-grow justify-between">
+      <div className="flex-1 flex flex-col flex-grow px-4 sm:px-6">
+        <div className="flex-1 flex flex-col flex-grow space-y-6 pt-6 pb-5">
+          {children}
+        </div>
       </div>
     </div>
   </div>

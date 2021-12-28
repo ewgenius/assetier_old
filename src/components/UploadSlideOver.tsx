@@ -1,7 +1,8 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useState } from "react";
 import type { Project } from "@prisma/client";
+import { useDropzone } from "react-dropzone";
+import { XIcon } from "@heroicons/react/outline";
 
-import { Spinner } from "@components/Spinner";
 import {
   SlideOver,
   SlideOverProps,
@@ -9,9 +10,6 @@ import {
   SlideOverFooter,
   SlideOverBody,
 } from "@components/SlideOver";
-import { TextInput } from "@components/TextInput";
-import { Toggle } from "@components/Toggle";
-import { useProjectUpdater } from "@hooks/useProjectUpdater";
 
 export interface UploadSlideOverProps extends SlideOverProps {
   project: Project;
@@ -20,13 +18,93 @@ export interface UploadSlideOverProps extends SlideOverProps {
 export const UploadSlideOver: FC<UploadSlideOverProps> = ({
   open,
   onClose,
-  project,
 }) => {
+  const [files, setFiles] = useState<File[]>([]);
+  const deleteFile = useCallback(
+    (index: number) => {
+      setFiles([...files.slice(0, index), ...files.slice(index + 1)]);
+    },
+    [files]
+  );
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const length = Object.keys(files).length;
+      setFiles([...files, ...acceptedFiles]);
+    },
+    [files]
+  );
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   return (
     <SlideOver open={open} onClose={onClose} size="2xl">
       <SlideOverHeading onClose={onClose} title="Upload assets" />
 
-      <SlideOverBody></SlideOverBody>
+      <SlideOverBody>
+        <h2 className="font-medium">
+          {files?.length > 0
+            ? `${files.length} files selected for upload`
+            : "Select files for upload"}
+        </h2>
+
+        <div
+          className="p-2 min-h-0 max-h-80 overflow-y-auto rounded-md border-2 bg-gray-100 border-zinc-200 border-dotted"
+          {...getRootProps()}
+        >
+          <input {...getInputProps()} />
+
+          <div className="mb-2 last:mb-0 border-2 border-dotted border-gray-300 hover:border-gray-400 py-2 px-4 rounded-md cursor-pointer">
+            {isDragActive ? (
+              <div className="text-zinc-400">Drop the files here ...</div>
+            ) : (
+              <div className="text-zinc-400">
+                Drag 'n' drop some files here, or click to select files
+              </div>
+            )}
+          </div>
+
+          {files && files.length > 0 && (
+            <div className="flex flex-grow flex-col gap-2">
+              {files.map((file, i) => {
+                return (
+                  <div
+                    className="flex box-border p-2 bg-white rounded-md justify-center items-center"
+                    key={`file-${i}`}
+                  >
+                    <div className="flex-shrink-0 rounded-lg p-2 border border-gray-100">
+                      <img
+                        key={file.name}
+                        className="w-4 h-4"
+                        src={URL.createObjectURL(file)}
+                      />
+                    </div>
+
+                    <div className="flex-grow flex flex-col justify-center px-4">
+                      <p className="text-xs text-mono text-gray-700">
+                        {file.name}
+                      </p>
+                      <p className="text-xs text-mono text-gray-400">
+                        {file.size}B
+                      </p>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deleteFile(i);
+                        return false;
+                      }}
+                      className="hover:text-zinc-500 text-zinc-400 p-2"
+                    >
+                      <XIcon className="w-4 h-4" />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </SlideOverBody>
 
       <SlideOverFooter>
         <button
@@ -39,7 +117,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
         </button>
         <button
           type="submit"
-          // disabled={updating || !form.isValid}
+          disabled={!files?.length}
           className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
         >
           <span>Upload</span>
