@@ -61,14 +61,14 @@ export const ProjectPageWrapper: FC<
       title={() => (
         <LayoutBlock mode="primary" borderBottom borderTop padding="none">
           <div className="pt-6">
-            <div className="md:flex md:items-center md:justify-between">
+            <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
                 <h2 className="text-xl leading-8 font-medium text-gray-900 truncate">
                   {project.name}
                 </h2>
               </div>
 
-              <div className="mt-4 flex-shrink-0 flex md:mt-0 md:ml-4">
+              <div className="flex-shrink-0 flex">
                 {/* <button
                   type="button"
                   className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
@@ -78,7 +78,7 @@ export const ProjectPageWrapper: FC<
               </div>
             </div>
 
-            <div className="mt-3 sm:mt-4">
+            <div className="mt-4">
               <nav className="-mb-px flex space-x-4">
                 {tabs.map((tab) => {
                   const isCurrent = tab.id === tabId;
@@ -103,7 +103,7 @@ export const ProjectPageWrapper: FC<
                               isCurrent
                                 ? "bg-zinc-100 text-zinc-600"
                                 : "bg-gray-100 text-gray-900",
-                              "hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"
+                              "hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"
                             )}
                           >
                             {tab.count}
