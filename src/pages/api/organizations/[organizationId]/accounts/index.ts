@@ -2,10 +2,11 @@ import type { GithubInstallation, Project } from "@prisma/client";
 import type { ErrorResponse } from "@utils/types";
 import { prisma } from "@utils/prisma";
 import { withOrganization } from "@utils/withOrganization";
+import { NotAllowedError } from "@utils/httpErrors";
 
 export default withOrganization<GithubInstallation[] | ErrorResponse>(
-  async (req, res, { organization }) => {
-    switch (req.method) {
+  async ({ method, organization }, res) => {
+    switch (method) {
       case "GET": {
         const accounts = await prisma.githubInstallation.findMany({
           where: {
@@ -16,9 +17,7 @@ export default withOrganization<GithubInstallation[] | ErrorResponse>(
       }
 
       default: {
-        return res.status(409).send({
-          error: "Not Allowed",
-        });
+        throw new NotAllowedError();
       }
     }
   }

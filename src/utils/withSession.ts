@@ -1,24 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import type { ErrorResponse, SessionWithId } from "@utils/types";
+import type { SessionWithId } from "@utils/types";
+import { UnauthorizedError } from "./httpErrors";
+import { withHttpError } from "./withHttpError";
+
+export type NextApiRequestWithSession = NextApiRequest & {
+  session: SessionWithId;
+};
 
 export type NextApiHandlerWithSession<T = any> = (
-  req: NextApiRequest,
-  res: NextApiResponse<T>,
-  session: SessionWithId
+  req: NextApiRequestWithSession,
+  res: NextApiResponse<T>
 ) => void | Promise<void>;
 
-export const withSession =
-  <T = any>(handler: NextApiHandlerWithSession<T>) =>
-  async (req: NextApiRequest, res: NextApiResponse<T | ErrorResponse>) => {
-    const session = (await getSession({ req })) as SessionWithId;
+export const withSession = <T = any>(handler: NextApiHandlerWithSession<T>) =>
+  withHttpError(
+    async (req: NextApiRequestWithSession, res: NextApiResponse) => {
+      const session = (await getSession({ req })) as SessionWithId;
 
-    if (!session) {
-      return res.status(401).send({
-        error:
-          "You must be signed in to view the protected content on this page.",
-      });
+      if (!session) {
+        throw new UnauthorizedError();
+      }
+
+      req.session = session;
+
+      return handler(req, res);
     }
-
-    return handler(req, res, session);
-  };
+  );

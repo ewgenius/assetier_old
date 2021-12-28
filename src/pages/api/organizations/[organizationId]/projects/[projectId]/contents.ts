@@ -1,10 +1,11 @@
 import type { ErrorResponse, GithubFile } from "@utils/types";
 import { withProject } from "@utils/withProject";
 import { getProjectRepositoryContents } from "@utils/getProjectRepositoryContents";
+import { NotAllowedError } from "@utils/httpErrors";
 
 export default withProject<GithubFile[] | ErrorResponse>(
-  async (req, res, { project }) => {
-    switch (req.method) {
+  async ({ method, project }, res) => {
+    switch (method) {
       case "GET": {
         try {
           const contents = await getProjectRepositoryContents(project);
@@ -17,9 +18,7 @@ export default withProject<GithubFile[] | ErrorResponse>(
       }
 
       default: {
-        return res.status(409).send({
-          error: "Not Allowed",
-        });
+        throw new NotAllowedError();
       }
     }
   }

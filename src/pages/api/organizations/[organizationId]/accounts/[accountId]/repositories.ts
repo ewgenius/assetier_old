@@ -1,10 +1,11 @@
 import { withOrganization } from "@utils/withOrganization";
 import { getGithubApp } from "@utils/getGithubApp";
+import { NotAllowedError } from "@utils/httpErrors";
 
-export default withOrganization(async (req, res, { organization }) => {
-  switch (req.method) {
+export default withOrganization(async ({ method, query }, res) => {
+  switch (method) {
     case "GET": {
-      const installationId = Number(req.query.accountId);
+      const installationId = Number(query.accountId);
 
       const app = await getGithubApp();
       const repositories = [];
@@ -19,9 +20,7 @@ export default withOrganization(async (req, res, { organization }) => {
     }
 
     default: {
-      return res.status(409).send({
-        error: "Not Allowed",
-      });
+      throw new NotAllowedError();
     }
   }
 });

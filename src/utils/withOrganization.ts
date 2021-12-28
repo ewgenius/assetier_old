@@ -1,26 +1,27 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { ErrorResponse, SessionWithId } from "@utils/types";
+import type { SessionWithId } from "@utils/types";
 import type { Organization, User } from "@prisma/client";
 import { prisma } from "@utils/prisma";
-import { withSession } from "@utils/withSession";
+import { withSession, NextApiRequestWithSession } from "@utils/withSession";
+import { ForbiddenError, NotFoundError } from "./httpErrors";
+
+export type NextApiRequestWithOrganization = NextApiRequestWithSession & {
+  user: User;
+  organization: Organization;
+};
 
 export type NextApiHandlerWithOrganization<T = any> = (
-  req: NextApiRequest,
-  res: NextApiResponse<T>,
-  context: {
-    session: SessionWithId;
-    user: User;
-    organization: Organization;
-  }
+  req: NextApiRequestWithOrganization,
+  res: NextApiResponse<T>
 ) => void | Promise<void>;
 
 export const withOrganization = <T = any>(
   handler: NextApiHandlerWithOrganization<T>
 ) =>
-  withSession(async (req, res, session) => {
+  withSession(async (req: NextApiRequestWithSession, res) => {
     const user = await prisma.user.findUnique({
       where: {
-        id: session.userId,
+        id: req.session.userId,
       },
       include: {
         organizations: true,
@@ -28,9 +29,7 @@ export const withOrganization = <T = any>(
     });
 
     if (!user) {
-      return res.status(404).send({
-        error: "User not found.",
-      });
+      throw new NotFoundError("User not found.");
     }
 
     const organization = await prisma.organization.findUnique({
@@ -40,18 +39,17 @@ export const withOrganization = <T = any>(
     });
 
     if (!organization) {
-      return res.status(404).send({
-        error: "Organization not found.",
-      });
+      throw new NotFoundError("Organization not found.");
     }
 
     if (
       !user.organizations.some((org) => org.organizationId === organization.id)
     ) {
-      return res.status(403).send({
-        error: "Unauthorized access.",
-      });
+      throw new ForbiddenError();
     }
 
-    return handler(req, res, { session, user, organization });
+    (req as NextApiRequestWithOrganization).user = user;
+    (req as NextApiRequestWithOrganization).organization = organization;
+
+    return handler(req as NextApiRequestWithOrganization, res);
   });

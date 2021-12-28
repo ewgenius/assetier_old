@@ -2,21 +2,23 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { ErrorResponse, SessionWithId } from "@utils/types";
 import type { Organization, Project, User } from "@prisma/client";
 import { prisma } from "@utils/prisma";
-import { withOrganization } from "@utils/withOrganization";
+import {
+  withOrganization,
+  NextApiRequestWithOrganization,
+} from "@utils/withOrganization";
+import { ForbiddenError, NotFoundError } from "./httpErrors";
+
+export type NextApiRequestWithProject = NextApiRequestWithOrganization & {
+  project: Project;
+};
 
 export type NextApiHandlerWithProject<T = any> = (
-  req: NextApiRequest,
-  res: NextApiResponse<T>,
-  context: {
-    session: SessionWithId;
-    user: User;
-    organization: Organization;
-    project: Project;
-  }
+  req: NextApiRequestWithProject,
+  res: NextApiResponse<T>
 ) => void | Promise<void>;
 
 export const withProject = <T = any>(handler: NextApiHandlerWithProject<T>) =>
-  withOrganization(async (req, res, { session, user, organization }) => {
+  withOrganization(async (req, res) => {
     const project = await prisma.project.findUnique({
       where: {
         id: req.query.projectId as string,
@@ -24,16 +26,14 @@ export const withProject = <T = any>(handler: NextApiHandlerWithProject<T>) =>
     });
 
     if (!project) {
-      return res.status(404).send({
-        error: "Project not found.",
-      });
+      throw new NotFoundError("Project not found.");
     }
 
-    if (project.organizationId !== organization.id) {
-      return res.status(403).send({
-        error: "Unauthorized",
-      });
+    if (project.organizationId !== req.organization.id) {
+      throw new ForbiddenError();
     }
 
-    return handler(req, res, { session, user, organization, project });
+    (req as NextApiRequestWithProject).project = project;
+
+    return handler(req as NextApiRequestWithProject, res);
   });

@@ -1,4 +1,5 @@
-import { User, Organization } from "@prisma/client";
+import { Organization } from "@prisma/client";
+import { NotAllowedError } from "@utils/httpErrors";
 import { prisma } from "@utils/prisma";
 import type {
   ErrorResponse,
@@ -8,8 +9,8 @@ import type {
 import { withSession } from "@utils/withSession";
 
 export default withSession<UserResponse | ErrorResponse>(
-  async (req, res, session) => {
-    switch (req.method) {
+  async ({ method, session }, res) => {
+    switch (method) {
       case "GET": {
         const user = await prisma.user.findUnique({
           where: {
@@ -35,9 +36,7 @@ export default withSession<UserResponse | ErrorResponse>(
       }
 
       default: {
-        return res.status(409).send({
-          error: "Not Allowed",
-        });
+        throw new NotAllowedError();
       }
     }
   }
