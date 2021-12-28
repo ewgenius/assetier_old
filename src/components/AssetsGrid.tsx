@@ -30,7 +30,9 @@ export const AssetsGrid: FC<AssetsGridProps> = ({ project }) => {
             />
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
               {delaying ? (
-                <Spinner />
+                <div className="flex justify-center py-4">
+                  <Spinner />
+                </div>
               ) : (
                 <SearchIcon
                   className="h-5 w-5 text-gray-400"
@@ -49,7 +51,7 @@ export const AssetsGrid: FC<AssetsGridProps> = ({ project }) => {
         </div>
       </LayoutBlock>
       <LayoutBlock>
-        {contents ? (
+        {contents && contents.length ? (
           <div className="flex flex-col">
             <div className="grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-2">
               {contents

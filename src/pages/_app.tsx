@@ -2,7 +2,6 @@ import "tailwindcss/tailwind.css";
 import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import type { Organization } from "@prisma/client";
 
 import { AppPropsExtended } from "@utils/types";
 import { LayoutBlock } from "@components/LayoutBlock";
@@ -41,7 +40,13 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
     >
       <div className="min-h-screen">
         <AppTopBar currentNavId={Page.navId} />
-        <Page {...pageProps} />
+        {Page.Wrapper ? (
+          <Page.Wrapper {...Page.wrapperProps}>
+            <Page {...pageProps} />
+          </Page.Wrapper>
+        ) : (
+          <Page {...pageProps} />
+        )}
       </div>
     </AppContext.Provider>
   );

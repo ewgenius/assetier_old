@@ -2,13 +2,17 @@ import type { NextComponentType, NextPage, NextPageContext } from "next";
 import type { AppProps } from "next/app";
 import type { Session } from "next-auth/core/types";
 import type { User, Organization } from "@prisma/client";
+import { ComponentType, ReactNode } from "react";
 
-export type WithNavId = {
+export type WithNavId<W = {}> = {
   type: "site" | "app";
   navId: string;
+  Wrapper?: ComponentType<W>;
+  wrapperProps?: W;
 };
 
-export type NextPageExtended<P = {}, IP = P> = NextPage<P, IP> & WithNavId;
+export type NextPageExtended<P = {}, IP = P, W = {}> = NextPage<P, IP> &
+  WithNavId<W>;
 
 export type AppPropsExtended<P = {}> = AppProps<P> & {
   Component: NextComponentType<NextPageContext, any, P> & WithNavId;
