@@ -2,57 +2,21 @@ import * as fs from "fs";
 import * as crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import formidable, { Files, Fields } from "formidable";
+import type { NextApiRequest } from "next";
 import type { Project } from "@prisma/client";
 import type { Octokit } from "@octokit/core";
 
-import { prisma } from "@utils/prisma";
 import { getOctokit } from "@utils/getOctokit";
 import { withProject } from "@utils/withProject";
-import {
-  BadRequestError,
-  NotAllowedError,
-  NotFoundError,
-} from "@utils/httpErrors";
-import { NextApiRequest } from "next";
+import { BadRequestError, NotAllowedError } from "@utils/httpErrors";
+import { getProjectInstallation } from "@utils/getProjectInstallation";
+import { getProjectRepository, Repository } from "@utils/getProjectRepository";
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
-
-async function getProjectInstallation(project: Project) {
-  const installation = await prisma.githubInstallation.findUnique({
-    where: {
-      id: project.githubInstallationId,
-    },
-  });
-
-  if (!installation) {
-    throw new NotFoundError("GH Installation not found");
-  }
-
-  return installation;
-}
-
-export interface Repository {
-  owner: {
-    login: string;
-  };
-  name: string;
-}
-
-async function getProjectRepository(project: Project, octokit: Octokit) {
-  const repository = await octokit.request("GET /repositories/{id}", {
-    id: project.repositoryId,
-  });
-
-  if (!repository) {
-    throw new NotFoundError("GH Repository not found");
-  }
-
-  return repository.data as Repository;
-}
 
 async function parseForm(req: NextApiRequest) {
   const form = formidable({});
