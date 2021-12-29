@@ -49,7 +49,7 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
             >
               <div
                 className={classNames(
-                  "w-screen h-screen p-2",
+                  "w-screen h-screen p-2 pb-[env(safe-area-inset-bottom)]",
                   size === "sm" && "max-w-sm",
                   size === "md" && "max-w-md",
                   size === "lg" && "max-w-lg",
