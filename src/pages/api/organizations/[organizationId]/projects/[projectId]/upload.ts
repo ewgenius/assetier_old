@@ -94,23 +94,6 @@ async function createBranch(
   return branch.data;
 }
 
-async function verifyBranchRef(
-  repository: Repository,
-  branchRef: string,
-  octokit: Octokit
-) {
-  const branch = await octokit.request(
-    "GET /repos/{owner}/{repo}/git/ref/{ref}",
-    {
-      owner: repository.owner.login as string,
-      repo: repository.name as string,
-      ref: branchRef,
-    }
-  );
-
-  return branch.data;
-}
-
 export interface FileForUpload {
   file: formidable.File;
   buffer: Buffer;
