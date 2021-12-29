@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
-import formidable, { Files, File as FFile, Fields } from "formidable";
+import formidable, { Files, Fields } from "formidable";
 import type { Project } from "@prisma/client";
 import type { Octokit } from "@octokit/core";
 
@@ -84,59 +84,119 @@ async function createBranch(
   branchName: string,
   octokit: Octokit
 ) {
-  return octokit.request("POST /repos/{owner}/{repo}/git/refs", {
+  const branch = await octokit.request("POST /repos/{owner}/{repo}/git/refs", {
     owner: repository.owner.login as string,
     repo: repository.name as string,
     ref: `refs/heads/${branchName}`,
     sha: baseBranchSha,
   });
+
+  return branch.data;
 }
 
-async function prepareFiles(files: formidable.Files) {
+async function verifyBranchRef(
+  repository: Repository,
+  branchRef: string,
+  octokit: Octokit
+) {
+  const branch = await octokit.request(
+    "GET /repos/{owner}/{repo}/git/ref/{ref}",
+    {
+      owner: repository.owner.login as string,
+      repo: repository.name as string,
+      ref: branchRef,
+    }
+  );
+
+  return branch.data;
+}
+
+export interface FileForUpload {
+  file: formidable.File;
+  buffer: Buffer;
+  fileSha: string;
+}
+
+async function prepareFiles(files: formidable.Files): Promise<FileForUpload[]> {
   return Promise.all(
     Object.values(files).map(
       (file) =>
-        new Promise<{ file: FFile; buffer: Buffer; fileSha: string }>(
+        new Promise<{ file: formidable.File; buffer: Buffer; fileSha: string }>(
           (resolve, reject) =>
-            fs.readFile((file as any as FFile).filepath, (err, buffer) => {
-              if (err) {
-                reject(err);
-              } else {
-                const hashSum = crypto.createHash("sha1");
-                hashSum.update(
-                  "blob " + Buffer.byteLength(buffer) + "\0" + buffer
-                );
-                const fileSha = hashSum.digest("hex");
-                resolve({
-                  file: file as any as FFile,
-                  buffer,
-                  fileSha,
-                });
+            fs.readFile(
+              (file as any as formidable.File).filepath,
+              (err, buffer) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  const hashSum = crypto.createHash("sha1");
+                  hashSum.update(
+                    "blob " + Buffer.byteLength(buffer) + "\0" + buffer
+                  );
+                  const fileSha = hashSum.digest("hex");
+                  resolve({
+                    file: file as any as formidable.File,
+                    buffer,
+                    fileSha,
+                  });
+                }
               }
-            })
+            )
         )
     )
   );
 }
 
-async function uloadFile(
+export interface GHTree {
+  path: string;
+  mode: "100644";
+  type: "blob";
+  content: string;
+}
+
+async function uploadFiles(
   project: Project,
   repository: Repository,
+  files: FileForUpload[],
   branchName: string,
-  file: FFile,
-  buffer: Buffer,
-  fileSha: string,
+  branchSha: string,
   octokit: Octokit
 ) {
-  return octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+  const treeForUpload = files.map<GHTree>(({ file, buffer }) => ({
+    path: project.assetsPath + "/" + file.originalFilename,
+    mode: "100644",
+    type: "blob",
+    content: buffer.toString(),
+  }));
+
+  const tree = await octokit.request("POST /repos/{owner}/{repo}/git/trees", {
     owner: repository.owner.login as string,
     repo: repository.name as string,
-    path: project.assetsPath + "/" + file.originalFilename,
-    message: `update from Assetier: ${file.originalFilename}`,
-    content: buffer.toString("base64"),
-    branch: branchName,
-    sha: fileSha,
+    tree: treeForUpload,
   });
+
+  const commit = await octokit.request(
+    "POST /repos/{owner}/{repo}/git/commits",
+    {
+      owner: repository.owner.login as string,
+      repo: repository.name as string,
+      message: "update from Assetier",
+      tree: tree.data.sha,
+      parents: [branchSha],
+    }
+  );
+
+  const updatedBranch = await octokit.request(
+    "PATCH /repos/{owner}/{repo}/git/refs/{ref}",
+    {
+      owner: repository.owner.login as string,
+      repo: repository.name as string,
+      ref: `heads/${branchName}`,
+      sha: commit.data.sha,
+    }
+  );
+
+  return updatedBranch.data;
 }
 
 async function createPullRequest(
@@ -184,9 +244,9 @@ export default withProject<any>(async (req, res) => {
       const merge = fields.merge === "true";
 
       const branches = await getRepositoryBranches(repository, octokit);
-      const branch = branches.find((b) => b.name === baseBranchName);
+      const baseBranch = branches.find((b) => b.name === baseBranchName);
 
-      if (!branch) {
+      if (!baseBranch) {
         throw new BadRequestError(`Branch ${baseBranchName} does not exist`);
       }
 
@@ -195,23 +255,23 @@ export default withProject<any>(async (req, res) => {
       }
 
       const branchName = `assetier/upload/${uuidv4()}`;
-      await createBranch(repository, branch.commit.sha, branchName, octokit);
+      const newBranch = await createBranch(
+        repository,
+        baseBranch.commit.sha,
+        branchName,
+        octokit
+      );
 
       const dataToUpload = await prepareFiles(files);
 
-      for (let { buffer, file, fileSha } of dataToUpload) {
-        await uloadFile(
-          project,
-          repository,
-          branchName,
-          file,
-          buffer,
-          fileSha,
-          octokit
-        ).then(() => {
-          console.log(`uploaded ${file.originalFilename}`);
-        });
-      }
+      await uploadFiles(
+        project,
+        repository,
+        dataToUpload,
+        branchName,
+        newBranch.object.sha,
+        octokit
+      );
 
       const pr = await createPullRequest(
         repository,
