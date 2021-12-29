@@ -119,7 +119,7 @@ async function prepareFiles(files: formidable.Files) {
   );
 }
 
-async function ulooadFile(
+async function uloadFile(
   project: Project,
   repository: Repository,
   branchName: string,
@@ -200,7 +200,7 @@ export default withProject<any>(async (req, res) => {
       const dataToUpload = await prepareFiles(files);
 
       for (let { buffer, file, fileSha } of dataToUpload) {
-        await ulooadFile(
+        await uloadFile(
           project,
           repository,
           branchName,
