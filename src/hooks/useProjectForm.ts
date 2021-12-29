@@ -11,6 +11,12 @@ export function useProjectForm(project?: Partial<Project>) {
   );
   const [assetsPath, setAssetsPath, resetAssetsPath, setAssetsPathValue] =
     useInputState(project?.assetsPath);
+  const [
+    defaultBranch,
+    setDefaultBranch,
+    resetDefaultBranch,
+    setDefaultBranchValue,
+  ] = useInputState(project?.defaultBranch);
   const [publicPageEnabled, setPublicPageEnabled] = useState(
     project?.publicPageEnabled !== undefined ? project.publicPageEnabled : false
   );
@@ -31,12 +37,14 @@ export function useProjectForm(project?: Partial<Project>) {
       project.name && setNameValue(project.name);
       project.alias && setAliasValue(project.alias);
       project.assetsPath && setAssetsPathValue(project.assetsPath);
+      project.defaultBranch && setDefaultBranchValue(project.defaultBranch);
       project.publicPageEnabled !== undefined &&
         setPublicPageEnabled(project.publicPageEnabled);
     } else {
       resetName();
       resetAlias();
       resetAssetsPath();
+      resetDefaultBranch();
       setPublicPageEnabled(false);
       setGithubInstallation(null);
     }
@@ -50,6 +58,7 @@ export function useProjectForm(project?: Partial<Project>) {
     name,
     alias,
     assetsPath,
+    defaultBranch,
     publicPageEnabled,
     githubInstallationId: githubInstallation?.githubInstallationId as string,
     repositoryId: githubInstallation?.repositoryId as number,
@@ -79,12 +88,14 @@ export function useProjectForm(project?: Partial<Project>) {
     name,
     alias,
     assetsPath,
+    defaultBranch,
     publicPageEnabled,
     githubInstallation,
 
     setName,
     setAlias,
     setAssetsPath,
+    setDefaultBranch,
     setPublicPageEnabled,
     setGithubInstallation,
   };

@@ -197,7 +197,8 @@ export default withProject<any>(async (req, res) => {
       const repository = await getProjectRepository(project, octokit);
       const { files, fields } = await parseForm(req);
 
-      const baseBranchName = (fields.baseBranch as string) || "main";
+      const baseBranchName =
+        (fields.baseBranch as string) || project.defaultBranch || "main";
       const merge = fields.merge === "true";
 
       const branches = await getRepositoryBranches(repository, octokit);

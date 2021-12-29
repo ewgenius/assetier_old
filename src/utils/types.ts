@@ -37,6 +37,27 @@ export interface UserResponse {
   personalOrganization: OrganizationWithPlan;
 }
 
+export interface GithubCommit {
+  url: string;
+  sha: string;
+  node_id: string;
+  html_url: string;
+  comments_url: string;
+  commit: {
+    url: string;
+    message: string;
+    author: {
+      name?: string;
+      email?: string;
+      date?: string;
+    } | null;
+  };
+  author: {
+    login: string;
+    avatar_url: string;
+  };
+}
+
 export interface GithubFile {
   name: string;
   path: string;

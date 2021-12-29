@@ -70,6 +70,16 @@ export const ProjectSettingsPage: NextPageExtended<
               value={form.alias}
               onChange={form.setAlias}
             />
+
+            <TextInput
+              id="default-branch"
+              name="default-branch"
+              label="Default branch"
+              placeholder="main"
+              disabled={updating}
+              value={form.defaultBranch}
+              onChange={form.setDefaultBranch}
+            />
           </div>
           <div className="border-b border-gray-200 sm:hidden" />
 

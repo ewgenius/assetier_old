@@ -6,7 +6,6 @@ import { getProjectRepository } from "@utils/getProjectRepository";
 
 export async function getProjectRepositoryContents(project: Project) {
   const installation = await getProjectInstallation(project);
-
   const octokit = await getOctokit(installation.installationId);
   const repository = await getProjectRepository(project, octokit);
 
