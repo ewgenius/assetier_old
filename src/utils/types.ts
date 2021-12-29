@@ -1,7 +1,7 @@
 import type { NextComponentType, NextPage, NextPageContext } from "next";
 import type { AppProps } from "next/app";
 import type { Session } from "next-auth/core/types";
-import type { User, Organization } from "@prisma/client";
+import type { User, Organization, OrganizationPlan } from "@prisma/client";
 import { ComponentType, ReactNode } from "react";
 
 export type WithNavId<W = {}> = {
@@ -26,6 +26,10 @@ export type UserWithOrganizations = User & {
   organizations: {
     organization: Organization;
   }[];
+};
+
+export type OrganizationWithPlan = Organization & {
+  organizationPlan: OrganizationPlan;
 };
 
 export interface UserResponse {

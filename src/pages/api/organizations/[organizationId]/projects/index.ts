@@ -16,6 +16,16 @@ export default withOrganization<Project | Project[]>(
       }
 
       case "POST": {
+        const projectsCount = await prisma.project.count({
+          where: {
+            organization,
+          },
+        });
+
+        if (projectsCount >= organization.organizationPlan.projectsLimit) {
+          throw new NotAllowedError("You reached projects limit");
+        }
+
         const newProject = await prisma.project.create({
           data: {
             name: body.name as string,
@@ -23,6 +33,7 @@ export default withOrganization<Project | Project[]>(
             ...body,
           },
         });
+
         return res.status(200).json(newProject);
       }
 

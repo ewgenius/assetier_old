@@ -85,14 +85,37 @@ enum OrganizationType {
 }
 
 model Organization {
-  id        String           @id @default(cuid())
-  type      OrganizationType @default(PERSONAL)
-  createdAt DateTime         @default(now())
+  id                 String           @id @default(cuid())
+  type               OrganizationType @default(PERSONAL)
+  createdAt          DateTime         @default(now())
+  organizationPlanId String
 
   users               UserToOrganization[]
   projects            Project[]
   githubInstallations GithubInstallation[]
+  organizationPlan    OrganizationPlan     @relation(fields: [organizationPlanId], references: [name])
 }
+
+enum OrganizationPlanType {
+  HOBBY
+  PRO
+}
+
+model OrganizationPlan {
+  name      String               @id
+  planType  OrganizationPlanType @default(HOBBY)
+  active    Boolean              @default(true)
+  createdAt DateTime             @default(now())
+
+  projectsLimit Int @default(1)
+  usersLimit    Int @default(1)
+
+  organizations Organization[]
+
+  @@unique([planType, active])
+}
+
+// Github
 
 enum GithubAccountType {
   USER

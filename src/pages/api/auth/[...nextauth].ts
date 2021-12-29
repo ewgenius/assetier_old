@@ -3,9 +3,40 @@ import GithubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { prisma } from "@utils/prisma";
-import { OrganizationType, Role, User } from "@prisma/client";
+import {
+  OrganizationPlan,
+  OrganizationPlanType,
+  OrganizationType,
+  Role,
+  User,
+} from "@prisma/client";
 
 async function createPersonalOrganization(userId: string) {
+  let hobbyPlan = await prisma.organizationPlan.findUnique({
+    where: {
+      planType_active: {
+        planType: OrganizationPlanType.HOBBY,
+        active: true,
+      },
+    },
+  });
+
+  if (!hobbyPlan) {
+    hobbyPlan = await prisma.organizationPlan.create({
+      data: {
+        name: "Hobby",
+        planType: OrganizationPlanType.HOBBY,
+      },
+    });
+  }
+
+  const organization = await prisma.organization.create({
+    data: {
+      type: OrganizationType.PERSONAL,
+      organizationPlanId: hobbyPlan.name,
+    },
+  });
+
   return prisma.user.update({
     where: {
       id: userId,
@@ -15,12 +46,7 @@ async function createPersonalOrganization(userId: string) {
         create: {
           isPersonal: true,
           role: Role.ADMIN,
-
-          organization: {
-            create: {
-              type: OrganizationType.PERSONAL,
-            },
-          },
+          organizationId: organization.id,
         },
       },
     },

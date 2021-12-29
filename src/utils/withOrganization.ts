@@ -1,13 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { SessionWithId } from "@utils/types";
-import type { Organization, User } from "@prisma/client";
+import type { NextApiResponse } from "next";
+import type { User } from "@prisma/client";
+import type { OrganizationWithPlan } from "./types";
 import { prisma } from "@utils/prisma";
 import { withSession, NextApiRequestWithSession } from "@utils/withSession";
 import { ForbiddenError, NotFoundError } from "./httpErrors";
 
 export type NextApiRequestWithOrganization = NextApiRequestWithSession & {
   user: User;
-  organization: Organization;
+  organization: OrganizationWithPlan;
 };
 
 export type NextApiHandlerWithOrganization<T = any> = (
@@ -35,6 +35,9 @@ export const withOrganization = <T = any>(
     const organization = await prisma.organization.findUnique({
       where: {
         id: req.query.organizationId as string,
+      },
+      include: {
+        organizationPlan: true,
       },
     });
 
