@@ -4,6 +4,7 @@ import { useSWRConfig } from "swr";
 import { useOrganization } from "@hooks/useOrganization";
 import { useProjectForm } from "@hooks/useProjectForm";
 import { useProjects } from "@hooks/useProjects";
+import { fetcher } from "@utils/fetcher";
 
 export function useProjectCreator() {
   const organization = useOrganization();
@@ -18,14 +19,13 @@ export function useProjectCreator() {
 
     return mutate(
       [`/api/organizations/${organization.id}/projects`, organization],
-      fetch(`/api/organizations/${organization.id}/projects`, {
+      fetcher(`/api/organizations/${organization.id}/projects`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(form.projectData),
       })
-        .then((r) => r.json())
         .then((newProject) =>
           mutate(
             [
@@ -38,11 +38,15 @@ export function useProjectCreator() {
           )
         )
         .then((newProject) => {
-          console.log(newProject, projects);
           return {
             ...projects,
             [newProject.id]: newProject,
           };
+        })
+        .catch((err) => {
+          // TODO: handle error properly
+          console.log(err);
+          return projects;
         })
         .finally(() => setCreating(false)),
       false
