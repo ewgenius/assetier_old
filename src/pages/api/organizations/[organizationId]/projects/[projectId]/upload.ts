@@ -279,7 +279,7 @@ export default withProject<any>(async (req, res) => {
         repository,
         dataToUpload,
         branchName,
-        baseBranch.commit.sha,
+        newBranch.object.sha,
         octokit
       );
 
