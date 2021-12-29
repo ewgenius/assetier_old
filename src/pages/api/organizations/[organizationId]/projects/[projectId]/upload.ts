@@ -169,10 +169,20 @@ async function uploadFiles(
     content: buffer.toString(),
   }));
 
+  const baseCommit = await octokit.request(
+    "GET /repos/{owner}/{repo}/git/commits/{commit_sha}",
+    {
+      owner: repository.owner.login as string,
+      repo: repository.name as string,
+      commit_sha: branchSha,
+    }
+  );
+
   const tree = await octokit.request("POST /repos/{owner}/{repo}/git/trees", {
     owner: repository.owner.login as string,
     repo: repository.name as string,
     tree: treeForUpload,
+    base_tree: baseCommit.data.tree.sha,
   });
 
   const commit = await octokit.request(
@@ -269,7 +279,7 @@ export default withProject<any>(async (req, res) => {
         repository,
         dataToUpload,
         branchName,
-        newBranch.object.sha,
+        baseBranch.commit.sha,
         octokit
       );
 
