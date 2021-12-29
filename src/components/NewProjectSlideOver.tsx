@@ -57,7 +57,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         <div className="px-4 sm:px-6 py-2 bg-zinc-200 text-zinc-600 flex gap-2 items-center">
           <ExclamationCircleIcon className="w-5 h-5" />
           <span className="flex-grow text-sm">
-            You've reached projects limit
+            You&apos;ve reached projects limit
           </span>
           <button
             type="button"
