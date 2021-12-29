@@ -110,7 +110,7 @@ export const SlideOverHeading: FC<SlideOverHeadingProps> = ({
       </div>
       {subtitle && (
         <div className="mt-1">
-          <p className="text-sm text-gray-500">subtitle</p>
+          <p className="text-sm text-gray-500">{subtitle}</p>
         </div>
       )}
       {/* <div className="mt-6 flex-grow " /> */}

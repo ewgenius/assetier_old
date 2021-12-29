@@ -5,6 +5,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import { classNames } from "@utils/classNames";
+import { useMe } from "@hooks/useMe";
 
 const userNavigation = [
   { name: "Profile", href: "#" },
@@ -24,25 +25,29 @@ export interface AppTopBarProps {
 }
 
 const ProfileDropdown: FC<{}> = () => {
-  const { data: session } = useSession();
+  const { user } = useMe();
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <Menu as="div" className="ml-3 relative">
       <div>
         <Menu.Button className="max-w-xs flex items-center text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
-          <div className="ml-2 mr-4">
+          <div className="relative ml-2 pr-[40px] mr-4 flex">
             <div className="font-medium text-sm text-gray-800">
-              {session?.user?.name}
+              {user.user.name}
             </div>
-            <div className="text-xs font-medium text-gray-500">
-              {session?.user?.email}
+            <div className="absolute top-0 right-0 text-xs font-medium bg-zinc-600 text-white px-2 rounded-lg">
+              {user.personalOrganization.organizationPlan.name}
             </div>
           </div>
           <span className="sr-only">Open user menu</span>
-          {session?.user?.image && (
+          {user.user.image && (
             <img
               className="h-8 w-8 rounded-full"
-              src={session.user.image}
+              src={user.user.image}
               alt=""
             />
           )}
@@ -81,7 +86,11 @@ const ProfileDropdown: FC<{}> = () => {
 };
 
 export const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
-  const { data: session } = useSession();
+  const { user } = useMe();
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <Disclosure as="nav" className="bg-gray-100 top-0 left-0 right-0">
@@ -112,42 +121,40 @@ export const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            {session && session.user && (
-              <div className="pt-4 pb-3 border-t border-gray-200">
-                <div className="flex items-center px-4">
-                  <div className="flex-shrink-0">
-                    {session.user.image && (
-                      <img
-                        className="h-10 w-10 rounded-full"
-                        src={session.user.image}
-                        alt=""
-                      />
-                    )}
-                  </div>
-                  <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">
-                      {session.user.name}
-                    </div>
-                    <div className="text-sm font-medium text-gray-500">
-                      {session.user.email}
-                    </div>
-                  </div>
+            <div className="pt-4 pb-3 border-t border-gray-200">
+              <div className="flex items-center px-4">
+                <div className="flex-shrink-0">
+                  {user.user.image && (
+                    <img
+                      className="h-10 w-10 rounded-full"
+                      src={user.user.image}
+                      alt=""
+                    />
+                  )}
                 </div>
-                <div className="mt-3 space-y-1">
-                  {userNavigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      onClick={item.action}
-                      className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
+                <div className="ml-3">
+                  <div className="text-base font-medium text-gray-800">
+                    {user.user.name}
+                  </div>
+                  <div className="text-sm font-medium text-gray-500">
+                    {user.personalOrganization.organizationPlan.name}
+                  </div>
                 </div>
               </div>
-            )}
+              <div className="mt-3 space-y-1">
+                {userNavigation.map((item) => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    onClick={item.action}
+                    className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                ))}
+              </div>
+            </div>
           </Disclosure.Panel>
         </>
       )}
