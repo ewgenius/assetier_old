@@ -1,12 +1,13 @@
 import { createContext } from "react";
 import type { Organization } from "@prisma/client";
+import { OrganizationWithPlan } from "@utils/types";
 
 export interface AppContextInterface {
-  organization: Organization;
+  organization: OrganizationWithPlan;
 }
 
 export const AppContext = createContext<AppContextInterface>({
   organization: {
     id: "",
-  } as Organization,
+  } as OrganizationWithPlan,
 });

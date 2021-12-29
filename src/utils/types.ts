@@ -34,7 +34,7 @@ export type OrganizationWithPlan = Organization & {
 
 export interface UserResponse {
   user: UserWithOrganizations;
-  personalOrganization: Organization;
+  personalOrganization: OrganizationWithPlan;
 }
 
 export interface GithubFile {

@@ -3,7 +3,11 @@ import { Organization } from "@prisma/client";
 import { NotAllowedError } from "@utils/httpErrors";
 import { withSession } from "@utils/withSession";
 import { prisma } from "@utils/prisma";
-import type { UserResponse, UserWithOrganizations } from "@utils/types";
+import type {
+  OrganizationWithPlan,
+  UserResponse,
+  UserWithOrganizations,
+} from "@utils/types";
 
 export default withSession<UserResponse>(async ({ method, session }, res) => {
   switch (method) {
@@ -18,7 +22,11 @@ export default withSession<UserResponse>(async ({ method, session }, res) => {
               isPersonal: true,
             },
             include: {
-              organization: true,
+              organization: {
+                include: {
+                  organizationPlan: true,
+                },
+              },
             },
           },
         },
@@ -27,7 +35,7 @@ export default withSession<UserResponse>(async ({ method, session }, res) => {
       return res.status(200).send({
         user: user as UserWithOrganizations,
         personalOrganization: user?.organizations[0]
-          .organization as Organization,
+          .organization as OrganizationWithPlan,
       });
     }
 
