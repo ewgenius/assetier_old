@@ -18,6 +18,7 @@ export function useProjectUpdater(project: Partial<Project>) {
   const { projects } = useProjects();
   const { data, error } = useSWR<Project[]>(apiKey, fetcher);
   const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const { mutate } = useSWRConfig();
 
   const form = useProjectForm(project);
@@ -64,11 +65,43 @@ export function useProjectUpdater(project: Partial<Project>) {
     form.githubInstallation,
   ]);
 
+  const deleteProject = useCallback(() => {
+    setDeleting(true);
+
+    return fetcher(
+      `/api/organizations/${organization.id}/projects/${project.id}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((deletedProject: Project) => {
+        // mutate(
+        //   [
+        //     `/api/organizations/${organization.id}/projects/${deletedProject.id}`,
+        //     organization,
+        //     deletedProject.id,
+        //   ],
+        //   undefined,
+        //   false
+        // );
+        return mutate(
+          [`/api/organizations/${organization.id}/projects`, organization],
+          {
+            ...projects,
+            [deletedProject.id]: undefined,
+          }
+        );
+      })
+      .finally(() => setDeleting(false));
+  }, [organization, projects, project, data]);
+
   return {
     project: data,
     error,
     updateProject,
+    deleteProject,
     updating,
+    deleting,
     form,
   };
 }

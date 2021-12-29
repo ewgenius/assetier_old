@@ -12,14 +12,17 @@ import { Spinner } from "@components/Spinner";
 import { TextInput } from "@components/TextInput";
 import { Toggle } from "@components/Toggle";
 import { useProjectUpdater } from "@hooks/useProjectUpdater";
+import { useRouter } from "next/router";
 
 export const ProjectSettingsPage: NextPageExtended<
   {},
   {},
   ProjectPageWrapperProps
 > = () => {
+  const router = useRouter();
   const project = useProjectContext();
-  const { updateProject, updating, form } = useProjectUpdater(project);
+  const { updateProject, updating, deleteProject, deleting, form } =
+    useProjectUpdater(project);
 
   const submit = useCallback(() => {
     if (form.isValid) {
@@ -109,6 +112,24 @@ export const ProjectSettingsPage: NextPageExtended<
           >
             <span>Update</span>
             {updating && <Spinner className="ml-2" />}
+          </button>
+        </div>
+
+        <div className="border-b border-gray-200 my-4" />
+
+        <div>
+          <button
+            type="button"
+            onClick={() =>
+              deleteProject().then(() => {
+                router.push("/app");
+              })
+            }
+            disabled={updating || deleting}
+            className="inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+          >
+            <span>Delete project</span>
+            {deleting && <Spinner className="ml-2" />}
           </button>
         </div>
       </form>
