@@ -1,8 +1,7 @@
+import { FC } from "react";
 import { SearchIcon } from "@heroicons/react/outline";
-import { useGithubRepositoryBranches } from "@hooks/useProjectBranches";
 import type { Project } from "@prisma/client";
 import { GithubBranch } from "@utils/types";
-import { FC, useState } from "react";
 import { GithubBranchSelector } from "./GithubConnector/GithubBranchSelector";
 import { LayoutBlock } from "./LayoutBlock";
 import { Spinner } from "./Spinner";
@@ -14,6 +13,7 @@ export interface AssetsToolbarProps {
   onQueryChange: TextInputProps["onChange"];
   querying: boolean;
   onUploadClick: () => void;
+  branches?: GithubBranch[];
   selectedBranch: GithubBranch | null;
   onSelectBranch: (branch: GithubBranch | null) => void;
 }
@@ -24,11 +24,10 @@ export const AssetsToolbar: FC<AssetsToolbarProps> = ({
   onQueryChange,
   querying,
   onUploadClick,
+  branches,
   selectedBranch,
   onSelectBranch,
 }) => {
-  const { branches } = useGithubRepositoryBranches(project);
-
   return (
     <LayoutBlock mode="primary" borderBottom sticky>
       <div className="flex flex-col sm:flex-row gap-2">

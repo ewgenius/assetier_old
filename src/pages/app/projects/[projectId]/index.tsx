@@ -7,8 +7,9 @@ import {
 } from "@components/PageWrappers/ProjectWrapper";
 import { UploadSlideOver } from "@components/UploadSlideOver";
 import { AssetDetailsSlideOver } from "@components/AssetDetailsSlideOver";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProjectContents } from "@hooks/useProjectContents";
+import { useProjectBranches } from "@hooks/useProjectBranches";
 import { useDelayedInputState } from "@hooks/useInputState";
 import { AssetsToolbar } from "@components/AssetsToolbar";
 
@@ -16,6 +17,7 @@ export const ProjectPage: NextPageExtended<{}, {}, ProjectPageWrapperProps> =
   () => {
     const project = useProjectContext();
     const [uploadOpen, setUploadOpen] = useState(false);
+    const { branches } = useProjectBranches(project);
     const [selectedBranch, setSelectedBranch] = useState<GithubBranch | null>(
       null
     );
@@ -26,6 +28,21 @@ export const ProjectPage: NextPageExtended<{}, {}, ProjectPageWrapperProps> =
     const [selectedAsset, setSelectedAsset] = useState<GithubFile | null>(null);
     const [query, delayedQuery, setQuery, delaying] = useDelayedInputState();
 
+    useEffect(() => {
+      if (
+        selectedBranch &&
+        branches &&
+        project.defaultBranch !== selectedBranch.name
+      ) {
+        const newBranch = branches.find(
+          (b) => b.name === project.defaultBranch
+        );
+        if (newBranch) {
+          setSelectedBranch(newBranch);
+        }
+      }
+    }, [project.defaultBranch]);
+
     return (
       <>
         <AssetsToolbar
@@ -34,6 +51,7 @@ export const ProjectPage: NextPageExtended<{}, {}, ProjectPageWrapperProps> =
           onQueryChange={setQuery}
           querying={delaying}
           onUploadClick={() => setUploadOpen(true)}
+          branches={branches}
           selectedBranch={selectedBranch}
           onSelectBranch={setSelectedBranch}
         />

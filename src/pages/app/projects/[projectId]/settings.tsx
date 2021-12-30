@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useRouter } from "next/router";
 
-import type { GithubBranch, NextPageExtended } from "@utils/types";
+import type { NextPageExtended } from "@utils/types";
 import {
   ProjectPageWrapper,
   ProjectPageWrapperProps,
@@ -13,7 +13,6 @@ import { Spinner } from "@components/Spinner";
 import { TextInput } from "@components/TextInput";
 import { Toggle } from "@components/Toggle";
 import { useProjectUpdater } from "@hooks/useProjectUpdater";
-import { useGithubRepositoryBranches } from "@hooks/useProjectBranches";
 import { GithubConnector } from "@components/GithubConnector";
 
 export const ProjectSettingsPage: NextPageExtended<
@@ -25,11 +24,6 @@ export const ProjectSettingsPage: NextPageExtended<
   const project = useProjectContext();
   const { updateProject, updating, deleteProject, deleting, form } =
     useProjectUpdater(project);
-
-  const [selectedBranch, setSelectedBranch] = useState<GithubBranch | null>(
-    null
-  );
-  const { branches } = useGithubRepositoryBranches(project);
 
   const submit = useCallback(() => {
     if (form.isValid) {
