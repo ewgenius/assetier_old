@@ -44,7 +44,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
   );
 
   const connect = useCallback(
-    (branch: GithubBranch) => {
+    (branch: GithubBranch | null) => {
       setSelectedBranch(branch);
       onChange(
         selectedAccount && selectedRepository && branch
@@ -84,9 +84,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
           branches={branches}
           selectedBranch={selectedBranch}
           defaultBranchName="main"
-          onChange={(branch) => {
-            connect(branch);
-          }}
+          onChange={connect}
         />
       )}
     </div>
