@@ -29,7 +29,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/formidable": "^2.0.0",
+    "@types/formidable": "^2.0.2",
     "@types/node": "^16.11.12",
     "@types/react": "17.0.37",
     "@types/uuid": "^8.3.3",
