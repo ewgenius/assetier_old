@@ -17,17 +17,20 @@ export const AssetsGrid: FC<AssetsGridProps> = ({ assets, onClick }) => {
             {assets.map((asset) => (
               <div key={asset.name} className="flex">
                 <button
-                  className="h-28 flex flex-col flex-grow justify-center items-center p-2 rounded-md bg-white hover:outline outline-offset-2 outline-2 outline-zinc-500"
+                  className="h-28 max-w-full flex flex-col flex-grow justify-center items-center rounded-md bg-white hover:outline outline-offset-2 outline-2 outline-zinc-500"
                   onClick={() => onClick && onClick(asset)}
-                  // href={asset._links.html}
-                  // target="_blank"
-                  // rel="noreferrer"
                 >
-                  <img
-                    className="w-[24px] h-[24px] mb-2"
-                    src={asset.download_url}
-                  />
-                  <p className="font-mono text-[10px]">{asset.name}</p>
+                  <div className="p-2 overflow-hidden flex flex-col flex-grow justify-center items-center">
+                    <img
+                      className="w-[24px] h-[24px] mb-2"
+                      src={asset.download_url}
+                    />
+                  </div>
+                  <div className="p-2 overflow-hidden max-w-full">
+                    <p className="font-mono text-[10px] truncate">
+                      {asset.name}
+                    </p>
+                  </div>
                 </button>
               </div>
             ))}
