@@ -49,29 +49,28 @@ export function useProjectForm(project?: Partial<Project>) {
     reset();
   }, [project]);
 
-  const projectData: Partial<Project> = useMemo(
-    () => ({
+  const projectData: Partial<Project> = useMemo(() => {
+    const data: Partial<Project> = {
       name,
-      alias,
       assetsPath,
       publicPageEnabled,
       defaultBranch: githubInstallation?.branch,
       githubInstallationId: githubInstallation?.githubInstallationId as string,
       repositoryId: githubInstallation?.repositoryId as number,
-    }),
-    [
-      name,
-      alias,
-      assetsPath,
-      publicPageEnabled,
-      githubInstallation?.branch,
-      githubInstallation?.githubInstallationId,
-      githubInstallation?.repositoryId,
-    ]
-  );
-
-  console.log(githubInstallation);
-  console.log(projectData);
+    };
+    if (alias) {
+      data.alias = alias;
+    }
+    return data;
+  }, [
+    name,
+    alias,
+    assetsPath,
+    publicPageEnabled,
+    githubInstallation?.branch,
+    githubInstallation?.githubInstallationId,
+    githubInstallation?.repositoryId,
+  ]);
 
   const isValid = useMemo(
     () =>
