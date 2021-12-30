@@ -84,6 +84,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         <GithubConnector
           onChange={form.setGithubInstallation}
           layout="column"
+          disabled={reachedLimit || creating}
         />
 
         <TextInput

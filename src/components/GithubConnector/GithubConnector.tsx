@@ -17,12 +17,14 @@ export interface GithubConnectorProps {
   connection?: GithubConnection | null;
   onChange: (connection: GithubConnection | null) => void;
   layout?: "column" | "row";
+  disabled?: boolean;
 }
 
 export const GithubConnector: FC<GithubConnectorProps> = ({
   onChange,
   connection,
   layout,
+  disabled,
 }) => {
   const { accounts } = useGithubAccounts();
   const [selectedAccount, setSelectedAccount] =
@@ -80,6 +82,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
           selectedAccount={selectedAccount}
           defaultAccountId={connection?.githubInstallationId}
           onChange={setSelectedAccount}
+          disabled={disabled}
         />
       </div>
 
@@ -91,7 +94,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
           )}
         >
           <GithubRepositorySelector
-            disabled={!selectedAccount}
+            disabled={!selectedAccount || disabled}
             repositories={repositories}
             selectedRepository={selectedRepository}
             onChange={setSelectedRepository}
@@ -110,7 +113,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
           )}
         >
           <GithubBranchSelector
-            disabled={!selectedRepository}
+            disabled={!selectedRepository || disabled}
             branches={branches}
             selectedBranch={selectedBranch}
             defaultBranchName={connection?.branch || "main"}
