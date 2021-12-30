@@ -8,6 +8,7 @@ import { Spinner } from "@components/Spinner";
 export interface SelectProps<T = any> {
   label?: string;
   placeholder?: string;
+  disabled?: boolean;
   items?: T[];
   selectedItem: T | null;
   onChange: (item: T | null) => void;
@@ -23,6 +24,7 @@ export interface SelectProps<T = any> {
 
 export const Select: FC<SelectProps> = ({
   label,
+  disabled,
   placeholder,
   items,
   selectedItem,
@@ -43,7 +45,7 @@ export const Select: FC<SelectProps> = ({
   }, [items, preselectedId, selectedItem]);
 
   return (
-    <Listbox value={selectedItem} onChange={onChange}>
+    <Listbox value={selectedItem} onChange={onChange} disabled={disabled}>
       {({ open }) => (
         <>
           {label && (

@@ -10,6 +10,7 @@ export interface GithubAccountSelectorProps {
   onChange: (account: GithubInstallation | null) => void;
   accounts?: GithubInstallation[];
   defaultAccountId?: string;
+  disabled?: boolean;
 }
 
 export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
@@ -17,6 +18,7 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
   selectedAccount,
   accounts,
   defaultAccountId,
+  disabled,
 }) => {
   return (
     <>
@@ -32,6 +34,7 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
           <Select
             label="Github Account"
             placeholder="Select Github account"
+            disabled={disabled}
             selectedItem={selectedAccount}
             items={accounts}
             onChange={onChange}

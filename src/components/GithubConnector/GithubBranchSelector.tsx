@@ -8,6 +8,7 @@ export interface GithubBranchSelectorProps {
   label?: string | false;
   branches?: GithubBranch[];
   defaultBranchName?: string;
+  disabled?: boolean;
   selectedBranch?: GithubBranch | null;
   onChange: (branch: GithubBranch | null) => void;
 }
@@ -15,6 +16,7 @@ export interface GithubBranchSelectorProps {
 export const GithubBranchSelector: FC<GithubBranchSelectorProps> = ({
   label,
   branches,
+  disabled,
   defaultBranchName,
   selectedBranch,
   onChange,
@@ -29,6 +31,7 @@ export const GithubBranchSelector: FC<GithubBranchSelectorProps> = ({
           : label
       }
       placeholder="Select branch"
+      disabled={disabled}
       items={branches}
       selectedItem={selectedBranch}
       onChange={onChange}

@@ -1,10 +1,7 @@
 import { FC, useEffect, useState } from "react";
 
 import { classNames } from "@utils/classNames";
-import {
-  Repository,
-  useGithubAccountRepositories,
-} from "@hooks/useGithubAccountRepositories";
+import { Repository } from "@hooks/useGithubAccountRepositories";
 import { Select } from "@components/Select";
 
 export interface GithubRepositorySelectorProps {
@@ -12,6 +9,7 @@ export interface GithubRepositorySelectorProps {
   selectedRepository?: Repository | null;
   onChange: (repository: Repository | null) => void;
   defaultRepositoryId?: string;
+  disabled?: boolean;
 }
 
 export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
@@ -19,12 +17,14 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
   repositories,
   onChange,
   defaultRepositoryId,
+  disabled,
 }) => {
   return (
     <div>
       <Select
         label="Repository"
         placeholder="Select Repository"
+        disabled={disabled}
         items={repositories}
         selectedItem={selectedRepository}
         onChange={onChange}

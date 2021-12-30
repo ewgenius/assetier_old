@@ -67,9 +67,10 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
         />
       </div>
 
-      {selectedAccount && (
+      {(selectedAccount || connection) && (
         <div className="sm:flex-1 sm:flex-shrink-0">
           <GithubRepositorySelector
+            disabled={!selectedAccount}
             repositories={repositories}
             selectedRepository={selectedRepository}
             onChange={setSelectedRepository}
@@ -80,9 +81,10 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
         </div>
       )}
 
-      {selectedRepository && (
+      {(selectedRepository || connection) && (
         <div className="sm:flex-1 sm:flex-shrink-0 sm:max-w-[220px]">
           <GithubBranchSelector
+            disabled={!selectedRepository}
             branches={branches}
             selectedBranch={selectedBranch}
             defaultBranchName={connection?.branch || "main"}
