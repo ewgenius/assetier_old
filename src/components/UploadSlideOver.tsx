@@ -13,20 +13,26 @@ import {
 import { Spinner } from "./Spinner";
 import { useProjectContents } from "@hooks/useProjectContents";
 import { Toggle } from "@components/Toggle";
+import { GithubBranch } from "@utils/types";
 
 export interface UploadSlideOverProps extends SlideOverProps {
   project: Project;
+  baseBranch?: GithubBranch | null;
 }
 
 export const UploadSlideOver: FC<UploadSlideOverProps> = ({
   open,
   onClose,
   project,
+  baseBranch,
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [merge, setMerge] = useState(false);
 
-  const { refresh } = useProjectContents(project.id);
+  const { refresh } = useProjectContents(
+    project.id,
+    baseBranch?.name || project.defaultBranch
+  );
   const [uploading, setUploading] = useState(false);
   const onDrop = useCallback(
     (acceptedFiles: File[]) => setFiles([...files, ...acceptedFiles]),
@@ -54,6 +60,10 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
       data.set(`${file.name}_i`, file);
     });
 
+    if (baseBranch) {
+      data.set("baseBranch", baseBranch.name);
+    }
+
     data.set("merge", merge ? "true" : "false");
 
     fetch(
@@ -65,11 +75,15 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
     )
       .then(refresh)
       .finally(close);
-  }, [files, merge]);
+  }, [files, merge, project, baseBranch]);
 
   return (
     <SlideOver open={open} onClose={onClose} onSubmit={submit} size="xl">
-      <SlideOverHeading onClose={onClose} title="Upload assets" />
+      <SlideOverHeading
+        onClose={onClose}
+        title="Upload assets"
+        subtitle={baseBranch?.name}
+      />
 
       <SlideOverBody>
         <div>

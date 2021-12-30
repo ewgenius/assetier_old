@@ -188,6 +188,9 @@ export default withProject<any>(async (req, res) => {
       const octokit = await getOctokit(installation.installationId);
       const repository = await getProjectRepository(project, octokit);
       const { files, fields } = await parseForm(req);
+      if (!files) {
+        throw new BadRequestError("No files uploaded");
+      }
 
       const baseBranchName =
         (fields.baseBranch as string) || project.defaultBranch || "main";
@@ -195,13 +198,9 @@ export default withProject<any>(async (req, res) => {
 
       const branches = await getRepositoryBranches(repository, octokit);
       const baseBranch = branches.find((b) => b.name === baseBranchName);
-
+      console.log(baseBranchName, baseBranch);
       if (!baseBranch) {
         throw new BadRequestError(`Branch ${baseBranchName} does not exist`);
-      }
-
-      if (!files) {
-        throw new BadRequestError("No files uploaded");
       }
 
       const branchName = `assetier/upload/${uuidv4()}`;

@@ -5,6 +5,7 @@ import { GithubBranch } from "@utils/types";
 import { classNames } from "@utils/classNames";
 
 export interface GithubBranchSelectorProps {
+  label?: string | false;
   branches?: GithubBranch[];
   defaultBranchName?: string;
   selectedBranch?: GithubBranch | null;
@@ -12,6 +13,7 @@ export interface GithubBranchSelectorProps {
 }
 
 export const GithubBranchSelector: FC<GithubBranchSelectorProps> = ({
+  label,
   branches,
   defaultBranchName,
   selectedBranch,
@@ -20,7 +22,13 @@ export const GithubBranchSelector: FC<GithubBranchSelectorProps> = ({
   return (
     <div>
       <Select
-        label="Default Branch"
+        label={
+          label === undefined
+            ? "Select Branch"
+            : label === false
+            ? undefined
+            : label
+        }
         placeholder="Select branch"
         items={branches}
         selectedItem={selectedBranch}

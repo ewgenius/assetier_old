@@ -1,4 +1,4 @@
-import { GithubFile, NextPageExtended } from "@utils/types";
+import { GithubBranch, GithubFile, NextPageExtended } from "@utils/types";
 import { AssetsGrid } from "@components/AssetsGrid";
 import {
   ProjectPageWrapper,
@@ -16,17 +16,26 @@ export const ProjectPage: NextPageExtended<{}, {}, ProjectPageWrapperProps> =
   () => {
     const project = useProjectContext();
     const [uploadOpen, setUploadOpen] = useState(false);
-    const { contents } = useProjectContents(project.id);
+    const [selectedBranch, setSelectedBranch] = useState<GithubBranch | null>(
+      null
+    );
+    const { contents } = useProjectContents(
+      project.id,
+      selectedBranch?.name || project.defaultBranch
+    );
     const [selectedAsset, setSelectedAsset] = useState<GithubFile | null>(null);
     const [query, delayedQuery, setQuery, delaying] = useDelayedInputState();
 
     return (
       <>
         <AssetsToolbar
+          project={project}
           query={query}
           onQueryChange={setQuery}
           querying={delaying}
           onUploadClick={() => setUploadOpen(true)}
+          selectedBranch={selectedBranch}
+          onSelectBranch={setSelectedBranch}
         />
         <AssetsGrid
           assets={contents?.filter(
@@ -36,6 +45,7 @@ export const ProjectPage: NextPageExtended<{}, {}, ProjectPageWrapperProps> =
         />
         <UploadSlideOver
           project={project}
+          baseBranch={selectedBranch}
           open={uploadOpen}
           onClose={() => setUploadOpen(false)}
         />
