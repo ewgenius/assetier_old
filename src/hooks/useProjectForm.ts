@@ -11,23 +11,23 @@ export function useProjectForm(project?: Partial<Project>) {
   );
   const [assetsPath, setAssetsPath, resetAssetsPath, setAssetsPathValue] =
     useInputState(project?.assetsPath);
-  const [
-    defaultBranch,
-    setDefaultBranch,
-    resetDefaultBranch,
-    setDefaultBranchValue,
-  ] = useInputState(project?.defaultBranch);
   const [publicPageEnabled, setPublicPageEnabled] = useState(
     project?.publicPageEnabled !== undefined ? project.publicPageEnabled : false
   );
-  const [githubInstallation, setGithubInstallation] = useState<Pick<
-    Project,
-    "githubInstallationId" | "repositoryId"
-  > | null>(
-    project && project.githubInstallationId && project.repositoryId
+  const [githubInstallation, setGithubInstallation] = useState<
+    | (Pick<Project, "githubInstallationId" | "repositoryId"> & {
+        branch: string;
+      })
+    | null
+  >(
+    project &&
+      project.githubInstallationId &&
+      project.repositoryId &&
+      project.defaultBranch
       ? {
           githubInstallationId: project.githubInstallationId,
           repositoryId: project.repositoryId,
+          branch: project.defaultBranch,
         }
       : null
   );
@@ -37,14 +37,12 @@ export function useProjectForm(project?: Partial<Project>) {
       project.name && setNameValue(project.name);
       project.alias && setAliasValue(project.alias);
       project.assetsPath && setAssetsPathValue(project.assetsPath);
-      project.defaultBranch && setDefaultBranchValue(project.defaultBranch);
       project.publicPageEnabled !== undefined &&
         setPublicPageEnabled(project.publicPageEnabled);
     } else {
       resetName();
       resetAlias();
       resetAssetsPath();
-      resetDefaultBranch();
       setPublicPageEnabled(false);
       setGithubInstallation(null);
     }
@@ -54,15 +52,29 @@ export function useProjectForm(project?: Partial<Project>) {
     reset();
   }, [project]);
 
-  const projectData: Partial<Project> = {
-    name,
-    alias,
-    assetsPath,
-    defaultBranch,
-    publicPageEnabled,
-    githubInstallationId: githubInstallation?.githubInstallationId as string,
-    repositoryId: githubInstallation?.repositoryId as number,
-  };
+  const projectData: Partial<Project> = useMemo(
+    () => ({
+      name,
+      alias,
+      assetsPath,
+      publicPageEnabled,
+      defaultBranch: githubInstallation?.branch,
+      githubInstallationId: githubInstallation?.githubInstallationId as string,
+      repositoryId: githubInstallation?.repositoryId as number,
+    }),
+    [
+      name,
+      alias,
+      assetsPath,
+      publicPageEnabled,
+      githubInstallation?.branch,
+      githubInstallation?.githubInstallationId,
+      githubInstallation?.repositoryId,
+    ]
+  );
+
+  console.log(githubInstallation);
+  console.log(projectData);
 
   const isValid = useMemo(
     () =>
@@ -70,12 +82,14 @@ export function useProjectForm(project?: Partial<Project>) {
         ? name
         : name &&
           githubInstallation?.githubInstallationId &&
-          githubInstallation?.repositoryId,
+          githubInstallation?.repositoryId &&
+          githubInstallation?.branch,
     [
       name,
       project,
-      githubInstallation?.repositoryId,
       githubInstallation?.githubInstallationId,
+      githubInstallation?.repositoryId,
+      githubInstallation?.branch,
     ]
   );
 
@@ -88,20 +102,17 @@ export function useProjectForm(project?: Partial<Project>) {
     name,
     alias,
     assetsPath,
-    defaultBranch,
     publicPageEnabled,
     githubInstallation,
 
     setName,
     setAlias,
     setAssetsPath,
-    setDefaultBranch,
     setPublicPageEnabled,
     setGithubInstallation,
 
     setNameValue,
     setAliasValue,
     setAssetsPathValue,
-    setDefaultBranchValue,
   };
 }

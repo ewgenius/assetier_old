@@ -11,14 +11,16 @@ export interface Repository {
   };
 }
 
-export function useGithubAccountRepositories(installationId: number) {
+export function useGithubAccountRepositories(installationId?: number) {
   const organization = useOrganization();
   const { data, error } = useSWR<Repository[]>(
-    [
-      `/api/organizations/${organization.id}/accounts/${installationId}/repositories`,
-      organization,
-      installationId,
-    ],
+    installationId
+      ? [
+          `/api/organizations/${organization.id}/accounts/${installationId}/repositories`,
+          organization,
+          installationId,
+        ]
+      : [],
     fetcher
   );
 

@@ -14,7 +14,6 @@ import { TextInput } from "@components/TextInput";
 import { Toggle } from "@components/Toggle";
 import { useProjectUpdater } from "@hooks/useProjectUpdater";
 import { useGithubRepositoryBranches } from "@hooks/useProjectBranches";
-import { GithubBranchSelector } from "@components/GithubConnector/GithubBranchSelector";
 
 export const ProjectSettingsPage: NextPageExtended<
   {},
@@ -81,7 +80,7 @@ export const ProjectSettingsPage: NextPageExtended<
               onChange={form.setAlias}
             />
 
-            <GithubBranchSelector
+            {/* <GithubBranchSelector
               branches={branches}
               defaultBranchName={form.defaultBranch || "main"}
               selectedBranch={selectedBranch}
@@ -89,7 +88,7 @@ export const ProjectSettingsPage: NextPageExtended<
                 setSelectedBranch(branch);
                 form.setDefaultBranchValue(branch?.name || "");
               }}
-            />
+            /> */}
           </div>
           <div className="border-b border-gray-200 sm:hidden" />
 

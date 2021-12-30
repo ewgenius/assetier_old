@@ -5,10 +5,21 @@ import { useGithubAccounts } from "@hooks/useGithubAccounts";
 
 import { GithubAccountSelector } from "./GithubAccountSelector";
 import { GithubRepositorySelector } from "./GithubRepositorySelector";
+import {
+  Repository,
+  useGithubAccountRepositories,
+} from "@hooks/useGithubAccountRepositories";
+import { GithubBranchSelector } from "./GithubBranchSelector";
+import { useGithubRepositoryBranches } from "@hooks/useGithubRepositoryBranches";
+import { GithubBranch } from "@utils/types";
 
 export interface GithubConnectorProps {
   onChange: (
-    data: Pick<Project, "githubInstallationId" | "repositoryId"> | null
+    data:
+      | (Pick<Project, "githubInstallationId" | "repositoryId"> & {
+          branch: string;
+        })
+      | null
   ) => void;
 }
 
@@ -17,18 +28,35 @@ export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
   const [selectedAccount, setSelectedAccount] =
     useState<GithubInstallation | null>(null);
 
-  const selectRepository = useCallback(
-    (repositoryId: number | null) => {
+  const { repositories } = useGithubAccountRepositories(
+    selectedAccount?.installationId
+  );
+  const [selectedRepository, setSelectedRepository] =
+    useState<Repository | null>(null);
+
+  const { branches } = useGithubRepositoryBranches(
+    selectedAccount?.installationId,
+    selectedRepository?.owner.login,
+    selectedRepository?.name
+  );
+  const [selectedBranch, setSelectedBranch] = useState<GithubBranch | null>(
+    null
+  );
+
+  const connect = useCallback(
+    (branch: GithubBranch) => {
+      setSelectedBranch(branch);
       onChange(
-        repositoryId && selectedAccount
+        selectedAccount && selectedRepository && branch
           ? {
               githubInstallationId: selectedAccount.id,
-              repositoryId: repositoryId,
+              repositoryId: selectedRepository.id,
+              branch: branch.name,
             }
           : null
       );
     },
-    [selectedAccount]
+    [selectedAccount, selectedRepository]
   );
 
   return (
@@ -44,10 +72,22 @@ export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
       {selectedAccount && (
         <div>
           <GithubRepositorySelector
-            installationId={selectedAccount.installationId}
-            onChange={selectRepository}
+            repositories={repositories}
+            selectedRepository={selectedRepository}
+            onChange={setSelectedRepository}
           />
         </div>
+      )}
+
+      {selectedRepository && (
+        <GithubBranchSelector
+          branches={branches}
+          selectedBranch={selectedBranch}
+          defaultBranchName="main"
+          onChange={(branch) => {
+            connect(branch);
+          }}
+        />
       )}
     </div>
   );

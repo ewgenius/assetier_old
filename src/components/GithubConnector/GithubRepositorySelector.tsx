@@ -8,36 +8,23 @@ import {
 import { Select } from "@components/Select";
 
 export interface GithubRepositorySelectorProps {
-  installationId: number;
-  onChange?: (repositoryId: number | null) => void;
+  repositories?: Repository[];
+  selectedRepository?: Repository | null;
+  onChange: (repository: Repository | null) => void;
 }
 
 export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
-  installationId,
+  selectedRepository,
+  repositories,
   onChange,
 }) => {
-  const [selectedRepository, setSelectedRepository] =
-    useState<Repository | null>(null);
-  const { repositories } = useGithubAccountRepositories(installationId);
-
-  useEffect(() => {
-    selectRepository(null);
-  }, [installationId]);
-
-  const selectRepository = (repository: Repository | null) => {
-    setSelectedRepository(repository);
-    if (onChange) {
-      onChange(repository ? repository.id : null);
-    }
-  };
-
   return (
     <Select
       label="Repository"
       placeholder="Select Repository"
       items={repositories}
       selectedItem={selectedRepository}
-      onChange={selectRepository}
+      onChange={onChange}
       renderButton={(repository) => (
         <span className="block truncate">
           @{repository.owner.login}/{repository.name}
