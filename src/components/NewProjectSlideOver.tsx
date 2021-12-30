@@ -91,7 +91,10 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
 
         <div className="border-b border-gray-200" />
 
-        <GithubConnector onChange={form.setGithubInstallation} />
+        <GithubConnector
+          onChange={form.setGithubInstallation}
+          layout="column"
+        />
 
         <div className="border-b border-gray-200" />
 

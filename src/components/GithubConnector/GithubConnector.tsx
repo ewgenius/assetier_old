@@ -11,15 +11,18 @@ import type { GithubBranch, GithubConnection } from "@utils/types";
 import { GithubBranchSelector } from "./GithubBranchSelector";
 import { GithubAccountSelector } from "./GithubAccountSelector";
 import { GithubRepositorySelector } from "./GithubRepositorySelector";
+import { classNames } from "@utils/classNames";
 
 export interface GithubConnectorProps {
   connection?: GithubConnection | null;
   onChange: (connection: GithubConnection | null) => void;
+  layout?: "column" | "row";
 }
 
 export const GithubConnector: FC<GithubConnectorProps> = ({
   onChange,
   connection,
+  layout,
 }) => {
   const { accounts } = useGithubAccounts();
   const [selectedAccount, setSelectedAccount] =
@@ -57,7 +60,15 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
   );
 
   return (
-    <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 md:space-x-4">
+    <div
+      className={classNames(
+        "flex",
+        layout === "column" && "flex-col space-y-4",
+        layout === "row" && "flex-row sm:space-x-2 md:space-x-4",
+        !layout &&
+          "flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 md:space-x-4"
+      )}
+    >
       <div className="sm:flex-1 sm:flex-shrink-0">
         <GithubAccountSelector
           accounts={accounts}
