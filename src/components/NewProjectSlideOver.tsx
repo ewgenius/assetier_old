@@ -26,7 +26,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
       projects &&
       Object.keys(projects).length >=
         organization.organizationPlan.projectsLimit,
-    [organization]
+    [organization, projects]
   );
 
   const close = () => {
