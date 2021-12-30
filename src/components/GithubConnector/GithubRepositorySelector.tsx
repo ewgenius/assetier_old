@@ -11,36 +11,41 @@ export interface GithubRepositorySelectorProps {
   repositories?: Repository[];
   selectedRepository?: Repository | null;
   onChange: (repository: Repository | null) => void;
+  defaultRepositoryId?: string;
 }
 
 export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
   selectedRepository,
   repositories,
   onChange,
+  defaultRepositoryId,
 }) => {
   return (
-    <Select
-      label="Repository"
-      placeholder="Select Repository"
-      items={repositories}
-      selectedItem={selectedRepository}
-      onChange={onChange}
-      renderButton={(repository) => (
-        <span className="block truncate">
-          @{repository.owner.login}/{repository.name}
-        </span>
-      )}
-      getItemId={(repository: Repository) => String(repository.id)}
-      renderItem={(repository: Repository, { selected }) => (
-        <span
-          className={classNames(
-            selected ? "font-semibold" : "font-normal",
-            "block truncate"
-          )}
-        >
-          @{repository.owner.login}/{repository.name}
-        </span>
-      )}
-    />
+    <div>
+      <Select
+        label="Repository"
+        placeholder="Select Repository"
+        items={repositories}
+        selectedItem={selectedRepository}
+        onChange={onChange}
+        renderButton={(repository) => (
+          <span className="block truncate">
+            @{repository.owner.login}/{repository.name}
+          </span>
+        )}
+        preselectedId={defaultRepositoryId}
+        getItemId={(repository: Repository) => String(repository.id)}
+        renderItem={(repository: Repository, { selected }) => (
+          <span
+            className={classNames(
+              selected ? "font-semibold" : "font-normal",
+              "block truncate"
+            )}
+          >
+            @{repository.owner.login}/{repository.name}
+          </span>
+        )}
+      />
+    </div>
   );
 };

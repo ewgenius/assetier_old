@@ -9,12 +9,14 @@ export interface GithubAccountSelectorProps {
   selectedAccount: GithubInstallation | null;
   onChange: (account: GithubInstallation | null) => void;
   accounts?: GithubInstallation[];
+  defaultAccountId?: string;
 }
 
 export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
   onChange,
   selectedAccount,
   accounts,
+  defaultAccountId,
 }) => {
   return (
     <>
@@ -53,6 +55,7 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
                 </div>
               </li>
             )}
+            preselectedId={defaultAccountId}
             getItemId={(account) => account.id}
             renderItem={(account, { selected }) => (
               <div className="flex items-center">

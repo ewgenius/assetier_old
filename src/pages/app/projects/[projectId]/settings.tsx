@@ -14,6 +14,7 @@ import { TextInput } from "@components/TextInput";
 import { Toggle } from "@components/Toggle";
 import { useProjectUpdater } from "@hooks/useProjectUpdater";
 import { useGithubRepositoryBranches } from "@hooks/useProjectBranches";
+import { GithubConnector } from "@components/GithubConnector";
 
 export const ProjectSettingsPage: NextPageExtended<
   {},
@@ -109,6 +110,15 @@ export const ProjectSettingsPage: NextPageExtended<
             />
           </div>
         </div>
+
+        <div className="border-b border-gray-200 my-4" />
+
+        <GithubConnector
+          connection={form.githubInstallation}
+          onChange={form.setGithubInstallation}
+        />
+
+        <div className="border-b border-gray-200 my-4" />
 
         <div>
           <button

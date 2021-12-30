@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import type { GithubInstallation } from "@prisma/client";
 
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
@@ -13,10 +13,14 @@ import { GithubAccountSelector } from "./GithubAccountSelector";
 import { GithubRepositorySelector } from "./GithubRepositorySelector";
 
 export interface GithubConnectorProps {
-  onChange: (data: GithubConnection | null) => void;
+  connection?: GithubConnection | null;
+  onChange: (connection: GithubConnection | null) => void;
 }
 
-export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
+export const GithubConnector: FC<GithubConnectorProps> = ({
+  onChange,
+  connection,
+}) => {
   const { accounts } = useGithubAccounts();
   const [selectedAccount, setSelectedAccount] =
     useState<GithubInstallation | null>(null);
@@ -53,32 +57,38 @@ export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {
   );
 
   return (
-    <div className="space-y-4">
-      <div>
+    <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 md:space-x-4">
+      <div className="sm:flex-1 sm:flex-shrink-0">
         <GithubAccountSelector
           accounts={accounts}
           selectedAccount={selectedAccount}
+          defaultAccountId={connection?.githubInstallationId}
           onChange={setSelectedAccount}
         />
       </div>
 
       {selectedAccount && (
-        <div>
+        <div className="sm:flex-1 sm:flex-shrink-0">
           <GithubRepositorySelector
             repositories={repositories}
             selectedRepository={selectedRepository}
             onChange={setSelectedRepository}
+            defaultRepositoryId={
+              connection ? String(connection.repositoryId) : undefined
+            }
           />
         </div>
       )}
 
       {selectedRepository && (
-        <GithubBranchSelector
-          branches={branches}
-          selectedBranch={selectedBranch}
-          defaultBranchName="main"
-          onChange={connect}
-        />
+        <div className="sm:flex-1 sm:flex-shrink-0 sm:max-w-[220px]">
+          <GithubBranchSelector
+            branches={branches}
+            selectedBranch={selectedBranch}
+            defaultBranchName={connection?.branch || "main"}
+            onChange={connect}
+          />
+        </div>
       )}
     </div>
   );
