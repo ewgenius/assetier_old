@@ -59,7 +59,6 @@ export function useProjectUpdater(project: Partial<Project>) {
     data,
     form.name,
     form.alias,
-    form.defaultBranch,
     form.assetsPath,
     form.publicPageEnabled,
     form.githubInstallation,
