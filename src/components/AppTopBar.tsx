@@ -35,12 +35,14 @@ const ProfileDropdown: FC<{}> = () => {
     <Menu as="div" className="ml-3 relative">
       <div>
         <Menu.Button className="max-w-xs flex items-center text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
-          <div className="relative ml-2 pr-[40px] mr-4 flex">
-            <div className="font-medium text-sm text-gray-800">
+          <div className="ml-2 mr-4 flex">
+            <div className="font-medium text-sm text-gray-800 mr-1">
               {user.user.name}
             </div>
-            <div className="absolute top-0 right-0 text-xs font-medium bg-zinc-600 text-white px-2 rounded-lg">
-              {user.personalOrganization.organizationPlan.name}
+            <div>
+              <div className="text-xs font-medium bg-zinc-600 text-white px-2 rounded-lg">
+                {user.personalOrganization.organizationPlan.name}
+              </div>
             </div>
           </div>
           <span className="sr-only">Open user menu</span>
@@ -132,12 +134,14 @@ export const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
                     />
                   )}
                 </div>
-                <div className="ml-3">
-                  <div className="text-base font-medium text-gray-800">
+                <div className="ml-3 flex">
+                  <div className="text-base font-medium text-gray-800 mr-1">
                     {user.user.name}
                   </div>
-                  <div className="text-sm font-medium text-gray-500">
-                    {user.personalOrganization.organizationPlan.name}
+                  <div>
+                    <div className="text-xs font-medium bg-zinc-600 text-white px-2 rounded-lg">
+                      {user.personalOrganization.organizationPlan.name}
+                    </div>
                   </div>
                 </div>
               </div>
