@@ -11,6 +11,7 @@ import { withProject } from "@utils/withProject";
 import { BadRequestError, NotAllowedError } from "@utils/httpErrors";
 import { getProjectInstallation } from "@utils/getProjectInstallation";
 import { getProjectRepository, Repository } from "@utils/getProjectRepository";
+import { getRepositoryBranches } from "@utils/getRepositoryBranches";
 
 export const config = {
   api: {
@@ -31,15 +32,6 @@ async function parseForm(req: NextApiRequest) {
       });
     });
   });
-}
-
-async function getRepositoryBranches(repository: Repository, octokit: Octokit) {
-  const branches = await octokit.request("GET /repos/{owner}/{repo}/branches", {
-    owner: repository.owner.login as string,
-    repo: repository.name as string,
-  });
-
-  return branches.data;
 }
 
 async function createBranch(
