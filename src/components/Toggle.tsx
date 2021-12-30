@@ -26,7 +26,10 @@ export const Toggle: FC<ToggleProps> = ({
         {label}
       </Switch.Label>
       {description && (
-        <Switch.Description as="span" className="text-sm text-gray-500">
+        <Switch.Description
+          as="span"
+          className="text-sm text-gray-500 truncate"
+        >
           {description}
         </Switch.Description>
       )}

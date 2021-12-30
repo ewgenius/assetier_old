@@ -69,7 +69,12 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
           "flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 md:space-x-4"
       )}
     >
-      <div className="sm:flex-1 sm:flex-shrink-0">
+      <div
+        className={classNames(
+          layout === "row" && "flex-1 flex-shrink-0",
+          !layout && "sm:flex-1 sm:flex-shrink-0"
+        )}
+      >
         <GithubAccountSelector
           accounts={accounts}
           selectedAccount={selectedAccount}
@@ -79,7 +84,12 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
       </div>
 
       {(selectedAccount || connection) && (
-        <div className="sm:flex-1 sm:flex-shrink-0">
+        <div
+          className={classNames(
+            layout === "row" && "flex-1 flex-shrink-0",
+            !layout && "sm:flex-1 sm:flex-shrink-0"
+          )}
+        >
           <GithubRepositorySelector
             disabled={!selectedAccount}
             repositories={repositories}
@@ -93,7 +103,12 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
       )}
 
       {(selectedRepository || connection) && (
-        <div className="sm:flex-1 sm:flex-shrink-0 sm:max-w-[220px]">
+        <div
+          className={classNames(
+            layout === "row" && "flex-1 flex-shrink-0 max-w-[220px]",
+            !layout && "sm:flex-1 sm:flex-shrink-0 sm:max-w-[220px]"
+          )}
+        >
           <GithubBranchSelector
             disabled={!selectedRepository}
             branches={branches}

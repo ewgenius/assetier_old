@@ -79,24 +79,12 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           onChange={form.setName}
         />
 
-        <TextInput
-          id="project-alias"
-          name="project-alias"
-          label="Project alias"
-          placeholder="if not set, will be generated"
-          disabled={reachedLimit || creating}
-          value={form.alias}
-          onChange={form.setAlias}
-        />
-
         <div className="border-b border-gray-200" />
 
         <GithubConnector
           onChange={form.setGithubInstallation}
           layout="column"
         />
-
-        <div className="border-b border-gray-200" />
 
         <TextInput
           id="assets-path"
@@ -108,11 +96,28 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           onChange={form.setAssetsPath}
         />
 
+        <div className="border-b border-gray-200" />
+
         <Toggle
           label="Enable public page?"
+          description={`https://assetier.app/public/${
+            form.alias || "<project-alias>"
+          }`}
           checked={form.publicPageEnabled}
           onChange={form.setPublicPageEnabled}
         />
+
+        {form.publicPageEnabled && (
+          <TextInput
+            id="project-alias"
+            name="project-alias"
+            label="Project alias"
+            placeholder="if not set, will be generated"
+            disabled={reachedLimit || creating}
+            value={form.alias}
+            onChange={form.setAlias}
+          />
+        )}
       </SlideOverBody>
 
       <SlideOverFooter>

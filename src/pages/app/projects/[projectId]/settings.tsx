@@ -65,29 +65,14 @@ export const ProjectSettingsPage: NextPageExtended<
               onChange={form.setName}
             />
 
-            <TextInput
-              id="project-alias"
-              name="project-alias"
-              label="Project alias"
-              placeholder="if not set, will be generated"
-              disabled={updating}
-              value={form.alias}
-              onChange={form.setAlias}
+            <div className="border-b border-gray-200 my-4" />
+
+            <GithubConnector
+              connection={form.githubInstallation}
+              onChange={form.setGithubInstallation}
+              layout="column"
             />
 
-            {/* <GithubBranchSelector
-              branches={branches}
-              defaultBranchName={form.defaultBranch || "main"}
-              selectedBranch={selectedBranch}
-              onChange={(branch) => {
-                setSelectedBranch(branch);
-                form.setDefaultBranchValue(branch?.name || "");
-              }}
-            /> */}
-          </div>
-          <div className="border-b border-gray-200 sm:hidden" />
-
-          <div className="flex-1 space-y-4">
             <TextInput
               id="assets-path"
               name="assets-path"
@@ -97,50 +82,58 @@ export const ProjectSettingsPage: NextPageExtended<
               value={form.assetsPath}
               onChange={form.setAssetsPath}
             />
+
+            <div className="border-b border-gray-200 my-4" />
+
             <Toggle
               label="Enable public page?"
+              description={`https://assetier.app/public/${
+                form.alias || "<project-alias>"
+              }`}
               checked={form.publicPageEnabled}
               onChange={form.setPublicPageEnabled}
             />
+            {form.publicPageEnabled && (
+              <TextInput
+                id="project-alias"
+                name="project-alias"
+                label="Project alias"
+                placeholder="if not set, will be generated"
+                disabled={updating}
+                value={form.alias}
+                onChange={form.setAlias}
+              />
+            )}
+
+            <div className="border-b border-gray-200 my-4" />
+
+            <button
+              type="submit"
+              disabled={updating || !form.isValid}
+              className="inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+            >
+              <span>Update</span>
+              {updating && <Spinner className="ml-2" />}
+            </button>
+
+            <div className="border-b border-gray-200 my-4" />
+
+            <button
+              type="button"
+              onClick={() =>
+                deleteProject().then(() => {
+                  router.push("/app");
+                })
+              }
+              disabled={updating || deleting}
+              className="inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+            >
+              <span>Delete project</span>
+              {deleting && <Spinner className="ml-2" />}
+            </button>
           </div>
-        </div>
 
-        <div className="border-b border-gray-200 my-4" />
-
-        <GithubConnector
-          connection={form.githubInstallation}
-          onChange={form.setGithubInstallation}
-        />
-
-        <div className="border-b border-gray-200 my-4" />
-
-        <div>
-          <button
-            type="submit"
-            disabled={updating || !form.isValid}
-            className="inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-          >
-            <span>Update</span>
-            {updating && <Spinner className="ml-2" />}
-          </button>
-        </div>
-
-        <div className="border-b border-gray-200 my-4" />
-
-        <div>
-          <button
-            type="button"
-            onClick={() =>
-              deleteProject().then(() => {
-                router.push("/app");
-              })
-            }
-            disabled={updating || deleting}
-            className="inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
-          >
-            <span>Delete project</span>
-            {deleting && <Spinner className="ml-2" />}
-          </button>
+          <div className="flex-1 space-y-4" />
         </div>
       </form>
     </LayoutBlock>
