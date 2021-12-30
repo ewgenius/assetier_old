@@ -1,6 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useRouter } from "next/router";
 
-import type { NextPageExtended } from "@utils/types";
+import type { GithubBranch, NextPageExtended } from "@utils/types";
 import {
   ProjectPageWrapper,
   ProjectPageWrapperProps,
@@ -12,7 +13,8 @@ import { Spinner } from "@components/Spinner";
 import { TextInput } from "@components/TextInput";
 import { Toggle } from "@components/Toggle";
 import { useProjectUpdater } from "@hooks/useProjectUpdater";
-import { useRouter } from "next/router";
+import { useGithubRepositoryBranches } from "@hooks/useProjectBranches";
+import { GithubBranchSelector } from "@components/GithubConnector/GithubBranchSelector";
 
 export const ProjectSettingsPage: NextPageExtended<
   {},
@@ -23,6 +25,11 @@ export const ProjectSettingsPage: NextPageExtended<
   const project = useProjectContext();
   const { updateProject, updating, deleteProject, deleting, form } =
     useProjectUpdater(project);
+
+  const [selectedBranch, setSelectedBranch] = useState<GithubBranch | null>(
+    null
+  );
+  const { branches } = useGithubRepositoryBranches(project);
 
   const submit = useCallback(() => {
     if (form.isValid) {
@@ -74,14 +81,14 @@ export const ProjectSettingsPage: NextPageExtended<
               onChange={form.setAlias}
             />
 
-            <TextInput
-              id="default-branch"
-              name="default-branch"
-              label="Default branch"
-              placeholder="main"
-              disabled={updating}
-              value={form.defaultBranch}
-              onChange={form.setDefaultBranch}
+            <GithubBranchSelector
+              branches={branches}
+              defaultBranchName={form.defaultBranch || "main"}
+              selectedBranch={selectedBranch}
+              onChange={(branch) => {
+                setSelectedBranch(branch);
+                form.setDefaultBranchValue(branch?.name || "");
+              }}
             />
           </div>
           <div className="border-b border-gray-200 sm:hidden" />

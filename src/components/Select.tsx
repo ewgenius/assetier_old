@@ -1,4 +1,4 @@
-import { FC, Fragment, ReactNode } from "react";
+import { FC, Fragment, ReactNode, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 
@@ -7,10 +7,12 @@ import { Spinner } from "@components/Spinner";
 
 export interface SelectProps<T = any> {
   label?: string;
+  placeholder?: string;
   items?: T[];
   selectedItem: T | null;
   onChange: (item: T | null) => void;
-  renderButton: (item: T | null) => ReactNode;
+  renderButton: (item: T) => ReactNode;
+  preselectedId?: string;
   getItemId: (item: T) => string;
   renderBefore?: () => ReactNode;
   renderItem: (
@@ -21,26 +23,43 @@ export interface SelectProps<T = any> {
 
 export const Select: FC<SelectProps> = ({
   label,
+  placeholder,
   items,
   selectedItem,
   onChange,
   renderButton,
+  preselectedId,
   getItemId,
   renderBefore,
   renderItem,
 }) => {
+  useEffect(() => {
+    if (items && items.length > 0 && !selectedItem && preselectedId) {
+      const item = items.find((i) => getItemId(i) === preselectedId);
+      if (item) {
+        onChange(item);
+      }
+    }
+  }, [items, preselectedId, selectedItem]);
+
   return (
     <Listbox value={selectedItem} onChange={onChange}>
       {({ open }) => (
         <>
           {label && (
-            <Listbox.Label className="block text-sm font-medium text-gray-700">
+            <Listbox.Label className="mb-1 block text-sm font-medium text-gray-700">
               {label}
             </Listbox.Label>
           )}
-          <div className="mt-1 relative">
+          <div className="relative">
             <Listbox.Button className="bg-white cursor-pointer relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm">
-              {renderButton(selectedItem)}
+              {selectedItem ? (
+                renderButton(selectedItem)
+              ) : (
+                <span className="block truncate text-gray-500">
+                  {placeholder}
+                </span>
+              )}
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 {items ? (
                   <SelectorIcon

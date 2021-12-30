@@ -98,5 +98,10 @@ export function useProjectForm(project?: Partial<Project>) {
     setDefaultBranch,
     setPublicPageEnabled,
     setGithubInstallation,
+
+    setNameValue,
+    setAliasValue,
+    setAssetsPathValue,
+    setDefaultBranchValue,
   };
 }

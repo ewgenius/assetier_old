@@ -29,27 +29,22 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
         <>
           <Select
             label="Github Account"
+            placeholder="Select Github account"
             selectedItem={selectedAccount}
             items={accounts}
             onChange={onChange}
-            renderButton={() =>
-              selectedAccount ? (
-                <span className="flex items-center">
-                  <img
-                    src={selectedAccount.accountAvatarUrl}
-                    alt=""
-                    className="flex-shrink-0 h-5 w-5 border border-zinc-200 bg-white rounded-full"
-                  />
-                  <span className="ml-3 block truncate">
-                    {selectedAccount.accountLogin}
-                  </span>
+            renderButton={(account) => (
+              <span className="flex items-center">
+                <img
+                  src={account.accountAvatarUrl}
+                  alt=""
+                  className="flex-shrink-0 h-5 w-5 border border-zinc-200 bg-white rounded-full"
+                />
+                <span className="ml-3 block truncate">
+                  {account.accountLogin}
                 </span>
-              ) : (
-                <span className="block truncate text-gray-500">
-                  Select Github Account
-                </span>
-              )
-            }
+              </span>
+            )}
             renderBefore={() => (
               <li>
                 <AddGithubAccountButton mode="option" />

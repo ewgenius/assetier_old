@@ -74,3 +74,24 @@ export interface GithubFile {
     html: string;
   };
 }
+
+export interface GithubBranch {
+  name: string;
+  commit: {
+    sha: string;
+    url: string;
+  };
+  protected: boolean;
+  protection?: {
+    url?: string;
+    enabled?: boolean;
+    required_status_checks?: {
+      url?: string;
+      enforcement_level?: string;
+      contexts: string[];
+      contexts_url?: string;
+      strict?: boolean;
+    };
+  };
+  protection_url?: string;
+}

@@ -4,7 +4,10 @@ import type { GithubFile } from "@utils/types";
 import { getProjectInstallation } from "./getProjectInstallation";
 import { getProjectRepository } from "@utils/getProjectRepository";
 
-export async function getProjectRepositoryContents(project: Project) {
+export async function getProjectRepositoryContents(
+  project: Project,
+  branch?: string
+) {
   const installation = await getProjectInstallation(project);
   const octokit = await getOctokit(installation.installationId);
   const repository = await getProjectRepository(project, octokit);
@@ -15,6 +18,7 @@ export async function getProjectRepositoryContents(project: Project) {
       owner: repository.owner.login as string,
       repo: repository.name as string,
       path: project.assetsPath,
+      ref: `${branch || project.defaultBranch}`,
     }
   );
 

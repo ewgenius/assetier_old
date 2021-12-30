@@ -34,20 +34,15 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
   return (
     <Select
       label="Repository"
+      placeholder="Select Repository"
       items={repositories}
       selectedItem={selectedRepository}
       onChange={selectRepository}
-      renderButton={() =>
-        selectedRepository ? (
-          <span className="block truncate">
-            @{selectedRepository.owner.login}/{selectedRepository.name}
-          </span>
-        ) : (
-          <span className="block truncate text-gray-500">
-            Select Repository
-          </span>
-        )
-      }
+      renderButton={(repository) => (
+        <span className="block truncate">
+          @{repository.owner.login}/{repository.name}
+        </span>
+      )}
       getItemId={(repository: Repository) => String(repository.id)}
       renderItem={(repository: Repository, { selected }) => (
         <span
