@@ -1,26 +1,19 @@
-import { FC, useCallback, useEffect, useState } from "react";
-import type { GithubInstallation, Project } from "@prisma/client";
+import { FC, useCallback, useState } from "react";
+import type { GithubInstallation } from "@prisma/client";
 
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
-
-import { GithubAccountSelector } from "./GithubAccountSelector";
-import { GithubRepositorySelector } from "./GithubRepositorySelector";
 import {
   Repository,
   useGithubAccountRepositories,
 } from "@hooks/useGithubAccountRepositories";
-import { GithubBranchSelector } from "./GithubBranchSelector";
 import { useGithubRepositoryBranches } from "@hooks/useGithubRepositoryBranches";
-import { GithubBranch } from "@utils/types";
+import type { GithubBranch, GithubConnection } from "@utils/types";
+import { GithubBranchSelector } from "./GithubBranchSelector";
+import { GithubAccountSelector } from "./GithubAccountSelector";
+import { GithubRepositorySelector } from "./GithubRepositorySelector";
 
 export interface GithubConnectorProps {
-  onChange: (
-    data:
-      | (Pick<Project, "githubInstallationId" | "repositoryId"> & {
-          branch: string;
-        })
-      | null
-  ) => void;
+  onChange: (data: GithubConnection | null) => void;
 }
 
 export const GithubConnector: FC<GithubConnectorProps> = ({ onChange }) => {

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Project } from "@prisma/client";
 
 import { useInputState } from "@hooks/useInputState";
+import { GithubConnection } from "@utils/types";
 
 export function useProjectForm(project?: Partial<Project>) {
   const [name, setName, resetName, setNameValue] = useInputState(project?.name);
@@ -14,23 +15,19 @@ export function useProjectForm(project?: Partial<Project>) {
   const [publicPageEnabled, setPublicPageEnabled] = useState(
     project?.publicPageEnabled !== undefined ? project.publicPageEnabled : false
   );
-  const [githubInstallation, setGithubInstallation] = useState<
-    | (Pick<Project, "githubInstallationId" | "repositoryId"> & {
-        branch: string;
-      })
-    | null
-  >(
-    project &&
-      project.githubInstallationId &&
-      project.repositoryId &&
-      project.defaultBranch
-      ? {
-          githubInstallationId: project.githubInstallationId,
-          repositoryId: project.repositoryId,
-          branch: project.defaultBranch,
-        }
-      : null
-  );
+  const [githubInstallation, setGithubInstallation] =
+    useState<GithubConnection | null>(
+      project &&
+        project.githubInstallationId &&
+        project.repositoryId &&
+        project.defaultBranch
+        ? {
+            githubInstallationId: project.githubInstallationId,
+            repositoryId: project.repositoryId,
+            branch: project.defaultBranch,
+          }
+        : null
+    );
 
   const reset = useCallback(() => {
     if (project) {

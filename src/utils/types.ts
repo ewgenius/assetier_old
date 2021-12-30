@@ -1,8 +1,13 @@
 import type { NextComponentType, NextPage, NextPageContext } from "next";
 import type { AppProps } from "next/app";
 import type { Session } from "next-auth/core/types";
-import type { User, Organization, OrganizationPlan } from "@prisma/client";
-import { ComponentType, ReactNode } from "react";
+import type {
+  User,
+  Organization,
+  OrganizationPlan,
+  Project,
+} from "@prisma/client";
+import type { ComponentType } from "react";
 
 export type WithNavId<W = {}> = {
   type: "site" | "app";
@@ -36,6 +41,13 @@ export interface UserResponse {
   user: UserWithOrganizations;
   personalOrganization: OrganizationWithPlan;
 }
+
+export type GithubConnection = Pick<
+  Project,
+  "githubInstallationId" | "repositoryId"
+> & {
+  branch: string;
+};
 
 export interface GithubCommit {
   url: string;
