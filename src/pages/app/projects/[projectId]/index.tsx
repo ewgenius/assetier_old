@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { GithubBranch, GithubFile, NextPageExtended } from "@utils/types";
 import { AssetsGrid } from "@components/AssetsGrid";
 import {
@@ -7,7 +8,6 @@ import {
 import type { ProjectPageWrapperProps } from "@components/PageWrappers/ProjectWrapper";
 import { UploadSlideOver } from "@components/UploadSlideOver";
 import { AssetDetailsSlideOver } from "@components/AssetDetailsSlideOver";
-import { useEffect, useState } from "react";
 import { useProjectContents } from "@hooks/useProjectContents";
 import { useProjectBranches } from "@hooks/useProjectBranches";
 import { useDelayedInputState } from "@hooks/useInputState";
@@ -28,20 +28,20 @@ export const ProjectPage: NextPageExtended<{}, {}, ProjectPageWrapperProps> =
     const [selectedAsset, setSelectedAsset] = useState<GithubFile | null>(null);
     const [query, delayedQuery, setQuery, delaying] = useDelayedInputState();
 
-    useEffect(() => {
-      if (
-        selectedBranch &&
-        branches &&
-        project.defaultBranch !== selectedBranch.name
-      ) {
-        const newBranch = branches.find(
-          (b) => b.name === project.defaultBranch
-        );
-        if (newBranch) {
-          setSelectedBranch(newBranch);
-        }
-      }
-    }, [project.defaultBranch, branches, selectedBranch]);
+    // useEffect(() => {
+    //   if (
+    //     selectedBranch &&
+    //     branches &&
+    //     project.defaultBranch !== selectedBranch.name
+    //   ) {
+    //     const newBranch = branches.find(
+    //       (b) => b.name === project.defaultBranch
+    //     );
+    //     if (newBranch) {
+    //       setSelectedBranch(newBranch);
+    //     }
+    //   }
+    // }, [project.defaultBranch, branches, selectedBranch]);
 
     return (
       <>
