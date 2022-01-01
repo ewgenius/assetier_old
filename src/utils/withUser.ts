@@ -5,7 +5,7 @@ import type {
   NextApiHandlerWithUser,
   NextApiRequestWithUser,
 } from "@utils/types";
-import { NotFoundError } from "./httpErrors";
+import { ForbiddenError, NotFoundError } from "./httpErrors";
 
 export const withUser = <T = any>(handler: NextApiHandlerWithUser<T>) =>
   withSession(async (req: NextApiRequestWithSession, res) => {
@@ -17,6 +17,10 @@ export const withUser = <T = any>(handler: NextApiHandlerWithUser<T>) =>
 
     if (!user) {
       throw new NotFoundError("User not found.");
+    }
+
+    if (!user.verified) {
+      throw new ForbiddenError();
     }
 
     (req as NextApiRequestWithUser).user = user;

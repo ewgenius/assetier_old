@@ -24,6 +24,10 @@ export const withOrganization = <T = any>(
       throw new NotFoundError("User not found.");
     }
 
+    if (!user.verified) {
+      throw new ForbiddenError();
+    }
+
     const organization = await prisma.organization.findUnique({
       where: {
         id: req.query.organizationId as string,

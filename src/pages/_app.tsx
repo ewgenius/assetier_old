@@ -32,6 +32,14 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
     );
   }
 
+  if (!user.user.verified) {
+    return (
+      <div className="min-h-screen">
+        <LayoutBlock>Hello {user.user.name}, you are in waitlist</LayoutBlock>
+      </div>
+    );
+  }
+
   return (
     <AppContext.Provider
       value={{
