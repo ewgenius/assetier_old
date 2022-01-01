@@ -17,7 +17,7 @@
     "@octokit/app": "^12.0.5",
     "@octokit/auth-app": "^3.6.1",
     "@octokit/core": "^3.5.1",
-    "@prisma/client": "^3.6.0",
+    "@prisma/client": "^3.7.0",
     "@tailwindcss/forms": "^0.4.0",
     "formidable": "^2.0.1",
     "next": "12.0.7",
