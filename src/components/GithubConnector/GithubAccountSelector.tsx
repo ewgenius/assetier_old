@@ -38,7 +38,7 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
             selectedItem={selectedAccount}
             items={accounts}
             onChange={onChange}
-            renderButton={(account) => (
+            renderButton={(account: GithubInstallation) => (
               <span className="flex items-center">
                 <img
                   src={account.accountAvatarUrl}

@@ -28,7 +28,7 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
         items={repositories}
         selectedItem={selectedRepository}
         onChange={onChange}
-        renderButton={(repository: Repository | null) => (
+        renderButton={(repository: Repository) => (
           <span className="block truncate">
             @{repository.owner.login}/{repository.name}
           </span>

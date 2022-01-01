@@ -6,7 +6,8 @@ import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import { classNames } from "@utils/classNames";
 import { Spinner } from "@components/Spinner";
 
-export interface SelectProps<T = {}> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface SelectProps<T = any> {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
