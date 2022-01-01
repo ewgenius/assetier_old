@@ -2,7 +2,8 @@ import type { NextApiResponse } from "next";
 import type { User } from "@prisma/client";
 import type { OrganizationWithPlan } from "./types";
 import { prisma } from "@utils/prisma";
-import { withSession, NextApiRequestWithSession } from "@utils/withSession";
+import { withSession } from "@utils/withSession";
+import type { NextApiRequestWithSession } from "@utils/withSession";
 import { ForbiddenError, NotFoundError } from "./httpErrors";
 
 export type NextApiRequestWithOrganization = NextApiRequestWithSession & {
