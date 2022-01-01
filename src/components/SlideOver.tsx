@@ -1,4 +1,5 @@
-import { FC, Fragment, PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import { classNames } from "@utils/classNames";
@@ -118,7 +119,9 @@ export const SlideOverHeading: FC<SlideOverHeadingProps> = ({
   );
 };
 
-export const SlideOverFooter: FC<PropsWithChildren<{}>> = ({ children }) => (
+export const SlideOverFooter: FC<PropsWithChildren<{}>> = ({
+  children,
+}) => (
   <div className="flex-shrink-0 px-4 py-4 flex justify-end border-t border-gray-200">
     {children}
   </div>

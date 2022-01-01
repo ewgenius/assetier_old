@@ -1,7 +1,7 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { Select } from "@components/Select";
-import { GithubBranch } from "@utils/types";
+import type { GithubBranch } from "@utils/types";
 import { classNames } from "@utils/classNames";
 
 export interface GithubBranchSelectorProps {

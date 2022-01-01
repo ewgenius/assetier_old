@@ -20,7 +20,7 @@ export type NextPageExtended<P = {}, IP = P, W = {}> = NextPage<P, IP> &
   WithNavId<W>;
 
 export type AppPropsExtended<P = {}> = AppProps<P> & {
-  Component: NextComponentType<NextPageContext, any, P> & WithNavId;
+  Component: NextComponentType<NextPageContext, {}, P> & WithNavId;
 };
 
 export type SessionWithId = Session & {
@@ -40,6 +40,11 @@ export type OrganizationWithPlan = Organization & {
 export interface UserResponse {
   user: UserWithOrganizations;
   personalOrganization: OrganizationWithPlan;
+}
+
+export interface OctokitError {
+  error: string;
+  status: number;
 }
 
 export type GithubConnection = Pick<

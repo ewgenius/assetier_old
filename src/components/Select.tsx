@@ -1,11 +1,12 @@
-import { FC, Fragment, ReactNode, useEffect } from "react";
+import type { FC, ReactNode } from "react";
+import { Fragment, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 
 import { classNames } from "@utils/classNames";
 import { Spinner } from "@components/Spinner";
 
-export interface SelectProps<T = any> {
+export interface SelectProps<T = {}> {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -42,7 +43,7 @@ export const Select: FC<SelectProps> = ({
         onChange(item);
       }
     }
-  }, [items, preselectedId, selectedItem]);
+  }, [items, preselectedId, selectedItem, getItemId, onChange]);
 
   return (
     <Listbox value={selectedItem} onChange={onChange} disabled={disabled}>

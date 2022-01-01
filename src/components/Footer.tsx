@@ -1,5 +1,6 @@
-import { FC } from "react";
-import { LayoutBlock, LayoutBlockProps } from "./LayoutBlock";
+import type { FC } from "react";
+import type { LayoutBlockProps } from "./LayoutBlock";
+import { LayoutBlock } from "./LayoutBlock";
 
 export const Footer: FC<Pick<LayoutBlockProps, "mode">> = ({ mode }) => {
   return (

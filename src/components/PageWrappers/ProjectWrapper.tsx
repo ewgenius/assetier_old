@@ -1,4 +1,5 @@
-import { createContext, FC, PropsWithChildren, useContext } from "react";
+import type { FC, PropsWithChildren} from "react";
+import { createContext, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 

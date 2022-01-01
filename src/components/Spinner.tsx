@@ -1,4 +1,4 @@
-import { FC, SVGProps } from "react";
+import type { FC, SVGProps } from "react";
 import { classNames } from "@utils/classNames";
 
 export const Spinner: FC<SVGProps<SVGSVGElement>> = ({ className }) => (

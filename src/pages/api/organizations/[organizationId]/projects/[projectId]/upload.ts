@@ -1,7 +1,8 @@
 import * as fs from "fs";
 import * as crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
-import formidable, { Files, Fields } from "formidable";
+import type { Files, Fields } from "formidable";
+import formidable from "formidable";
 import type { NextApiRequest } from "next";
 import type { Project } from "@prisma/client";
 import type { Octokit } from "@octokit/core";
@@ -10,7 +11,8 @@ import { getOctokit } from "@utils/getOctokit";
 import { withProject } from "@utils/withProject";
 import { BadRequestError, NotAllowedError } from "@utils/httpErrors";
 import { getProjectInstallation } from "@utils/getProjectInstallation";
-import { getProjectRepository, Repository } from "@utils/getProjectRepository";
+import type { Repository } from "@utils/getProjectRepository";
+import { getProjectRepository } from "@utils/getProjectRepository";
 import { getRepositoryBranches } from "@utils/getRepositoryBranches";
 
 export const config = {
@@ -63,7 +65,7 @@ async function prepareFiles(files: formidable.Files): Promise<FileForUpload[]> {
         new Promise<{ file: formidable.File; buffer: Buffer; fileSha: string }>(
           (resolve, reject) =>
             fs.readFile(
-              (file as any as formidable.File).filepath,
+              (file as unknown as formidable.File).filepath,
               (err, buffer) => {
                 if (err) {
                   reject(err);
@@ -74,7 +76,7 @@ async function prepareFiles(files: formidable.Files): Promise<FileForUpload[]> {
                   );
                   const fileSha = hashSum.digest("hex");
                   resolve({
-                    file: file as any as formidable.File,
+                    file: file as unknown as formidable.File,
                     buffer,
                     fileSha,
                   });
@@ -180,7 +182,7 @@ async function mergePullRequest(
   );
 }
 
-export default withProject<any>(async (req, res) => {
+export default withProject(async (req, res) => {
   const { method, project } = req;
   switch (method) {
     case "POST": {

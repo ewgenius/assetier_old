@@ -1,5 +1,5 @@
 import { classNames } from "@utils/classNames";
-import { FC, PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 export interface LayoutBlockProps {
   className?: string;

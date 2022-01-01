@@ -3,7 +3,7 @@ import { HttpError, NotAllowedError } from "@utils/httpErrors";
 import { getProjectInstallation } from "@utils/getProjectInstallation";
 import { getOctokit } from "@utils/getOctokit";
 import { getProjectRepository } from "@utils/getProjectRepository";
-import type { GithubCommit } from "@utils/types";
+import type { GithubCommit, OctokitError } from "@utils/types";
 
 export default withProject<GithubCommit[]>(
   async ({ method, project, query }, res) => {
@@ -33,8 +33,11 @@ export default withProject<GithubCommit[]>(
               },
             })) as GithubCommit[]
           );
-        } catch (err: any) {
-          throw new HttpError(err.error, err.status);
+        } catch (err: unknown) {
+          throw new HttpError(
+            (err as OctokitError).error,
+            (err as OctokitError).status
+          );
         }
       }
 

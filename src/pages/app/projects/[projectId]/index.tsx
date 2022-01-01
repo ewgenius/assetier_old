@@ -1,10 +1,10 @@
-import { GithubBranch, GithubFile, NextPageExtended } from "@utils/types";
+import type { GithubBranch, GithubFile, NextPageExtended } from "@utils/types";
 import { AssetsGrid } from "@components/AssetsGrid";
 import {
   ProjectPageWrapper,
-  ProjectPageWrapperProps,
   useProjectContext,
 } from "@components/PageWrappers/ProjectWrapper";
+import type { ProjectPageWrapperProps } from "@components/PageWrappers/ProjectWrapper";
 import { UploadSlideOver } from "@components/UploadSlideOver";
 import { AssetDetailsSlideOver } from "@components/AssetDetailsSlideOver";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ export const ProjectPage: NextPageExtended<{}, {}, ProjectPageWrapperProps> =
           setSelectedBranch(newBranch);
         }
       }
-    }, [project.defaultBranch]);
+    }, [project.defaultBranch, branches, selectedBranch]);
 
     return (
       <>

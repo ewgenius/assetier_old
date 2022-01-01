@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import type { NextPageExtended } from "@utils/types";
 import {
   ProjectPageWrapper,
-  ProjectPageWrapperProps,
   useProjectContext,
 } from "@components/PageWrappers/ProjectWrapper";
+import type { ProjectPageWrapperProps } from "@components/PageWrappers/ProjectWrapper";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { Spinner } from "@components/Spinner";
 
@@ -29,6 +29,7 @@ export const ProjectSettingsPage: NextPageExtended<
     if (form.isValid) {
       updateProject().then(close);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     form.name,
     form.alias,

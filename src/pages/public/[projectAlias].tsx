@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import type { Project } from "@prisma/client";
 
 import { prisma } from "@utils/prisma";
@@ -7,6 +7,7 @@ import { getProjectRepositoryContents } from "@utils/getProjectRepositoryContent
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { PageHeader } from "@components/PageHeader";
+import { AssetCard } from "@components/AssetsGrid";
 
 export interface ProjectPublicPageProps {
   project?: Pick<Project, "name">;
@@ -24,25 +25,9 @@ export const ProjectPublicPage: NextPage<ProjectPublicPageProps> = ({
     <Page title={() => <PageHeader>{project.name}</PageHeader>}>
       <LayoutBlock>
         <div className="mt-4 grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-1">
-          {contents.map(
-            (asset) =>
-              asset.download_url && (
-                <div key={asset.name} className="m-2">
-                  <a
-                    className="flex flex-col align-middle items-center"
-                    href={asset._links.html}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img
-                      className="w-[24px] h-[24px] mb-1"
-                      src={asset.download_url}
-                    />
-                    <p className="font-mono text-xs">{asset.name}</p>
-                  </a>
-                </div>
-              )
-          )}
+          {contents.map((asset) => (
+            <AssetCard key={asset.sha} asset={asset} />
+          ))}
         </div>
       </LayoutBlock>
     </Page>

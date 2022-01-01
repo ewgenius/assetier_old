@@ -1,6 +1,5 @@
-import { FC } from "react";
+import type { FC } from "react";
 import Link from "next/link";
-import { DotsVerticalIcon } from "@heroicons/react/outline";
 import type { Project } from "@prisma/client";
 
 import { stringToColor } from "@utils/stringToColor";

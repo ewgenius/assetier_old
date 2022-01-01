@@ -1,11 +1,12 @@
-import { FC, useCallback, useState } from "react";
+import type { FC } from "react";
+import { useCallback, useState } from "react";
 import type { Project } from "@prisma/client";
 import { useDropzone } from "react-dropzone";
 import { XIcon } from "@heroicons/react/outline";
 
+import type { SlideOverProps } from "@components/SlideOver";
 import {
   SlideOver,
-  SlideOverProps,
   SlideOverHeading,
   SlideOverFooter,
   SlideOverBody,
@@ -13,7 +14,7 @@ import {
 import { Spinner } from "./Spinner";
 import { useProjectContents } from "@hooks/useProjectContents";
 import { Toggle } from "@components/Toggle";
-import { GithubBranch } from "@utils/types";
+import type { GithubBranch } from "@utils/types";
 
 export interface UploadSlideOverProps extends SlideOverProps {
   project: Project;
@@ -46,18 +47,18 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
     [files]
   );
 
-  const close = () => {
+  const close = useCallback(() => {
     setFiles([]);
     setUploading(false);
     setMerge(false);
     onClose();
-  };
+  }, [setFiles, setUploading, setMerge, onClose]);
 
   const submit = useCallback(() => {
     setUploading(true);
     const data = new FormData();
     files.forEach((file, i) => {
-      data.set(`${file.name}_i`, file);
+      data.set(`${file.name}_${i}`, file);
     });
 
     if (baseBranch) {
@@ -75,7 +76,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
     )
       .then(refresh)
       .finally(close);
-  }, [files, merge, project, baseBranch]);
+  }, [files, merge, project, baseBranch, close, refresh]);
 
   return (
     <SlideOver open={open} onClose={onClose} onSubmit={submit} size="xl">
@@ -123,6 +124,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
                           key={file.name}
                           className="w-4 h-4"
                           src={URL.createObjectURL(file)}
+                          alt={file.name}
                         />
                       </div>
 

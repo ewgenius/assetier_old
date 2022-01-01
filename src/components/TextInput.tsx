@@ -1,5 +1,5 @@
 import { classNames } from "@utils/classNames";
-import { FC, InputHTMLAttributes } from "react";
+import type { FC, InputHTMLAttributes } from "react";
 
 export interface TextInputProps
   extends Pick<

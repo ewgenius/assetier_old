@@ -1,12 +1,5 @@
-import type { GithubFile } from "@utils/types";
 import type { FC } from "react";
-import { LayoutBlock } from "./LayoutBlock";
-import { Spinner } from "./Spinner";
-
-export interface AssetsGridProps {
-  assets?: GithubFile[];
-  onClick?: (asset: GithubFile) => void;
-}
+import type { GithubFile } from "@utils/types";
 
 export interface AssetCardProps {
   asset: GithubFile;
@@ -32,25 +25,5 @@ export const AssetCard: FC<AssetCardProps> = ({ asset, onClick }) => {
         </div>
       </button>
     </div>
-  );
-};
-
-export const AssetsGrid: FC<AssetsGridProps> = ({ assets, onClick }) => {
-  return (
-    <LayoutBlock>
-      {assets && assets.length ? (
-        <div className="flex flex-col">
-          <div className="grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-2">
-            {assets.map((asset) => (
-              <AssetCard key={asset.name} asset={asset} onClick={onClick} />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="flex justify-center py-4">
-          <Spinner />
-        </div>
-      )}
-    </LayoutBlock>
   );
 };

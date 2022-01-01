@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
 import { useSession } from "next-auth/react";
 
-import { AppPropsExtended } from "@utils/types";
+import type { AppPropsExtended } from "@utils/types";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { AuthBlock } from "@components/AuthBlock";
 import { AppTopBar } from "@components/AppTopBar";

@@ -1,11 +1,11 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { SearchIcon } from "@heroicons/react/outline";
 import type { Project } from "@prisma/client";
-import { GithubBranch } from "@utils/types";
+import type { GithubBranch } from "@utils/types";
 import { GithubBranchSelector } from "./GithubConnector/GithubBranchSelector";
 import { LayoutBlock } from "./LayoutBlock";
 import { Spinner } from "./Spinner";
-import { TextInputProps } from "./TextInput";
+import type { TextInputProps } from "./TextInput";
 
 export interface AssetsToolbarProps {
   project: Project;

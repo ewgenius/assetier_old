@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { FC, Fragment, MouseEvent, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
+import type { FC, MouseEvent } from "react";
+import { Fragment } from "react";
+import { signOut } from "next-auth/react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
@@ -87,7 +87,7 @@ const ProfileDropdown: FC<{}> = () => {
   );
 };
 
-export const AppTopBar: FC<AppTopBarProps> = ({ currentNavId }) => {
+export const AppTopBar: FC<AppTopBarProps> = () => {
   const { user } = useMe();
 
   if (!user) {

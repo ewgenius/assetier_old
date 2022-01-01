@@ -3,13 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { prisma } from "@utils/prisma";
-import {
-  OrganizationPlan,
-  OrganizationPlanType,
-  OrganizationType,
-  Role,
-  User,
-} from "@prisma/client";
+import { OrganizationPlanType, OrganizationType, Role } from "@prisma/client";
 
 async function createPersonalOrganization(userId: string) {
   let hobbyPlan = await prisma.organizationPlan.findUnique({

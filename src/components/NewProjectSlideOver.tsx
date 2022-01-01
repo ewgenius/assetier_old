@@ -1,9 +1,10 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import type { FC } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import { Spinner } from "@components/Spinner";
+import type { SlideOverProps } from "@components/SlideOver";
 import {
   SlideOver,
-  SlideOverProps,
   SlideOverHeading,
   SlideOverFooter,
   SlideOverBody,
@@ -29,25 +30,20 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
     [organization, projects]
   );
 
-  const close = () => {
+  const close = useCallback(() => {
     setTimeout(() => form.reset(), 700);
     onClose();
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => form.reset(), []);
 
   const submit = useCallback(() => {
     if (form.isValid) {
       createProject().then(close);
     }
-  }, [
-    form.name,
-    form.alias,
-    form.githubInstallation,
-    form.assetsPath,
-    form.publicPageEnabled,
-    form.isValid,
-  ]);
+  }, [form.isValid, close, createProject]);
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>

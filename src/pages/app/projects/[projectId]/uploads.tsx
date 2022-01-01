@@ -1,10 +1,6 @@
 import type { NextPageExtended } from "@utils/types";
-import { AssetsGrid } from "@components/AssetsGrid";
-import {
-  ProjectPageWrapper,
-  ProjectPageWrapperProps,
-  useProjectContext,
-} from "@components/PageWrappers/ProjectWrapper";
+import type { ProjectPageWrapperProps } from "@components/PageWrappers/ProjectWrapper";
+import { ProjectPageWrapper } from "@components/PageWrappers/ProjectWrapper";
 import { LayoutBlock } from "@components/LayoutBlock";
 
 export const ProjectUploadsPage: NextPageExtended<
@@ -12,7 +8,6 @@ export const ProjectUploadsPage: NextPageExtended<
   {},
   ProjectPageWrapperProps
 > = () => {
-  const project = useProjectContext();
   return <LayoutBlock>uploads...</LayoutBlock>;
 };
 

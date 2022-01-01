@@ -1,11 +1,10 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import type { FC } from "react";
+import { useCallback, useState } from "react";
 import type { GithubInstallation } from "@prisma/client";
 
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
-import {
-  Repository,
-  useGithubAccountRepositories,
-} from "@hooks/useGithubAccountRepositories";
+import type { Repository } from "@hooks/useGithubAccountRepositories";
+import { useGithubAccountRepositories } from "@hooks/useGithubAccountRepositories";
 import { useGithubRepositoryBranches } from "@hooks/useGithubRepositoryBranches";
 import type { GithubBranch, GithubConnection } from "@utils/types";
 import { GithubBranchSelector } from "./GithubBranchSelector";
@@ -58,7 +57,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
           : null
       );
     },
-    [selectedAccount, selectedRepository]
+    [selectedAccount, selectedRepository, onChange]
   );
 
   return (

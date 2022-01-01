@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import type { GithubInstallation } from "@prisma/client";
 
 import { classNames } from "@utils/classNames";

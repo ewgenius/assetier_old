@@ -1,6 +1,4 @@
-import { withProject } from "@utils/withProject";
-import { HttpError, NotAllowedError } from "@utils/httpErrors";
-import { getProjectInstallation } from "@utils/getProjectInstallation";
+import { NotAllowedError } from "@utils/httpErrors";
 import { getOctokit } from "@utils/getOctokit";
 import { withOrganization } from "@utils/withOrganization";
 

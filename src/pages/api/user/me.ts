@@ -1,5 +1,3 @@
-import { Organization } from "@prisma/client";
-
 import { NotAllowedError } from "@utils/httpErrors";
 import { withSession } from "@utils/withSession";
 import { prisma } from "@utils/prisma";

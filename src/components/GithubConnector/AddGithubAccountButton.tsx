@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { PlusSmIcon } from "@heroicons/react/outline";
 
 import { useOrganization } from "@hooks/useOrganization";
@@ -21,7 +21,6 @@ export const AddGithubAccountButton: FC<AddGithubAccountButtonProps> = ({
       }
       onClick={() => {
         const state = organization.id;
-        window.addEventListener("focus", () => {});
         window.open(
           `https://github.com/apps/${process.env.NEXT_PUBLIC_GITHUB_APP_NAME}/installations/new?state=${state}`,
           "winname",

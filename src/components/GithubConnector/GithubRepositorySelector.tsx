@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from "react";
+import type { FC } from "react";
 
 import { classNames } from "@utils/classNames";
-import { Repository } from "@hooks/useGithubAccountRepositories";
+import type { Repository } from "@hooks/useGithubAccountRepositories";
 import { Select } from "@components/Select";
 
 export interface GithubRepositorySelectorProps {
@@ -28,7 +28,7 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
         items={repositories}
         selectedItem={selectedRepository}
         onChange={onChange}
-        renderButton={(repository) => (
+        renderButton={(repository: Repository | null) => (
           <span className="block truncate">
             @{repository.owner.login}/{repository.name}
           </span>

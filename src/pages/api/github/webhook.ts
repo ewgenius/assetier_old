@@ -25,10 +25,7 @@ export default async function handler(
 ) {
   const {
     action,
-    installation: {
-      id: installationId,
-      account: { login, avatar_url, type },
-    },
+    installation: { id: installationId },
   } = req.body as WebhookPayload;
 
   switch (action) {

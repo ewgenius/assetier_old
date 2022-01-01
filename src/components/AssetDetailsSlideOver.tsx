@@ -1,16 +1,15 @@
-import { FC } from "react";
+import type { FC } from "react";
 import type { Project } from "@prisma/client";
 
+import type { SlideOverProps } from "@components/SlideOver";
 import {
   SlideOver,
-  SlideOverProps,
   SlideOverHeading,
   SlideOverBody,
 } from "@components/SlideOver";
 import type { GithubFile } from "@utils/types";
 import { useAssetCommits } from "@hooks/useAssetCommits";
 import { Spinner } from "./Spinner";
-import { classNames } from "@utils/classNames";
 
 export interface AssetDetailsSlideOverProps extends SlideOverProps {
   project: Project;
@@ -39,7 +38,11 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-shrink-0 flex justify-center align-center">
                 <div className="p-4 border border-gray-200 rounded-md">
-                  <img src={asset.download_url} className="w-16 h-16" />
+                  <img
+                    src={asset.download_url}
+                    className="w-16 h-16"
+                    alt={asset.name}
+                  />
                 </div>
               </div>
               <div className="flex-grow flex flex-col text-xs font-mono space-y-2">
@@ -79,6 +82,7 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
                               <img
                                 src={commit.author.avatar_url}
                                 className="border border-gray-200 h-6 w-6 rounded-full"
+                                alt={commit.author.login}
                               />
                             </div>
                             <div className="min-w-0 flex-1 flex justify-between space-x-4">

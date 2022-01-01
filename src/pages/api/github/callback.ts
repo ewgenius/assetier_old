@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { App } from "@octokit/app";
-import { getGithubPrivateKey } from "@utils/getGithubPrivateKey";
+// import { App } from "@octokit/app";
+// import { getGithubPrivateKey } from "@utils/getGithubPrivateKey";
 
 type Data = {
   name: string;
@@ -10,17 +10,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const privateKey = await getGithubPrivateKey();
+  // const privateKey = await getGithubPrivateKey();
 
-  const app = new App({
-    appId: Number(process.env.GITHUB_APP_ID),
-    privateKey,
-    clientId: process.env.GITHUB_APP_CLIENT_ID,
-    clientSecret: process.env.GITHUB_APP_CLIENT_SECRET,
-  });
+  // const app = new App({
+  //   appId: Number(process.env.GITHUB_APP_ID),
+  //   privateKey,
+  //   clientId: process.env.GITHUB_APP_CLIENT_ID,
+  //   clientSecret: process.env.GITHUB_APP_CLIENT_SECRET,
+  // });
 
-  console.log("query", req.query);
-  console.log("body", req.body);
+  // console.log("query", req.query);
+  // console.log("body", req.body);
 
   // const octokit = await app.getInstallationOctokit(
   //   Number(req.query.installation_id)
