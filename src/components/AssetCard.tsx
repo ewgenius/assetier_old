@@ -15,7 +15,7 @@ export const AssetCard: FC<AssetCardProps> = ({ asset, onClick }) => {
       >
         <div className="h-28 w-full p-2 overflow-hidden flex flex-col flex-grow justify-center items-center rounded-md bg-white group-hover:outline outline-offset-2 outline-2 outline-zinc-500">
           <img
-            className="w-[32px] h-[32px]"
+            className="w-[28px] h-[28px]"
             src={asset.download_url}
             alt={asset.name}
           />
