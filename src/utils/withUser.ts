@@ -1,7 +1,8 @@
 import type { NextApiResponse } from "next";
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import { prisma } from "@utils/prisma";
-import { withSession, NextApiRequestWithSession } from "@utils/withSession";
+import { withSession } from "@utils/withSession";
+import type { NextApiRequestWithSession } from "@utils/withSession";
 import { NotFoundError } from "./httpErrors";
 
 export type NextApiRequestWithUser = NextApiRequestWithSession & {
