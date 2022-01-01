@@ -17,12 +17,12 @@ export const AssetsGrid: FC<AssetsGridProps> = ({ assets, onClick }) => {
             {assets.map((asset) => (
               <div key={asset.name} className="flex">
                 <button
-                  className="h-28 max-w-full flex flex-col flex-grow justify-center items-center rounded-md bg-white hover:outline outline-offset-2 outline-2 outline-zinc-500"
+                  className="max-w-full flex flex-col flex-grow justify-center items-center group"
                   onClick={() => onClick && onClick(asset)}
                 >
-                  <div className="p-2 mt-6 overflow-hidden flex flex-col flex-grow justify-center items-center">
+                  <div className="h-28 w-full p-2 overflow-hidden flex flex-col flex-grow justify-center items-center rounded-md bg-white group-hover:outline outline-offset-2 outline-2 outline-zinc-500">
                     <img
-                      className="w-[24px] h-[24px]"
+                      className="w-[32px] h-[32px]"
                       src={asset.download_url}
                     />
                   </div>
