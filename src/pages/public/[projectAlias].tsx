@@ -7,7 +7,7 @@ import { getProjectRepositoryContents } from "@utils/getProjectRepositoryContent
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { PageHeader } from "@components/PageHeader";
-import { AssetCard } from "@components/AssetsGrid";
+import { AssetCard } from "@components/AssetCard";
 
 export interface ProjectPublicPageProps {
   project?: Pick<Project, "name">;
