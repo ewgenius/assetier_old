@@ -1,4 +1,10 @@
-import type { NextComponentType, NextPage, NextPageContext } from "next";
+import type {
+  NextApiRequest,
+  NextApiResponse,
+  NextComponentType,
+  NextPage,
+  NextPageContext,
+} from "next";
 import type { AppProps } from "next/app";
 import type { Session } from "next-auth/core/types";
 import type {
@@ -22,6 +28,38 @@ export type NextPageExtended<P = {}, IP = P, W = {}> = NextPage<P, IP> &
 export type AppPropsExtended<P = {}> = AppProps<P> & {
   Component: NextComponentType<NextPageContext, {}, P> & WithNavId;
 };
+
+export type NextApiRequestWithSession = NextApiRequest & {
+  session: SessionWithId;
+};
+
+export type NextApiRequestWithOrganization = NextApiRequestWithSession & {
+  user: User;
+  organization: OrganizationWithPlan;
+};
+
+export type NextApiRequestWithProject = NextApiRequestWithOrganization & {
+  project: Project;
+};
+
+export type NextApiRequestWithUser = NextApiRequestWithSession & {
+  user: User;
+};
+
+export type NextApiHandlerWithUser<T = any> = (
+  req: NextApiRequestWithUser,
+  res: NextApiResponse<T>
+) => void | Promise<void>;
+
+export type NextApiHandlerWithOrganization<T = any> = (
+  req: NextApiRequestWithOrganization,
+  res: NextApiResponse<T>
+) => void | Promise<void>;
+
+export type NextApiHandlerWithProject<T = any> = (
+  req: NextApiRequestWithProject,
+  res: NextApiResponse<T>
+) => void | Promise<void>;
 
 export type SessionWithId = Session & {
   userId: string;

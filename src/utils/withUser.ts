@@ -1,18 +1,11 @@
-import type { NextApiResponse } from "next";
-import type { User } from "@prisma/client";
 import { prisma } from "@utils/prisma";
 import { withSession } from "@utils/withSession";
-import type { NextApiRequestWithSession } from "@utils/withSession";
+import type {
+  NextApiRequestWithSession,
+  NextApiHandlerWithUser,
+  NextApiRequestWithUser,
+} from "@utils/types";
 import { NotFoundError } from "./httpErrors";
-
-export type NextApiRequestWithUser = NextApiRequestWithSession & {
-  user: User;
-};
-
-export type NextApiHandlerWithUser<T = any> = (
-  req: NextApiRequestWithUser,
-  res: NextApiResponse<T>
-) => void | Promise<void>;
 
 export const withUser = <T = any>(handler: NextApiHandlerWithUser<T>) =>
   withSession(async (req: NextApiRequestWithSession, res) => {
