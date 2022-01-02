@@ -42,7 +42,7 @@ export default withUser(async ({ method, user, body }, res) => {
         data: {
           organizations: {
             create: {
-              isPersonal: true,
+              isPersonal: false,
               role: Role.ADMIN,
               organizationId: newOrganizationId,
             },
