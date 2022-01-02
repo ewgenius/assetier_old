@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { FC, MouseEvent } from "react";
 import { Fragment } from "react";
 import { signOut } from "next-auth/react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, PlusCircleIcon, XIcon } from "@heroicons/react/outline";
 
+import type { OrganizationWithPlan } from "@utils/types";
 import { classNames } from "@utils/classNames";
 import { useMe } from "@hooks/useMe";
 import { OrganizationType } from "@prisma/client";
@@ -30,14 +31,26 @@ export interface AppTopBarProps {
 
 interface OrganizationDropdownProps {
   onCreateOrganizationClick: () => void;
+  onSelectOrganization?: () => void;
 }
 
 const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
   onCreateOrganizationClick,
+  onSelectOrganization,
 }) => {
   const { user } = useMe();
   const { organization: currentOrganization, setOrganization } =
     useOrganization();
+
+  const selectOrganization = useCallback(
+    (organization: OrganizationWithPlan) => {
+      setOrganization(organization);
+      if (onSelectOrganization) {
+        onSelectOrganization();
+      }
+    },
+    [onSelectOrganization, setOrganization]
+  );
 
   if (!user) {
     return null;
@@ -75,7 +88,7 @@ const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
           <Menu.Item key={user.personalOrganization.id}>
             {({ active }) => (
               <button
-                onClick={() => setOrganization(user.personalOrganization)}
+                onClick={() => selectOrganization(user.personalOrganization)}
                 className={classNames(
                   active ||
                     currentOrganization.id === user.personalOrganization.id
@@ -100,7 +113,7 @@ const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
               <Menu.Item key={organization.id}>
                 {({ active }) => (
                   <button
-                    onClick={() => setOrganization(organization)}
+                    onClick={() => selectOrganization(organization)}
                     className={classNames(
                       active || currentOrganization.id === organization.id
                         ? "bg-gray-100"
@@ -205,7 +218,7 @@ export const AppTopBar: FC<AppTopBarProps> = () => {
   return (
     <>
       <Disclosure as="nav" className="bg-gray-100 top-0 left-0 right-0">
-        {({ open }) => (
+        {({ open, close }) => (
           <>
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between h-16">
@@ -238,30 +251,12 @@ export const AppTopBar: FC<AppTopBarProps> = () => {
             <Disclosure.Panel className="sm:hidden">
               <div className="pt-4 pb-3 border-t border-gray-200">
                 <OrganizationDropdown
-                  onCreateOrganizationClick={() => setOpen(true)}
+                  onCreateOrganizationClick={() => {
+                    setOpen(true);
+                    close();
+                  }}
+                  onSelectOrganization={close}
                 />
-
-                {/* <div className="flex items-center px-4">
-                  <div className="flex-shrink-0">
-                    {user.user.image && (
-                      <img
-                        className="h-10 w-10 rounded-full"
-                        src={user.user.image}
-                        alt=""
-                      />
-                    )}
-                  </div>
-                  <div className="ml-3 flex">
-                    <div className="text-base font-medium text-gray-800 mr-1">
-                      {user.user.name}
-                    </div>
-                    <div>
-                      <div className="text-xs font-medium bg-zinc-600 text-white px-2 rounded-lg">
-                        {user.personalOrganization.organizationPlan.name}
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
 
                 <div className="mt-3 space-y-1">
                   {userNavigation.map((item) => (
