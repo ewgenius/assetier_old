@@ -2,7 +2,7 @@ import type { FC, MouseEvent } from "react";
 import { Fragment } from "react";
 import { signOut } from "next-auth/react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { MenuIcon, PlusCircleIcon, XIcon } from "@heroicons/react/outline";
 
 import { classNames } from "@utils/classNames";
 import { useMe } from "@hooks/useMe";
@@ -68,7 +68,7 @@ const ProfileDropdown: FC<{}> = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
           {user.organizations.map((organization) => (
             <Menu.Item key={organization.id}>
               {() => (
@@ -78,16 +78,36 @@ const ProfileDropdown: FC<{}> = () => {
                     currentOrganization.id === organization.id
                       ? "bg-gray-100"
                       : "",
-                    "block w-full px-4 py-2 text-sm text-gray-700 text-left"
+                    "flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 text-left"
                   )}
                 >
-                  {organization.type === OrganizationType.PERSONAL
-                    ? user.user.name
-                    : organization.name}
+                  <div className="flex flex-col">
+                    <span className="text-xs">
+                      {organization.type === OrganizationType.PERSONAL
+                        ? user.user.name
+                        : organization.name}
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      {organization.type === OrganizationType.PERSONAL
+                        ? "personal"
+                        : "team"}
+                    </span>
+                  </div>
                 </button>
               )}
             </Menu.Item>
           ))}
+
+          <Menu.Item>
+            <button
+              // onClick={() => setOrganization(organization)}
+              className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 text-left hover:bg-gray-100"
+            >
+              <span>Create Team</span>
+              <PlusCircleIcon className="w-4 h-4" />
+            </button>
+          </Menu.Item>
+
           <div className="border-b border-gray-200 m-2" />
           {userNavigation.map((item) => (
             <Menu.Item key={item.name}>

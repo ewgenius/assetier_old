@@ -1,9 +1,10 @@
 import "tailwindcss/tailwind.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-import type { AppPropsExtended } from "@utils/types";
+import type { AppPropsExtended, OrganizationWithPlan } from "@utils/types";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { AuthBlock } from "@components/AuthBlock";
 import { AppTopBar } from "@components/AppTopBar";
@@ -12,9 +13,16 @@ import { useMe } from "@hooks/useMe";
 import { AppContext } from "../appContext";
 
 function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
+  const { push } = useRouter();
   const { data: session } = useSession();
   const { user } = useMe();
   const [organization, setOrganization] = useState(user?.personalOrganization);
+
+  const selectOrganization = useCallback(
+    (org: OrganizationWithPlan) =>
+      push("/app").then(() => setOrganization(org)),
+    [setOrganization, push]
+  );
 
   useEffect(() => {
     if (user) {
@@ -44,7 +52,7 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
     <AppContext.Provider
       value={{
         organization: organization,
-        setOrganization: setOrganization,
+        setOrganization: selectOrganization,
       }}
     >
       <div className="min-h-screen">
