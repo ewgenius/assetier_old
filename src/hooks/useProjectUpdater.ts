@@ -8,7 +8,7 @@ import { useProjectForm } from "@hooks/useProjectForm";
 import { useProjects } from "./useProjects";
 
 export function useProjectUpdater(project: Partial<Project>) {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const apiKey = [
     `/api/organizations/${organization.id}/projects/${project.id}`,
     organization,

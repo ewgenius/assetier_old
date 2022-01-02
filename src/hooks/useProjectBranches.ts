@@ -6,7 +6,7 @@ import { useOrganization } from "@hooks/useOrganization";
 import { fetcher } from "@utils/fetcher";
 
 export function useProjectBranches(project: Project) {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { data, error } = useSWR<GithubBranch[]>(
     [
       `/api/organizations/${organization.id}/projects/${project.id}/branches`,

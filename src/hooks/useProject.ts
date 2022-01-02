@@ -4,7 +4,7 @@ import { fetcher } from "@utils/fetcher";
 import { useOrganization } from "@hooks/useOrganization";
 
 export function useProject(projectId: string) {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { data, error } = useSWR<Project>(
     [
       `/api/organizations/${organization.id}/projects/${projectId}`,

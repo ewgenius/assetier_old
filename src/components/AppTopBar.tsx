@@ -6,6 +6,8 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import { classNames } from "@utils/classNames";
 import { useMe } from "@hooks/useMe";
+import { OrganizationType } from "@prisma/client";
+import { useOrganization } from "@hooks/useOrganization";
 
 const userNavigation = [
   { name: "Profile", href: "#" },
@@ -26,6 +28,8 @@ export interface AppTopBarProps {
 
 const ProfileDropdown: FC<{}> = () => {
   const { user } = useMe();
+  const { organization: currentOrganization, setOrganization } =
+    useOrganization();
 
   if (!user) {
     return null;
@@ -65,6 +69,26 @@ const ProfileDropdown: FC<{}> = () => {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          {user.organizations.map((organization) => (
+            <Menu.Item key={organization.id}>
+              {() => (
+                <button
+                  onClick={() => setOrganization(organization)}
+                  className={classNames(
+                    currentOrganization.id === organization.id
+                      ? "bg-gray-100"
+                      : "",
+                    "block w-full px-4 py-2 text-sm text-gray-700 text-left"
+                  )}
+                >
+                  {organization.type === OrganizationType.PERSONAL
+                    ? user.user.name
+                    : organization.name}
+                </button>
+              )}
+            </Menu.Item>
+          ))}
+          <div className="border-b border-gray-200 m-2" />
           {userNavigation.map((item) => (
             <Menu.Item key={item.name}>
               {({ active }) => (

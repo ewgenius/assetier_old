@@ -44,6 +44,7 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
     <AppContext.Provider
       value={{
         organization: organization,
+        setOrganization: setOrganization,
       }}
     >
       <div className="min-h-screen">

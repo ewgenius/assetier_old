@@ -75,9 +75,10 @@ export type OrganizationWithPlan = Organization & {
   organizationPlan: OrganizationPlan;
 };
 
-export interface UserResponse {
+export interface UserMe {
   user: UserWithOrganizations;
   personalOrganization: OrganizationWithPlan;
+  organizations: OrganizationWithPlan[];
 }
 
 export interface OctokitError {

@@ -1,13 +1,9 @@
-import { NotAllowedError } from "@utils/httpErrors";
+import { NotAllowedError, NotFoundError } from "@utils/httpErrors";
 import { withSession } from "@utils/withSession";
 import { prisma } from "@utils/prisma";
-import type {
-  OrganizationWithPlan,
-  UserResponse,
-  UserWithOrganizations,
-} from "@utils/types";
+import type { UserMe, UserWithOrganizations } from "@utils/types";
 
-export default withSession<UserResponse>(async ({ method, session }, res) => {
+export default withSession<UserMe>(async ({ method, session }, res) => {
   switch (method) {
     case "GET": {
       const user = await prisma.user.findUnique({
@@ -16,9 +12,9 @@ export default withSession<UserResponse>(async ({ method, session }, res) => {
         },
         include: {
           organizations: {
-            where: {
-              isPersonal: true,
-            },
+            // where: {
+            //   isPersonal: true,
+            // },
             include: {
               organization: {
                 include: {
@@ -30,10 +26,22 @@ export default withSession<UserResponse>(async ({ method, session }, res) => {
         },
       });
 
+      if (!user) {
+        throw new NotFoundError();
+      }
+
+      const personalOrganization = user.organizations.find(
+        (org) => org.isPersonal
+      );
+
+      if (!personalOrganization) {
+        throw new NotFoundError();
+      }
+
       return res.status(200).send({
         user: user as UserWithOrganizations,
-        personalOrganization: user?.organizations[0]
-          .organization as OrganizationWithPlan,
+        personalOrganization: personalOrganization.organization,
+        organizations: user.organizations.map((org) => org.organization),
       });
     }
 

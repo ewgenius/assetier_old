@@ -4,7 +4,7 @@ import type { GithubCommit } from "@utils/types";
 import { useOrganization } from "@hooks/useOrganization";
 
 export function useAssetCommits(projectId: string, path?: string) {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { data, error } = useSWR<GithubCommit[]>(
     [
       `/api/organizations/${organization.id}/projects/${projectId}/commits?path=${path}`,

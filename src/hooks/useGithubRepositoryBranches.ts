@@ -10,7 +10,7 @@ export function useGithubRepositoryBranches(
   owner?: string,
   repository?: string
 ) {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { data, error } = useSWR<GithubBranch[]>(
     installationId && owner && repository
       ? [

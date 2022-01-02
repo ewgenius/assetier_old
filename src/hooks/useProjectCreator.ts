@@ -7,7 +7,7 @@ import { useProjects } from "@hooks/useProjects";
 import { fetcher } from "@utils/fetcher";
 
 export function useProjectCreator() {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { projects } = useProjects();
   const [creating, setCreating] = useState(false);
   const { mutate } = useSWRConfig();

@@ -4,7 +4,7 @@ import type { GithubFile } from "@utils/types";
 import { useOrganization } from "@hooks/useOrganization";
 
 export function useProjectContents(projectId: string, branch?: string) {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { mutate } = useSWRConfig();
   const { data, error } = useSWR<GithubFile[]>(
     [

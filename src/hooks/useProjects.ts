@@ -5,7 +5,7 @@ import { mapFetcher } from "@utils/fetcher";
 import { useOrganization } from "@hooks/useOrganization";
 
 export function useProjects() {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { data, error } = useSWR<Record<string, Project>>(
     [`/api/organizations/${organization.id}/projects`, organization],
     mapFetcher<Project>((project) => {

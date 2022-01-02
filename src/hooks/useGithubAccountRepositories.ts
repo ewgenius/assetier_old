@@ -12,7 +12,7 @@ export interface Repository {
 }
 
 export function useGithubAccountRepositories(installationId?: number) {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { data, error } = useSWR<Repository[]>(
     installationId
       ? [
