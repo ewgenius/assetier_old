@@ -10,7 +10,7 @@ export interface AddGithubAccountButtonProps {
 export const AddGithubAccountButton: FC<AddGithubAccountButtonProps> = ({
   mode,
 }) => {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   return (
     <button
       type="button"

@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import type { GithubInstallation } from "@prisma/client";
+import { GithubAccountType } from "@prisma/client";
 
 import { classNames } from "@utils/classNames";
 import { Select } from "@components/Select";
@@ -11,6 +12,7 @@ export interface GithubAccountSelectorProps {
   accounts?: GithubInstallation[];
   defaultAccountId?: string;
   disabled?: boolean;
+  disableOrgs?: boolean;
 }
 
 export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
@@ -19,6 +21,7 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
   accounts,
   defaultAccountId,
   disabled,
+  disableOrgs,
 }) => {
   return (
     <>
@@ -59,8 +62,14 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
               </li>
             )}
             preselectedId={defaultAccountId}
-            getItemId={(account) => account.id}
-            renderItem={(account, { selected }) => (
+            getItemId={(account: GithubInstallation) => account.id}
+            isItemDisabled={
+              disableOrgs
+                ? (account: GithubInstallation) =>
+                    account.accountType === GithubAccountType.ORGANIZATION
+                : undefined
+            }
+            renderItem={(account: GithubInstallation, { selected }) => (
               <div className="flex items-center">
                 <img
                   src={account.accountAvatarUrl}
@@ -70,11 +79,17 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
                 <span
                   className={classNames(
                     selected ? "font-semibold" : "font-normal",
-                    "ml-3 block truncate"
+                    "ml-3 block truncate flex-grow"
                   )}
                 >
                   {account.accountLogin}
                 </span>
+                {disableOrgs &&
+                  account.accountType === GithubAccountType.ORGANIZATION && (
+                    <span className="text-xs text-gray-400">
+                      not available on personal account
+                    </span>
+                  )}
               </div>
             )}
           />

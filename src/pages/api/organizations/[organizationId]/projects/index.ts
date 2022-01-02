@@ -30,6 +30,7 @@ export default withOrganization<Project | Project[]>(
           data: {
             name: body.name as string,
             organizationId: organization.id,
+            // TODO: validate project
             ...body,
           },
         });

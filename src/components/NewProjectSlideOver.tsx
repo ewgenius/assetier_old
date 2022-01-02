@@ -18,7 +18,7 @@ import { useProjects } from "@hooks/useProjects";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
-  const organization = useOrganization();
+  const { organization } = useOrganization();
   const { projects } = useProjects();
   const { createProject, creating, form } = useProjectCreator();
 

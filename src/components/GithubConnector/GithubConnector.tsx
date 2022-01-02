@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { GithubInstallation } from "@prisma/client";
+import { GithubAccountType, OrganizationType } from "@prisma/client";
 
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
 import type { Repository } from "@hooks/useGithubAccountRepositories";
@@ -11,6 +12,7 @@ import { GithubBranchSelector } from "./GithubBranchSelector";
 import { GithubAccountSelector } from "./GithubAccountSelector";
 import { GithubRepositorySelector } from "./GithubRepositorySelector";
 import { classNames } from "@utils/classNames";
+import { useOrganization } from "@hooks/useOrganization";
 
 export interface GithubConnectorProps {
   connection?: GithubConnection | null;
@@ -25,9 +27,25 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
   layout,
   disabled,
 }) => {
+  const {
+    organization: { type },
+  } = useOrganization();
   const { accounts } = useGithubAccounts();
   const [selectedAccount, setSelectedAccount] =
     useState<GithubInstallation | null>(null);
+  const selectAccount = useCallback(
+    (account: GithubInstallation | null) => {
+      if (
+        type === OrganizationType.PERSONAL &&
+        account?.accountType !== GithubAccountType.USER
+      ) {
+        return;
+      } else {
+        setSelectedAccount(account);
+      }
+    },
+    [setSelectedAccount, type]
+  );
 
   const { repositories } = useGithubAccountRepositories(
     selectedAccount?.installationId
@@ -80,8 +98,9 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
           accounts={accounts}
           selectedAccount={selectedAccount}
           defaultAccountId={connection?.githubInstallationId}
-          onChange={setSelectedAccount}
+          onChange={selectAccount}
           disabled={disabled}
+          disableOrgs={type === OrganizationType.PERSONAL}
         />
       </div>
 

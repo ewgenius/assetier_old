@@ -21,6 +21,7 @@ export interface SelectProps<T = any> {
     item: T,
     options: { selected?: boolean; active?: boolean }
   ) => ReactNode;
+  isItemDisabled?: (item: T) => boolean;
 }
 
 export const Select: FC<SelectProps> = ({
@@ -35,6 +36,7 @@ export const Select: FC<SelectProps> = ({
   getItemId,
   renderBefore,
   renderItem,
+  isItemDisabled,
 }) => {
   useEffect(() => {
     if (items && items.length > 0 && !selectedItem && preselectedId) {
@@ -96,6 +98,7 @@ export const Select: FC<SelectProps> = ({
                         )
                       }
                       value={item}
+                      disabled={isItemDisabled && isItemDisabled(item)}
                     >
                       {({ selected, active }) => (
                         <>
