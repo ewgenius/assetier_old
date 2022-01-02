@@ -12,9 +12,6 @@ export default withSession<UserMe>(async ({ method, session }, res) => {
         },
         include: {
           organizations: {
-            // where: {
-            //   isPersonal: true,
-            // },
             include: {
               organization: {
                 include: {
