@@ -98,8 +98,10 @@ const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
                 )}
               >
                 <div className="flex flex-col">
-                  <span className="text-xs">{user.user.name}</span>
-                  <span className="text-xs text-gray-400">personal</span>
+                  <span className="text-lg sm:text-xs">{user.user.name}</span>
+                  <span className="text-sm sm:text-xs text-gray-400">
+                    personal
+                  </span>
                 </div>
               </button>
             )}
@@ -122,12 +124,12 @@ const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
                     )}
                   >
                     <div className="flex flex-col">
-                      <span className="text-xs">
+                      <span className="text-lg sm:text-xs">
                         {organization.type === OrganizationType.PERSONAL
                           ? user.user.name
                           : organization.name}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-sm sm:text-xs text-gray-400">
                         {organization.type === OrganizationType.PERSONAL
                           ? "personal"
                           : "team"}
@@ -141,10 +143,10 @@ const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
           <Menu.Item>
             <button
               onClick={() => onCreateOrganizationClick()}
-              className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 text-left hover:bg-gray-100"
+              className="flex items-center justify-between w-full px-4 py-2 text-lg sm:text-sm text-gray-700 text-left hover:bg-gray-100"
             >
               <span>Create New Org</span>
-              <PlusCircleIcon className="w-4 h-4" />
+              <PlusCircleIcon className="sm:w-4 sm:h-4 w-6 h-6" />
             </button>
           </Menu.Item>
         </Menu.Items>
