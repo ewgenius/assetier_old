@@ -88,6 +88,7 @@ enum OrganizationType {
 model Organization {
   id                 String           @id @default(cuid())
   type               OrganizationType @default(PERSONAL)
+  name               String           @default("")
   createdAt          DateTime         @default(now())
   organizationPlanId String
 
