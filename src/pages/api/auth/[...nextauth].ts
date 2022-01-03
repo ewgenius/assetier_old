@@ -50,11 +50,25 @@ async function createPersonalOrganization(userId: string) {
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
+
+  session: {
+    strategy: "jwt",
+  },
+
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+  },
+
   callbacks: {
-    async session({ session, user: { id } }) {
+    async jwt({ token, user }) {
+      user && ((token as any).userId = user.id);
+      return token;
+    },
+
+    async session({ session, token }) {
       return {
         ...session,
-        userId: id,
+        userId: token?.userId,
       };
     },
   },
@@ -80,8 +94,6 @@ export default NextAuth({
     },
 
     createUser: async ({ user }) => {
-      console.log("register", user);
-
       // create personal org
       await createPersonalOrganization(user.id);
     },
