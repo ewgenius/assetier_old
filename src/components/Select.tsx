@@ -9,6 +9,7 @@ import { Spinner } from "@components/Spinner";
 export interface SelectProps<T = any> {
   label?: string;
   placeholder?: string;
+  renderPlaceholder?: () => ReactNode;
   disabled?: boolean;
   items?: T[];
   selectedItem: T | null;
@@ -28,6 +29,7 @@ export const Select: FC<SelectProps> = ({
   label,
   disabled,
   placeholder,
+  renderPlaceholder,
   items,
   selectedItem,
   onChange,
@@ -60,6 +62,8 @@ export const Select: FC<SelectProps> = ({
             <Listbox.Button className="bg-white cursor-pointer relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm">
               {selectedItem ? (
                 renderButton(selectedItem)
+              ) : renderPlaceholder ? (
+                renderPlaceholder()
               ) : (
                 <span className="block truncate text-gray-500">
                   {placeholder}

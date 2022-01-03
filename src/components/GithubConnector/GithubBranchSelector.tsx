@@ -38,6 +38,9 @@ export const GithubBranchSelector: FC<GithubBranchSelectorProps> = ({
       renderButton={(branch) => (
         <span className="block truncate">{branch.name}</span>
       )}
+      renderPlaceholder={() => (
+        <span className="block truncate">{defaultBranchName}</span>
+      )}
       preselectedId={defaultBranchName}
       getItemId={(branch) => branch.name}
       renderItem={(branch, { selected }) => (
