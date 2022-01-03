@@ -1,4 +1,4 @@
-import { Project } from "@prisma/client";
+import type { Project } from "@prisma/client";
 import { getOctokit } from "@utils/getOctokit";
 import type { GithubFile } from "@utils/types";
 import { getProjectInstallation } from "./getProjectInstallation";
