@@ -80,9 +80,9 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
                           <div className="relative flex space-x-3">
                             <div className="">
                               <img
-                                src={commit.author.avatar_url}
+                                src={commit.author?.avatar_url}
                                 className="border border-gray-200 h-6 w-6 rounded-full"
-                                alt={commit.author.login}
+                                alt={commit.author?.login}
                               />
                             </div>
                             <div className="min-w-0 flex-1 flex justify-between space-x-4">
