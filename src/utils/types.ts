@@ -16,8 +16,8 @@ import type {
 import type { ComponentType } from "react";
 
 export type WithNavId<W = {}> = {
-  type: "site" | "app";
-  navId: string;
+  type: "site" | "app" | "auth";
+  navId?: string;
   Wrapper?: ComponentType<W>;
   wrapperProps?: W;
 };

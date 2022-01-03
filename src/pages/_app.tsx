@@ -1,16 +1,16 @@
 import "tailwindcss/tailwind.css";
 import { useCallback, useEffect, useState } from "react";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import type { AppPropsExtended, OrganizationWithPlan } from "@utils/types";
 import { LayoutBlock } from "@components/LayoutBlock";
-import { AuthBlock } from "@components/AuthBlock";
 import { AppTopBar } from "@components/AppTopBar";
 import { Footer } from "@components/Footer";
 import { useMe } from "@hooks/useMe";
 import { AppContext } from "../appContext";
+import { Spinner } from "@components/Spinner";
 
 function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   const { push, query } = useRouter();
@@ -25,6 +25,12 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
       ),
     [setOrganization, push]
   );
+
+  useEffect(() => {
+    if (session === null) {
+      signIn();
+    }
+  }, [session, push]);
 
   useEffect(() => {
     if (user && !organization) {
@@ -44,9 +50,9 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   if (!session || !user || !organization) {
     return (
       <div className="min-h-screen">
-        <LayoutBlock>
-          <AuthBlock />
-        </LayoutBlock>
+        <div className="flex justify-center py-4">
+          <Spinner />
+        </div>
       </div>
     );
   }
@@ -88,6 +94,14 @@ function AppDefault({ Component: Page, pageProps }: AppPropsExtended) {
   );
 }
 
+function AppAuth({ Component: Page, pageProps }: AppPropsExtended) {
+  return (
+    <div className="min-h-screen">
+      <Page {...pageProps} />
+    </div>
+  );
+}
+
 function App(props: AppPropsExtended) {
   switch (props.Component.type) {
     case "app": {
@@ -99,6 +113,14 @@ function App(props: AppPropsExtended) {
         </SessionProvider>
       );
     }
+
+    case "auth":
+      return (
+        <>
+          <AppAuth {...props} />
+          <Footer mode="secondary" />
+        </>
+      );
 
     case "site":
       return (

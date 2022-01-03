@@ -26,7 +26,7 @@ const userNavigation = [
 ];
 
 export interface AppTopBarProps {
-  currentNavId: string;
+  currentNavId?: string;
 }
 
 interface OrganizationDropdownProps {
