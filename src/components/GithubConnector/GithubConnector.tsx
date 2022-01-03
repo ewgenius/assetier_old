@@ -1,8 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { GithubInstallation } from "@prisma/client";
-import { OrganizationPlanType } from "@prisma/client";
-import { GithubAccountType, OrganizationType } from "@prisma/client";
+import { GithubAccountType } from "@prisma/client";
 
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
 import type { Repository } from "@hooks/useGithubAccountRepositories";
@@ -29,23 +28,22 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
   disabled,
 }) => {
   const {
-    organization: { type, organizationPlan },
+    organization: {
+      organizationPlan: { allowGithubOrgs, allowGithubPrivateRepos },
+    },
   } = useOrganization();
   const { accounts } = useGithubAccounts();
   const [selectedAccount, setSelectedAccount] =
     useState<GithubInstallation | null>(null);
   const selectAccount = useCallback(
     (account: GithubInstallation | null) => {
-      if (
-        type === OrganizationType.PERSONAL &&
-        account?.accountType !== GithubAccountType.USER
-      ) {
+      if (!allowGithubOrgs && account?.accountType !== GithubAccountType.USER) {
         return;
       } else {
         setSelectedAccount(account);
       }
     },
-    [setSelectedAccount, type]
+    [setSelectedAccount, allowGithubOrgs]
   );
 
   const { repositories } = useGithubAccountRepositories(
@@ -101,7 +99,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
           defaultAccountId={connection?.githubInstallationId}
           onChange={selectAccount}
           disabled={disabled}
-          disableOrgs={type === OrganizationType.PERSONAL}
+          disableOrgs={!allowGithubOrgs}
         />
       </div>
 
@@ -120,9 +118,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
             defaultRepositoryId={
               connection ? String(connection.repositoryId) : undefined
             }
-            disablePrivateRepos={
-              organizationPlan.planType === OrganizationPlanType.HOBBY
-            }
+            disablePrivateRepos={!allowGithubPrivateRepos}
           />
         </div>
       )}

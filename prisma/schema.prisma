@@ -113,8 +113,10 @@ model OrganizationPlan {
   active    Boolean              @default(true)
   createdAt DateTime             @default(now())
 
-  projectsLimit Int @default(1)
-  usersLimit    Int @default(1)
+  projectsLimit           Int     @default(1)
+  usersLimit              Int     @default(1)
+  allowGithubPrivateRepos Boolean @default(false)
+  allowGithubOrgs         Boolean @default(false)
 
   organizations Organization[]
 
