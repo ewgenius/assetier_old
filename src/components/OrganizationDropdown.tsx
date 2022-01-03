@@ -1,14 +1,65 @@
 import { useCallback } from "react";
 import type { FC } from "react";
 import { Fragment } from "react";
+import Link from "next/link";
 import { Menu, Transition } from "@headlessui/react";
-import { PlusCircleIcon } from "@heroicons/react/outline";
+import {
+  CogIcon,
+  PlusCircleIcon,
+  UserGroupIcon,
+  UserIcon,
+} from "@heroicons/react/outline";
 
 import type { OrganizationWithPlan } from "@utils/types";
 import { classNames } from "@utils/classNames";
 import { useMe } from "@hooks/useMe";
 import { OrganizationType } from "@prisma/client";
 import { useOrganization } from "@hooks/useOrganization";
+
+export interface OrganizationMenuItemProps {
+  organization: OrganizationWithPlan;
+  onClick?: (organization: OrganizationWithPlan) => void;
+  active?: boolean;
+}
+
+export const OrganizationMenuItem: FC<OrganizationMenuItemProps> = ({
+  organization,
+  onClick,
+  active,
+}) => {
+  const { user } = useMe();
+
+  return (
+    <button
+      onClick={onClick && (() => onClick(organization))}
+      className={classNames(
+        active ? "bg-gray-100" : "",
+        !!onClick ? "cursor-pointer hover:bg-gray-100" : "cursor-default",
+        "flex items-center w-full px-4 py-2 text-sm text-gray-700 text-left"
+      )}
+    >
+      <div className="bg-zinc-200 rounded-lg p-2 sm:p-1 mr-2 -ml-1">
+        {organization.type === OrganizationType.PERSONAL ? (
+          <UserIcon className="w-4 h-4" />
+        ) : (
+          <UserGroupIcon className="w-4 h-4" />
+        )}
+      </div>
+      <div className="flex flex-col">
+        <span className="text-md sm:text-xs">
+          {organization.type === OrganizationType.PERSONAL
+            ? user?.user.name
+            : organization.name}
+        </span>
+        <span className="text-sm sm:text-xs text-gray-400">
+          {organization.type === OrganizationType.PERSONAL
+            ? "personal"
+            : "team"}
+        </span>
+      </div>
+    </button>
+  );
+};
 
 export interface OrganizationDropdownProps {
   onCreateOrganizationClick: () => void;
@@ -65,71 +116,40 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-full sm:w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <Menu.Item key={user.personalOrganization.id}>
-            {({ active }) => (
-              <button
-                onClick={() => selectOrganization(user.personalOrganization)}
-                className={classNames(
-                  active ||
-                    currentOrganization.id === user.personalOrganization.id
-                    ? "bg-gray-100"
-                    : "",
-                  "flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 text-left"
-                )}
-              >
-                <div className="flex flex-col">
-                  <span className="text-lg sm:text-xs">{user.user.name}</span>
-                  <span className="text-sm sm:text-xs text-gray-400">
-                    personal
-                  </span>
-                </div>
-              </button>
-            )}
+        <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-full sm:w-56 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <OrganizationMenuItem organization={currentOrganization} />
+
+          <Menu.Item>
+            <Link href={`/app/${currentOrganization.id}/settings`}>
+              <a className="flex items-center w-full px-4 py-2 text-md sm:text-sm text-gray-700 text-left hover:bg-gray-100">
+                <CogIcon className="sm:w-4 sm:h-4 w-6 h-6 mr-3" />
+                <span>Settings</span>
+              </a>
+            </Link>
+          </Menu.Item>
+
+          <Menu.Item>
+            <button
+              onClick={() => onCreateOrganizationClick()}
+              className="flex items-center w-full px-4 py-2 text-md sm:text-sm text-gray-700 text-left hover:bg-gray-100"
+            >
+              <PlusCircleIcon className="sm:w-4 sm:h-4 w-6 h-6 mr-3" />
+              <span>Create New Organization</span>
+            </button>
           </Menu.Item>
 
           <div className="border-b border-gray-200 my-1 mx-2" />
 
           {user.organizations
-            .filter((org) => org.type !== OrganizationType.PERSONAL)
+            .filter((org) => org.id !== currentOrganization.id)
             .map((organization) => (
               <Menu.Item key={organization.id}>
-                {({ active }) => (
-                  <button
-                    onClick={() => selectOrganization(organization)}
-                    className={classNames(
-                      active || currentOrganization.id === organization.id
-                        ? "bg-gray-100"
-                        : "",
-                      "flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 text-left"
-                    )}
-                  >
-                    <div className="flex flex-col">
-                      <span className="text-lg sm:text-xs">
-                        {organization.type === OrganizationType.PERSONAL
-                          ? user.user.name
-                          : organization.name}
-                      </span>
-                      <span className="text-sm sm:text-xs text-gray-400">
-                        {organization.type === OrganizationType.PERSONAL
-                          ? "personal"
-                          : "team"}
-                      </span>
-                    </div>
-                  </button>
-                )}
+                <OrganizationMenuItem
+                  organization={organization}
+                  onClick={(organization) => selectOrganization(organization)}
+                />
               </Menu.Item>
             ))}
-
-          <Menu.Item>
-            <button
-              onClick={() => onCreateOrganizationClick()}
-              className="flex items-center justify-between w-full px-4 py-2 text-lg sm:text-sm text-gray-700 text-left hover:bg-gray-100"
-            >
-              <span>Create New Org</span>
-              <PlusCircleIcon className="sm:w-4 sm:h-4 w-6 h-6" />
-            </button>
-          </Menu.Item>
         </Menu.Items>
       </Transition>
     </Menu>

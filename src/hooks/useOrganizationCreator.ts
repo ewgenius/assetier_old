@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { useSWRConfig } from "swr";
 
+import type { OrganizationWithPlan } from "@utils/types";
 import { fetcher } from "@utils/fetcher";
 import { useInputState } from "./useInputState";
 import { useMe } from "./useMe";
@@ -31,7 +32,7 @@ export function useOrganizationCreator() {
           });
         }
 
-        return organization;
+        return organization as OrganizationWithPlan;
       })
       .finally(() => setCreating(false));
   }, [name, mutate, user]);

@@ -12,11 +12,13 @@ import {
 import { TextInput } from "@components/TextInput";
 
 import { useOrganizationCreator } from "@hooks/useOrganizationCreator";
+import { useOrganization } from "@hooks/useOrganization";
 
 export const NewOrganizationSlideOver: FC<SlideOverProps> = ({
   open,
   onClose,
 }) => {
+  const { setOrganization } = useOrganization();
   const { name, setNameHandler, creating, createOrganization } =
     useOrganizationCreator();
 
@@ -25,8 +27,11 @@ export const NewOrganizationSlideOver: FC<SlideOverProps> = ({
   }, [onClose]);
 
   const submit = useCallback(() => {
-    createOrganization().then(close);
-  }, [createOrganization, close]);
+    createOrganization().then((org) => {
+      setOrganization(org);
+      close();
+    });
+  }, [createOrganization, close, setOrganization]);
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
