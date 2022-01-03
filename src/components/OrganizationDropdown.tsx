@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import type { FC } from "react";
 import { Fragment } from "react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { Menu, Transition } from "@headlessui/react";
 import {
   CogIcon,
@@ -70,6 +70,7 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
   onCreateOrganizationClick,
   onSelectOrganization,
 }) => {
+  const { push } = useRouter();
   const { user } = useMe();
   const { organization: currentOrganization, setOrganization } =
     useOrganization();
@@ -119,16 +120,17 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
         <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-full sm:w-56 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
           <OrganizationMenuItem organization={currentOrganization} />
 
-          <Menu.Item>
-            <Link href={`/app/${currentOrganization.id}/settings`}>
-              <a className="flex items-center w-full px-4 py-2 text-md sm:text-sm text-gray-700 text-left hover:bg-gray-100">
-                <CogIcon className="sm:w-4 sm:h-4 w-6 h-6 mr-3" />
-                <span>Settings</span>
-              </a>
-            </Link>
+          <Menu.Item key="organization-settings">
+            <button
+              onClick={() => push(`/app/${currentOrganization.id}/settings`)}
+              className="flex items-center w-full px-4 py-2 text-md sm:text-sm text-gray-700 text-left hover:bg-gray-100"
+            >
+              <CogIcon className="sm:w-4 sm:h-4 w-6 h-6 mr-3" />
+              <span>Settings</span>
+            </button>
           </Menu.Item>
 
-          <Menu.Item>
+          <Menu.Item key="create-organization">
             <button
               onClick={() => onCreateOrganizationClick()}
               className="flex items-center w-full px-4 py-2 text-md sm:text-sm text-gray-700 text-left hover:bg-gray-100"
