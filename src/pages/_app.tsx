@@ -13,22 +13,33 @@ import { useMe } from "@hooks/useMe";
 import { AppContext } from "../appContext";
 
 function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
-  const { push } = useRouter();
+  const { push, query } = useRouter();
   const { data: session } = useSession();
   const { user } = useMe();
   const [organization, setOrganization] = useState(user?.personalOrganization);
 
   const selectOrganization = useCallback(
     (org: OrganizationWithPlan) =>
-      push("/app").then(() => setOrganization(org)),
+      push("/app/[organizationId]", `/app/${org.id}`).then(() =>
+        setOrganization(org)
+      ),
     [setOrganization, push]
   );
 
   useEffect(() => {
-    if (user) {
-      setOrganization(user.personalOrganization);
+    if (user && !organization) {
+      if (query?.organizationId) {
+        const org = user.organizations.find(
+          (o) => o.id === query.organizationId
+        );
+        if (org) {
+          selectOrganization(org);
+        }
+      } else {
+        selectOrganization(user.personalOrganization);
+      }
     }
-  }, [user]);
+  }, [user, query?.organizationId, selectOrganization, organization]);
 
   if (!session || !user || !organization) {
     return (
