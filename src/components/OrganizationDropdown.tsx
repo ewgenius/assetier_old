@@ -138,7 +138,9 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
             </button>
           </Menu.Item>
 
-          <div className="border-b border-gray-200 my-1 mx-2" />
+          {user.organizations.length > 1 && (
+            <div className="border-b border-gray-200 my-1 mx-2" />
+          )}
 
           {user.organizations
             .filter((org) => org.id !== currentOrganization.id)
