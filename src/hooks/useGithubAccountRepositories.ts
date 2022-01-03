@@ -9,6 +9,7 @@ export interface Repository {
   owner: {
     login: string;
   };
+  private: boolean;
 }
 
 export function useGithubAccountRepositories(installationId?: number) {

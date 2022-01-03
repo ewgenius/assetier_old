@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import type { GithubInstallation } from "@prisma/client";
+import { OrganizationPlanType } from "@prisma/client";
 import { GithubAccountType, OrganizationType } from "@prisma/client";
 
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
@@ -28,7 +29,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
   disabled,
 }) => {
   const {
-    organization: { type },
+    organization: { type, organizationPlan },
   } = useOrganization();
   const { accounts } = useGithubAccounts();
   const [selectedAccount, setSelectedAccount] =
@@ -118,6 +119,9 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
             onChange={setSelectedRepository}
             defaultRepositoryId={
               connection ? String(connection.repositoryId) : undefined
+            }
+            disablePrivateRepos={
+              organizationPlan.planType === OrganizationPlanType.HOBBY
             }
           />
         </div>

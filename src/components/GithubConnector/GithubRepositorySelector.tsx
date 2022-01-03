@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { classNames } from "@utils/classNames";
 import type { Repository } from "@hooks/useGithubAccountRepositories";
 import { Select } from "@components/Select";
+import { ExclamationIcon, LockClosedIcon } from "@heroicons/react/outline";
 
 export interface GithubRepositorySelectorProps {
   repositories?: Repository[];
@@ -10,6 +11,7 @@ export interface GithubRepositorySelectorProps {
   onChange: (repository: Repository | null) => void;
   defaultRepositoryId?: string;
   disabled?: boolean;
+  disablePrivateRepos?: boolean;
 }
 
 export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
@@ -18,6 +20,7 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
   onChange,
   defaultRepositoryId,
   disabled,
+  disablePrivateRepos,
 }) => {
   return (
     <div>
@@ -25,7 +28,11 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
         label="Repository"
         placeholder="Select Repository"
         disabled={disabled}
-        items={repositories}
+        items={
+          disablePrivateRepos
+            ? repositories?.filter((r) => !r.private)
+            : repositories
+        }
         selectedItem={selectedRepository}
         onChange={onChange}
         renderButton={(repository: Repository) => (
@@ -33,17 +40,37 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
             @{repository.owner.login}/{repository.name}
           </span>
         )}
+        renderBefore={
+          disablePrivateRepos
+            ? () => (
+                <div className="p-2 bg-zinc-200 text-zinc-600 flex items-center gap-2">
+                  <ExclamationIcon className="w-4 h-4" />
+                  <span>private repos not available on hobby plan</span>
+                </div>
+              )
+            : undefined
+        }
         preselectedId={defaultRepositoryId}
         getItemId={(repository: Repository) => String(repository.id)}
+        isItemDisabled={
+          disablePrivateRepos
+            ? (repository: Repository) => repository.private
+            : undefined
+        }
         renderItem={(repository: Repository, { selected }) => (
-          <span
-            className={classNames(
-              selected ? "font-semibold" : "font-normal",
-              "block truncate"
+          <div className="flex items-center justify-between">
+            <span
+              className={classNames(
+                selected ? "font-semibold" : "font-normal",
+                "block truncate"
+              )}
+            >
+              @{repository.owner.login}/{repository.name}
+            </span>
+            {repository.private && (
+              <LockClosedIcon className="w-4 h-4 opacity-50" />
             )}
-          >
-            @{repository.owner.login}/{repository.name}
-          </span>
+          </div>
         )}
       />
     </div>
