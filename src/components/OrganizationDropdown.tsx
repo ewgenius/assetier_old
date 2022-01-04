@@ -90,9 +90,9 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
   }
 
   return (
-    <Menu as="div" className="mx-2 relative sm:w-auto">
+    <Menu as="div" className="relative sm:w-auto">
       <div className="flex">
-        <Menu.Button className="sm:max-w-xs flex flex-grow items-center text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
+        <Menu.Button className="sm:max-w-xs flex flex-grow items-center py-2 px-2 hover:bg-gray-300 sm:h-8 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
           <div className="flex flex-grow mx-2">
             <div className="font-medium text-lg sm:text-sm text-gray-800 mr-1">
               {currentOrganization.type === OrganizationType.PERSONAL

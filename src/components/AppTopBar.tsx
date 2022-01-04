@@ -33,7 +33,7 @@ export const AppTopBar: FC<AppTopBarProps> = () => {
                     <span className="font-bold text-zinc-800">Assetier</span>
                   </div>
                 </div>
-                <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                <div className="hidden sm:ml-6 sm:flex sm:items-center sm:gap-2">
                   <OrganizationDropdown
                     onCreateOrganizationClick={() => setOpen(true)}
                   />

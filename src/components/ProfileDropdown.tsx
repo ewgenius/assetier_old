@@ -27,9 +27,9 @@ export const ProfileDropdown: FC = () => {
   }
 
   return (
-    <Menu as="div" className="ml-3 relative">
+    <Menu as="div" className="relative">
       <div>
-        <Menu.Button className="max-w-xs flex items-center text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
+        <Menu.Button className="max-w-xs flex items-center hover:bg-gray-300 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
           <span className="sr-only">Open user menu</span>
           {user.user.image && (
             <img
