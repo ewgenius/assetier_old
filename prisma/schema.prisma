@@ -95,7 +95,8 @@ model Organization {
   users               UserToOrganization[]
   projects            Project[]
   githubInstallations GithubInstallation[]
-  organizationPlan    OrganizationPlan     @relation(fields: [organizationPlanId], references: [name])
+  figmaConnections    FigmaOauthConnection[]
+  organizationPlan    OrganizationPlan       @relation(fields: [organizationPlanId], references: [name])
 }
 
 enum OrganizationPlanType {
@@ -141,6 +142,19 @@ model GithubInstallation {
 
   organization Organization @relation(fields: [organizationId], references: [id])
   projects     Project[]
+}
+
+model FigmaOauthConnection {
+  id             String   @id @default(cuid())
+  organizationId String
+  createdAt      DateTime @default(now())
+
+  userId       Int
+  accessToken  String
+  refreshToken String
+  expiresIn    Int
+
+  organization Organization @relation(fields: [organizationId], references: [id])
 }
 
 // Projects
