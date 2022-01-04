@@ -151,3 +151,17 @@ export interface GithubBranch {
   };
   protection_url?: string;
 }
+
+export interface FigmaOauthConnection {
+  user_id: number;
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+}
+
+export interface FigmaUser {
+  id: string;
+  email: string;
+  handle: string;
+  img_url: string;
+}

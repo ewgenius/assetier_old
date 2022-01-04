@@ -16,6 +16,7 @@ import { useProjectCreator } from "@hooks/useProjectCreator";
 import { useOrganization } from "@hooks/useOrganization";
 import { useProjects } from "@hooks/useProjects";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
+import { ConnectFigmaButton } from "./ConnectFigmaButton";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useOrganization();
@@ -74,6 +75,10 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           value={form.name}
           onChange={form.setName}
         />
+
+        <div className="border-b border-gray-200" />
+
+        <ConnectFigmaButton />
 
         <div className="border-b border-gray-200" />
 
