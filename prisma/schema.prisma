@@ -154,24 +154,32 @@ model FigmaOauthConnection {
   refreshToken String
   expiresIn    Int
 
+  userEmail  String
+  userHandle String
+  userImage  String
+
   organization Organization @relation(fields: [organizationId], references: [id])
+  projects     Project[]
 }
 
 // Projects
 
 model Project {
-  id                   String   @id @default(cuid())
-  organizationId       String
-  name                 String
-  createdAt            DateTime @default(now())
-  repositoryId         Int
-  githubInstallationId String
+  id                     String   @id @default(cuid())
+  organizationId         String
+  name                   String
+  createdAt              DateTime @default(now())
+  repositoryId           Int
+  githubInstallationId   String
+  figmaOauthConnectionId String?
+  figmaFileUrl           String?
 
   alias             String? @unique @default(cuid())
   publicPageEnabled Boolean @default(false)
   assetsPath        String  @default("")
   defaultBranch     String  @default("main")
 
-  organization       Organization       @relation(fields: [organizationId], references: [id])
-  githubInstallation GithubInstallation @relation(fields: [githubInstallationId], references: [id])
+  organization       Organization          @relation(fields: [organizationId], references: [id])
+  githubInstallation GithubInstallation    @relation(fields: [githubInstallationId], references: [id])
+  figmaConnection    FigmaOauthConnection? @relation(fields: [figmaOauthConnectionId], references: [id])
 }
