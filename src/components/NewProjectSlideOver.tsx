@@ -18,10 +18,34 @@ import { useProjects } from "@hooks/useProjects";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { ConnectFigmaButton } from "./ConnectFigmaButton";
 
+function parseFigmaUrl(url: string): { key: string; title: string } | null {
+  if (!url) {
+    return null;
+  }
+
+  const match = url.match(
+    /https:\/\/www\.figma\.com\/file\/([A-z|\d]+)\/([a-zA-Z|\-|_|\d]+)(\?.*)?/
+  );
+
+  if (match) {
+    return {
+      key: match[1],
+      title: match[2],
+    };
+  }
+
+  return null;
+}
+
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useOrganization();
   const { projects } = useProjects();
   const { createProject, creating, form } = useProjectCreator();
+
+  const parsedFigmaUrl = useMemo(
+    () => parseFigmaUrl(form.figmaFileUrl),
+    [form.figmaFileUrl]
+  );
 
   const reachedLimit = useMemo(
     () =>
@@ -78,10 +102,6 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
 
         <div className="border-b border-gray-200" />
 
-        <ConnectFigmaButton />
-
-        <div className="border-b border-gray-200" />
-
         <GithubConnector
           onChange={form.setGithubInstallation}
           layout="column"
@@ -97,6 +117,29 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           value={form.assetsPath}
           onChange={form.setAssetsPath}
         />
+
+        <div className="border-b border-gray-200" />
+
+        <ConnectFigmaButton />
+
+        <div>
+          <TextInput
+            id="figma-file-url"
+            name="figma-file-url"
+            label="Figma file url"
+            placeholder="https://www.figma.com/file/..."
+            disabled={reachedLimit || creating}
+            value={form.figmaFileUrl}
+            onChange={form.setFigmaFileUrl}
+          />
+
+          {parsedFigmaUrl && (
+            <div className="mt-2 text-xs font-mono text-gray-400">
+              <p>key: {parsedFigmaUrl.key}</p>
+              <p>title: {parsedFigmaUrl.title}</p>
+            </div>
+          )}
+        </div>
 
         <div className="border-b border-gray-200" />
 

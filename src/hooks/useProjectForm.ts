@@ -3,13 +3,19 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Project } from "@prisma/client";
 
 import { useInputState } from "@hooks/useInputState";
-import { GithubConnection } from "@utils/types";
+import type { GithubConnection } from "@utils/types";
 
 export function useProjectForm(project?: Partial<Project>) {
   const [name, setName, resetName, setNameValue] = useInputState(project?.name);
   const [alias, setAlias, resetAlias, setAliasValue] = useInputState(
     project?.alias || undefined
   );
+  const [
+    figmaFileUrl,
+    setFigmaFileUrl,
+    resetFigmaFileUrl,
+    setFigmaFileUrlValue,
+  ] = useInputState(project?.figmaFileUrl || undefined);
   const [assetsPath, setAssetsPath, resetAssetsPath, setAssetsPathValue] =
     useInputState(project?.assetsPath);
   const [publicPageEnabled, setPublicPageEnabled] = useState(
@@ -33,12 +39,14 @@ export function useProjectForm(project?: Partial<Project>) {
     if (project) {
       project.name && setNameValue(project.name);
       project.alias && setAliasValue(project.alias);
+      project.figmaFileUrl && setFigmaFileUrlValue(project.figmaFileUrl);
       project.assetsPath && setAssetsPathValue(project.assetsPath);
       project.publicPageEnabled !== undefined &&
         setPublicPageEnabled(project.publicPageEnabled);
     } else {
       resetName();
       resetAlias();
+      resetFigmaFileUrl();
       resetAssetsPath();
       setPublicPageEnabled(false);
       setGithubInstallation(null);
@@ -53,6 +61,7 @@ export function useProjectForm(project?: Partial<Project>) {
     const data: Partial<Project> = {
       name,
       assetsPath,
+      figmaFileUrl,
       publicPageEnabled,
       defaultBranch: githubInstallation?.branch,
       githubInstallationId: githubInstallation?.githubInstallationId as string,
@@ -65,6 +74,7 @@ export function useProjectForm(project?: Partial<Project>) {
   }, [
     name,
     alias,
+    figmaFileUrl,
     assetsPath,
     publicPageEnabled,
     githubInstallation?.branch,
@@ -97,18 +107,21 @@ export function useProjectForm(project?: Partial<Project>) {
 
     name,
     alias,
+    figmaFileUrl,
     assetsPath,
     publicPageEnabled,
     githubInstallation,
 
     setName,
     setAlias,
+    setFigmaFileUrl,
     setAssetsPath,
     setPublicPageEnabled,
     setGithubInstallation,
 
     setNameValue,
     setAliasValue,
+    setFigmaFileUrlValue,
     setAssetsPathValue,
   };
 }
