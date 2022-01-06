@@ -29,9 +29,14 @@ export default withOrganization<Project | Project[]>(
         const newProject = await prisma.project.create({
           data: {
             name: body.name as string,
+            assetsPath: body.assetsPath,
+            figmaFileUrl: body.figmaFileUrl,
+            figmaOauthConnectionId: body.figmaOauthConnectionId,
+            publicPageEnabled: body.publicPageEnabled,
+            defaultBranch: body.defaultBranch,
             organizationId: organization.id,
-            // TODO: validate project
-            ...body,
+            githubInstallationId: body.githubInstallationId,
+            repositoryId: body.repositoryId,
           },
         });
 

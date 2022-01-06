@@ -16,11 +16,18 @@ import { useProjectCreator } from "@hooks/useProjectCreator";
 import { useOrganization } from "@hooks/useOrganization";
 import { useProjects } from "@hooks/useProjects";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
+import { FigmaConnector } from "./FigmaConnector/FigmaConnector";
+import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useOrganization();
   const { projects } = useProjects();
   const { createProject, creating, form } = useProjectCreator();
+
+  const parsedFigmaUrl = useMemo(
+    () => parseFigmaUrl(form.figmaFileUrl),
+    [form.figmaFileUrl]
+  );
 
   const reachedLimit = useMemo(
     () =>
@@ -92,6 +99,32 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           value={form.assetsPath}
           onChange={form.setAssetsPath}
         />
+
+        <div className="border-b border-gray-200" />
+
+        <FigmaConnector
+          disabled={reachedLimit || creating}
+          onChange={form.setFigmaOauthConnectionId}
+        />
+
+        <div>
+          <TextInput
+            id="figma-file-url"
+            name="figma-file-url"
+            label="Figma file url"
+            placeholder="https://www.figma.com/file/..."
+            disabled={reachedLimit || creating}
+            value={form.figmaFileUrl}
+            onChange={form.setFigmaFileUrl}
+          />
+
+          {parsedFigmaUrl && (
+            <div className="mt-2 text-xs font-mono text-gray-400">
+              <p>key: {parsedFigmaUrl.key}</p>
+              <p>title: {parsedFigmaUrl.title}</p>
+            </div>
+          )}
+        </div>
 
         <div className="border-b border-gray-200" />
 

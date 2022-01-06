@@ -52,17 +52,7 @@ export function useProjectUpdater(project: Partial<Project>) {
         })
         .finally(() => setUpdating(false))
     );
-  }, [
-    organization,
-    projects,
-    project,
-    data,
-    form.name,
-    form.alias,
-    form.assetsPath,
-    form.publicPageEnabled,
-    form.githubInstallation,
-  ]);
+  }, [organization, projects, form.projectData, project, mutate]);
 
   const deleteProject = useCallback(() => {
     setDeleting(true);

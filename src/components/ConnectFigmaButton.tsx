@@ -3,13 +3,11 @@ import { PlusSmIcon } from "@heroicons/react/outline";
 
 import { useOrganization } from "@hooks/useOrganization";
 
-export interface AddGithubAccountButtonProps {
+export interface ConnectFigmaButton {
   mode?: "button" | "option";
 }
 
-export const AddGithubAccountButton: FC<AddGithubAccountButtonProps> = ({
-  mode,
-}) => {
+export const ConnectFigmaButton: FC<ConnectFigmaButton> = ({ mode }) => {
   const { organization } = useOrganization();
   return (
     <button
@@ -22,7 +20,7 @@ export const AddGithubAccountButton: FC<AddGithubAccountButtonProps> = ({
       onClick={() => {
         const state = organization.id;
         window.open(
-          `https://github.com/apps/${process.env.NEXT_PUBLIC_GITHUB_APP_NAME}/installations/new?state=${state}`,
+          `https://www.figma.com/oauth?client_id=${process.env.NEXT_PUBLIC_FIGMA_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_FIGMA_REDIRECT_URI}&scope=file_read&response_type=code&state=${state}`,
           "winname",
           "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800,height=600"
         );
@@ -30,9 +28,7 @@ export const AddGithubAccountButton: FC<AddGithubAccountButtonProps> = ({
     >
       <div className="flex items-center">
         <PlusSmIcon className="flex-shrink-0 h-5 w-5" />
-        <span className="font-normal ml-3 block truncate">
-          Add Github Account
-        </span>
+        <span className="font-normal ml-3 block truncate">Connect Figma</span>
       </div>
     </button>
   );

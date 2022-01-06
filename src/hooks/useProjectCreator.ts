@@ -51,14 +51,7 @@ export function useProjectCreator() {
         .finally(() => setCreating(false)),
       false
     );
-  }, [
-    organization,
-    form.name,
-    form.alias,
-    form.assetsPath,
-    form.publicPageEnabled,
-    form.githubInstallation,
-  ]);
+  }, [organization, form.projectData, projects, mutate]);
 
   return {
     createProject,
