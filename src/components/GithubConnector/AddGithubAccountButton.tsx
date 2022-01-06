@@ -4,7 +4,7 @@ import { PlusSmIcon } from "@heroicons/react/outline";
 import { useOrganization } from "@hooks/useOrganization";
 
 export interface AddGithubAccountButtonProps {
-  mode: "button" | "option";
+  mode?: "button" | "option";
 }
 
 export const AddGithubAccountButton: FC<AddGithubAccountButtonProps> = ({

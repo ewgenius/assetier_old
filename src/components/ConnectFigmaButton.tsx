@@ -3,12 +3,20 @@ import { PlusSmIcon } from "@heroicons/react/outline";
 
 import { useOrganization } from "@hooks/useOrganization";
 
-export const ConnectFigmaButton: FC = () => {
+export interface ConnectFigmaButton {
+  mode?: "button" | "option";
+}
+
+export const ConnectFigmaButton: FC<ConnectFigmaButton> = ({ mode }) => {
   const { organization } = useOrganization();
   return (
     <button
       type="button"
-      className="bg-white cursor-pointer relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
+      className={
+        mode === "option"
+          ? "w-full text-gray-900 cursor-pointer select-none relative py-2 pl-3 pr-9 hover:text-white hover:bg-zinc-600"
+          : "bg-white cursor-pointer relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
+      }
       onClick={() => {
         const state = organization.id;
         window.open(

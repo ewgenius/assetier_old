@@ -17,6 +17,8 @@ import { useOrganization } from "@hooks/useOrganization";
 import { useProjects } from "@hooks/useProjects";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { ConnectFigmaButton } from "./ConnectFigmaButton";
+import { FigmaConnector } from "./FigmaConnector/FigmaConnector";
+import { FigmaOauthConnection } from "@prisma/client";
 
 function parseFigmaUrl(url: string): { key: string; title: string } | null {
   if (!url) {
@@ -120,7 +122,10 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
 
         <div className="border-b border-gray-200" />
 
-        <ConnectFigmaButton />
+        <FigmaConnector
+          disabled={reachedLimit || creating}
+          onChange={form.setFigmaOauthConnectionId}
+        />
 
         <div>
           <TextInput

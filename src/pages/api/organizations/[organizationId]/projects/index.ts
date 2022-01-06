@@ -31,6 +31,7 @@ export default withOrganization<Project | Project[]>(
             name: body.name as string,
             assetsPath: body.assetsPath,
             figmaFileUrl: body.figmaFileUrl,
+            figmaOauthConnectionId: body.figmaOauthConnectionId,
             publicPageEnabled: body.publicPageEnabled,
             defaultBranch: body.defaultBranch,
             organizationId: organization.id,
