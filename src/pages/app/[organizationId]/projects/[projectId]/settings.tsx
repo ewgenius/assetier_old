@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
 
 import type { NextPageExtended } from "@utils/types";
@@ -14,6 +14,8 @@ import { TextInput } from "@components/TextInput";
 import { Toggle } from "@components/Toggle";
 import { useProjectUpdater } from "@hooks/useProjectUpdater";
 import { GithubConnector } from "@components/GithubConnector";
+import { parseFigmaUrl } from "@utils/parseFigmaUrl";
+import { FigmaConnector } from "@components/FigmaConnector/FigmaConnector";
 
 export const ProjectSettingsPage: NextPageExtended<
   {},
@@ -25,20 +27,16 @@ export const ProjectSettingsPage: NextPageExtended<
   const { updateProject, updating, deleteProject, deleting, form } =
     useProjectUpdater(project);
 
+  const parsedFigmaUrl = useMemo(
+    () => parseFigmaUrl(form.figmaFileUrl),
+    [form.figmaFileUrl]
+  );
+
   const submit = useCallback(() => {
     if (form.isValid) {
       updateProject().then(close);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    form.name,
-    form.alias,
-    form.githubInstallation,
-    form.assetsPath,
-    form.publicPageEnabled,
-    form.isValid,
-    updateProject,
-  ]);
+  }, [form.isValid, updateProject]);
 
   if (!project) {
     return null;
@@ -83,6 +81,31 @@ export const ProjectSettingsPage: NextPageExtended<
               value={form.assetsPath}
               onChange={form.setAssetsPath}
             />
+
+            <div className="border-b border-gray-200 my-4" />
+
+            <FigmaConnector
+              connectionId={project.figmaOauthConnectionId || undefined}
+              onChange={form.setFigmaOauthConnectionId}
+            />
+
+            <div>
+              <TextInput
+                id="figma-file-url"
+                name="figma-file-url"
+                label="Figma file url"
+                placeholder="https://www.figma.com/file/..."
+                value={form.figmaFileUrl}
+                onChange={form.setFigmaFileUrl}
+              />
+
+              {parsedFigmaUrl && (
+                <div className="mt-2 text-xs font-mono text-gray-400">
+                  <p>key: {parsedFigmaUrl.key}</p>
+                  <p>title: {parsedFigmaUrl.title}</p>
+                </div>
+              )}
+            </div>
 
             <div className="border-b border-gray-200 my-4" />
 

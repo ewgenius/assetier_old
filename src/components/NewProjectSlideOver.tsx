@@ -16,28 +16,8 @@ import { useProjectCreator } from "@hooks/useProjectCreator";
 import { useOrganization } from "@hooks/useOrganization";
 import { useProjects } from "@hooks/useProjects";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
-import { ConnectFigmaButton } from "./ConnectFigmaButton";
 import { FigmaConnector } from "./FigmaConnector/FigmaConnector";
-import { FigmaOauthConnection } from "@prisma/client";
-
-function parseFigmaUrl(url: string): { key: string; title: string } | null {
-  if (!url) {
-    return null;
-  }
-
-  const match = url.match(
-    /https:\/\/www\.figma\.com\/file\/([A-z|\d]+)\/([a-zA-Z|\-|_|\d]+)(\?.*)?/
-  );
-
-  if (match) {
-    return {
-      key: match[1],
-      title: match[2],
-    };
-  }
-
-  return null;
-}
+import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const { organization } = useOrganization();

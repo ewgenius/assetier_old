@@ -6,13 +6,14 @@ import { FigmaConnectionSelector } from "@components/FigmaConnectionSelector";
 import { useFigmaConnections } from "@hooks/useFigmaConnections";
 
 export interface FigmaConnectorProps {
-  connection?: FigmaOauthConnection;
+  connectionId?: string;
   layout?: "column" | "row";
   disabled?: boolean;
   onChange?: (connectionId: string | null | undefined) => void;
 }
 
 export const FigmaConnector: FC<FigmaConnectorProps> = ({
+  connectionId,
   layout,
   disabled,
   onChange,
@@ -47,6 +48,7 @@ export const FigmaConnector: FC<FigmaConnectorProps> = ({
           selectedConnection={selectedConnection}
           connections={connections}
           onChange={selectConnection}
+          defaultConnectionId={connectionId}
         />
       </div>
     </div>
