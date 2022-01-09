@@ -22,7 +22,7 @@ export const FigmaIntegrationAuth: NextPageExtended<
   return (
     <Page>
       <div className="h-screen flex flex-col justify-center items-center">
-        Figma signin
+        Figma plugin authorized, you can close this page now
       </div>
     </Page>
   );

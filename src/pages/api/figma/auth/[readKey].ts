@@ -5,8 +5,13 @@ import {
   NotFoundError,
 } from "@utils/httpErrors";
 import { prisma } from "@utils/prisma";
+import { runCors } from "@utils/corsMiddleware";
 
-export const handler: NextApiHandler = async ({ method, query }, res) => {
+export const handler: NextApiHandler = async (req, res) => {
+  await runCors(req, res);
+
+  const { method, query } = req;
+
   switch (method) {
     case "GET": {
       if (!query.readKey) {
@@ -25,7 +30,7 @@ export const handler: NextApiHandler = async ({ method, query }, res) => {
 
       // TODO: delete if it has access token
 
-      res.status(200).json(readWritePair);
+      return res.status(200).json(readWritePair);
     }
 
     default: {

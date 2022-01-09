@@ -1,14 +1,19 @@
 import type { NextApiHandler } from "next";
 import { NotAllowedError } from "@utils/httpErrors";
 import { prisma } from "@utils/prisma";
+import { runCors } from "@utils/corsMiddleware";
 
-export const handler: NextApiHandler = async ({ method }, res) => {
+export const handler: NextApiHandler = async (req, res) => {
+  await runCors(req, res);
+
+  const { method } = req;
+
   switch (method) {
     case "GET": {
       const readWritePair = await prisma.figmaReadWritePair.create({
         data: {},
       });
-      res.status(200).json(readWritePair);
+      return res.status(200).json(readWritePair);
     }
 
     default: {
