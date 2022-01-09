@@ -1,13 +1,7 @@
 import type { Octokit } from "@octokit/core";
 import type { Project } from "@prisma/client";
 import { NotFoundError } from "@utils/httpErrors";
-
-export interface Repository {
-  owner: {
-    login: string;
-  };
-  name: string;
-}
+import type { Repository } from "@utils/types";
 
 export async function getProjectRepository(project: Project, octokit: Octokit) {
   const repository = await octokit.request("GET /repositories/{id}", {

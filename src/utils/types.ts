@@ -114,6 +114,13 @@ export interface GithubCommit {
   };
 }
 
+export interface Repository {
+  owner: {
+    login: string;
+  };
+  name: string;
+}
+
 export interface GithubFile {
   name: string;
   path: string;
