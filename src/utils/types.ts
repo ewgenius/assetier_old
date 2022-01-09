@@ -29,6 +29,11 @@ export type AppPropsExtended<P = {}> = AppProps<P> & {
   Component: NextComponentType<NextPageContext, {}, P> & WithNavId;
 };
 
+export type Middleware = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => Promise<any>;
+
 export type NextApiRequestWithSession = NextApiRequest & {
   session: SessionWithId;
 };

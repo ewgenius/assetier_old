@@ -2,13 +2,15 @@ import type {
   NextApiRequestWithOrganization,
   NextApiRequestWithSession,
   NextApiHandlerWithOrganization,
-} from "./types";
+  Middleware,
+} from "@utils/types";
 import { prisma } from "@utils/prisma";
 import { withSession } from "@utils/withSession";
 import { ForbiddenError, NotFoundError } from "./httpErrors";
 
 export const withOrganization = <T = any>(
-  handler: NextApiHandlerWithOrganization<T>
+  handler: NextApiHandlerWithOrganization<T>,
+  middleware?: Middleware
 ) =>
   withSession(async (req: NextApiRequestWithSession, res) => {
     const user = await prisma.user.findUnique({
@@ -51,4 +53,4 @@ export const withOrganization = <T = any>(
     (req as NextApiRequestWithOrganization).organization = organization;
 
     return handler(req as NextApiRequestWithOrganization, res);
-  });
+  }, middleware);

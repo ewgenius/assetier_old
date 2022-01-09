@@ -1,6 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import type { SessionWithId, NextApiRequestWithSession } from "@utils/types";
+import type {
+  SessionWithId,
+  NextApiRequestWithSession,
+  Middleware,
+} from "@utils/types";
 import { UnauthorizedError } from "./httpErrors";
 import { withHttpError } from "./withHttpError";
 import { getToken } from "next-auth/jwt";
@@ -12,7 +16,7 @@ export type NextApiHandlerWithSession<T = any> = (
 
 export const withSession = <T = any>(
   handler: NextApiHandlerWithSession<T>,
-  middleware?: (req: NextApiRequest, res: NextApiResponse) => Promise<any>
+  middleware?: Middleware
 ) =>
   withHttpError(
     async (req: NextApiRequestWithSession, res: NextApiResponse) => {
