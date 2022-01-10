@@ -1,4 +1,4 @@
-import { OrganizationPlanType, OrganizationType, Role } from "@prisma/client";
+import { OrganizationPlanType, OrganizationType, Role } from "@assetier/prisma";
 import { NotAllowedError } from "@utils/httpErrors";
 import { prisma } from "@utils/prisma";
 import { withUser } from "@utils/withUser";

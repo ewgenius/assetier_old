@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// auth
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  verified      Boolean   @default(false)
+
+  accounts      Account[]
+  sessions      Session[]
+  organizations UserToOrganization[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Figma Integration Auth
+
+model FigmaReadWritePair {
+  readKey   String   @unique @default(cuid())
+  writeKey  String   @unique @default(cuid())
+  createdAt DateTime @default(now())
+  token     String?
+}
+
+// Org
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model UserToOrganization {
+  userId         String
+  organizationId String
+  role           Role    @default(MEMBER)
+  isPersonal     Boolean @default(true)
+
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@id([userId, organizationId])
+}
+
+enum OrganizationType {
+  PERSONAL
+  TEAM
+}
+
+model Organization {
+  id                 String           @id @default(cuid())
+  type               OrganizationType @default(PERSONAL)
+  name               String           @default("")
+  createdAt          DateTime         @default(now())
+  organizationPlanId String
+
+  users               UserToOrganization[]
+  projects            Project[]
+  githubInstallations GithubInstallation[]
+  figmaConnections    FigmaOauthConnection[]
+  organizationPlan    OrganizationPlan       @relation(fields: [organizationPlanId], references: [name])
+}
+
+enum OrganizationPlanType {
+  // only personal
+  HOBBY
+  PRO
+
+  // teams
+  TEAM_TRIAL
+}
+
+model OrganizationPlan {
+  name      String               @id
+  planType  OrganizationPlanType @default(HOBBY)
+  active    Boolean              @default(true)
+  createdAt DateTime             @default(now())
+
+  projectsLimit           Int     @default(1)
+  usersLimit              Int     @default(1)
+  allowGithubPrivateRepos Boolean @default(false)
+  allowGithubOrgs         Boolean @default(false)
+
+  organizations Organization[]
+
+  @@unique([planType, active])
+}
+
+// Github
+
+enum GithubAccountType {
+  USER
+  ORGANIZATION
+}
+
+model GithubInstallation {
+  id               String            @id @default(cuid())
+  installationId   Int               @unique
+  organizationId   String
+  accountLogin     String            @default("")
+  accountAvatarUrl String            @default("")
+  accountType      GithubAccountType @default(USER)
+  createdAt        DateTime          @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  projects     Project[]
+}
+
+model FigmaOauthConnection {
+  id             String   @id @default(cuid())
+  organizationId String
+  createdAt      DateTime @default(now())
+
+  userId       Int
+  accessToken  String
+  refreshToken String
+  expiresIn    Int
+
+  userEmail  String
+  userHandle String
+  userImage  String
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  projects     Project[]
+}
+
+// Projects
+
+model Project {
+  id                     String   @id @default(cuid())
+  organizationId         String
+  name                   String
+  createdAt              DateTime @default(now())
+  repositoryId           Int
+  githubInstallationId   String
+  figmaOauthConnectionId String?
+  figmaFileUrl           String?
+
+  alias             String? @unique @default(cuid())
+  publicPageEnabled Boolean @default(false)
+  assetsPath        String  @default("")
+  defaultBranch     String  @default("main")
+
+  organization       Organization          @relation(fields: [organizationId], references: [id])
+  githubInstallation GithubInstallation    @relation(fields: [githubInstallationId], references: [id])
+  figmaConnection    FigmaOauthConnection? @relation(fields: [figmaOauthConnectionId], references: [id])
+}

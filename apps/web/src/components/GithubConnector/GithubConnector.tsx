@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import type { GithubInstallation } from "@prisma/client";
-import { GithubAccountType } from "@prisma/client";
+import type { GithubInstallation } from "@assetier/prisma";
+import { GithubAccountType } from "@assetier/prisma";
 
 import { useGithubAccounts } from "@hooks/useGithubAccounts";
 import type { Repository } from "@hooks/useGithubAccountRepositories";

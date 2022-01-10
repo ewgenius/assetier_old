@@ -1,5 +1,5 @@
 import useSWR, { mutate } from "swr";
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 
 import { mapFetcher } from "@utils/fetcher";
 import { useOrganization } from "@hooks/useOrganization";

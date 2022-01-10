@@ -1,4 +1,4 @@
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 import { prisma } from "@utils/prisma";
 import { withOrganization } from "@utils/withOrganization";
 import { NotAllowedError } from "@utils/httpErrors";

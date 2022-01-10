@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 
 import { fetcher } from "@utils/fetcher";
 import { useOrganization } from "@hooks/useOrganization";

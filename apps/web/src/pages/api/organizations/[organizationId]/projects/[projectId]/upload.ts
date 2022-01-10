@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import type { Files, Fields } from "formidable";
 import formidable from "formidable";
 import type { NextApiRequest } from "next";
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 import type { Octokit } from "@octokit/core";
 
 import { getOctokit } from "@utils/getOctokit";

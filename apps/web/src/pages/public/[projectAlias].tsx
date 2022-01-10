@@ -1,5 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 
 import { prisma } from "@utils/prisma";
 import type { GithubFile } from "@utils/types";

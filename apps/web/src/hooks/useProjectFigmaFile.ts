@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 
 import { useOrganization } from "@hooks/useOrganization";
 import { fetcher } from "@utils/fetcher";

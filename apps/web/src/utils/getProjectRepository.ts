@@ -1,5 +1,5 @@
 import type { Octokit } from "@octokit/core";
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 import { NotFoundError } from "@utils/httpErrors";
 import type { Repository } from "@utils/types";
 

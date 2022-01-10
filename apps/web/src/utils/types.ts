@@ -12,7 +12,7 @@ import type {
   Organization,
   OrganizationPlan,
   Project,
-} from "@prisma/client";
+} from "@assetier/prisma";
 import type { ComponentType } from "react";
 
 export type WithNavId<W = {}> = {

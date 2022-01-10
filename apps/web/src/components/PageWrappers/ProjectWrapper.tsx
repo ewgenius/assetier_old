@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 import { useProject } from "@hooks/useProject";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";

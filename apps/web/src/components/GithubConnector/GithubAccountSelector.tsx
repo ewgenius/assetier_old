@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import type { GithubInstallation } from "@prisma/client";
-import { GithubAccountType } from "@prisma/client";
+import type { GithubInstallation } from "@assetier/prisma";
+import { GithubAccountType } from "@assetier/prisma";
 
 import { classNames } from "@utils/classNames";
 import { Select } from "@components/Select";

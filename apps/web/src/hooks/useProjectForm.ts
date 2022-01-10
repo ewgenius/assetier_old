@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import type { Project } from "@prisma/client";
+import type { Project } from "@assetier/prisma";
 
 import { useInputState } from "@hooks/useInputState";
 import type { GithubConnection } from "@utils/types";
