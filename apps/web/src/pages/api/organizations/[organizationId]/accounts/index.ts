@@ -1,4 +1,4 @@
-import type { GithubInstallation } from "lib-prisma";
+import type { GithubInstallation } from "@assetier/prisma";
 
 import { prisma } from "@utils/prisma";
 import { withOrganization } from "@utils/withOrganization";

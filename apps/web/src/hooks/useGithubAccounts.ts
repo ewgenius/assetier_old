@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import type { GithubInstallation } from "lib-prisma";
+import type { GithubInstallation } from "@assetier/prisma";
 
 import { fetcher } from "@utils/fetcher";
 import { useOrganization } from "@hooks/useOrganization";

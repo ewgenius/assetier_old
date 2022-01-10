@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { FigmaOauthConnection } from "lib-prisma";
+import type { FigmaOauthConnection } from "@assetier/prisma";
 
 import { classNames } from "@utils/classNames";
 import { Select } from "@components/Select";

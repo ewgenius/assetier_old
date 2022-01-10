@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import type { Project } from "lib-prisma";
+import type { Project } from "@assetier/prisma";
 import type { GithubBranch } from "@assetier/types";
 
 import { useOrganization } from "@hooks/useOrganization";

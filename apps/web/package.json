@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "lib-prisma": "*",
+    "@assetier/prisma": "*",
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
     "@next-auth/prisma-adapter": "^1.0.1",

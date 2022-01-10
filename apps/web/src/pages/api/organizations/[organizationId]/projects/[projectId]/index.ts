@@ -1,4 +1,4 @@
-import type { Project } from "lib-prisma";
+import type { Project } from "@assetier/prisma";
 import { NotAllowedError } from "@utils/httpErrors";
 import { prisma } from "@utils/prisma";
 import { withProject } from "@utils/withProject";

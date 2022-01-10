@@ -6,7 +6,7 @@ import type { SessionWithId } from "@assetier/types";
 import { prisma } from "@utils/prisma";
 import { Spinner } from "@components/Spinner";
 import { getOctokit } from "@utils/getOctokit";
-import { GithubAccountType } from "lib-prisma";
+import { GithubAccountType } from "@assetier/prisma";
 
 export const GithubAppSetup: NextPage = () => {
   useEffect(() => {

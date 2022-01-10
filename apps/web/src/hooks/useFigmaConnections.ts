@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import type { FigmaOauthConnection } from "lib-prisma";
+import type { FigmaOauthConnection } from "@assetier/prisma";
 
 import { fetcher } from "@utils/fetcher";
 import { useOrganization } from "@hooks/useOrganization";
