@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { fetcher } from "@utils/fetcher";
-import type { GithubCommit } from "@assetier/types";
+import type { GithubCommit } from "lib-types";
 import { useOrganization } from "@hooks/useOrganization";
 
 export function useAssetCommits(projectId: string, path?: string) {

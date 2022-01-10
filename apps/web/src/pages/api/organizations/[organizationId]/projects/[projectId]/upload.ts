@@ -11,7 +11,7 @@ import { getOctokit } from "@utils/getOctokit";
 import { withProject } from "@utils/withProject";
 import { BadRequestError, NotAllowedError } from "@utils/httpErrors";
 import { getProjectInstallation } from "@utils/getProjectInstallation";
-import type { Repository, GHTree } from "@assetier/types";
+import type { Repository, GHTree } from "lib-types";
 import { getProjectRepository } from "@utils/getProjectRepository";
 import { getRepositoryBranches } from "@utils/getRepositoryBranches";
 import { createPullRequest } from "@utils/createPullRequest";

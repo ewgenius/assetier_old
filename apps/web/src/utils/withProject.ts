@@ -4,7 +4,7 @@ import type {
   Middleware,
   NextApiHandlerWithProject,
   NextApiRequestWithProject,
-} from "@assetier/types";
+} from "lib-types";
 import { ForbiddenError, NotFoundError } from "./httpErrors";
 
 export const withProject = <T = any>(

@@ -1,5 +1,5 @@
 {
-  "name": "@assetier/types",
+  "name": "lib-types",
   "version": "0.0.0",
   "main": "index.d.ts",
   "types": "index.d.ts",

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import type { NextPageExtended } from "@assetier/types";
+import type { NextPageExtended } from "lib-types";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { NewProjectSlideOver } from "@components/NewProjectSlideOver";

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
 
-import type { NextPageExtended } from "@assetier/types";
+import type { NextPageExtended } from "lib-types";
 import {
   ProjectPageWrapper,
   useProjectContext,

@@ -1,4 +1,4 @@
-import type { NextPageExtended } from "@assetier/types";
+import type { NextPageExtended } from "lib-types";
 import { Page } from "@components/Page";
 import { Spinner } from "@components/Spinner";
 

@@ -27,7 +27,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@assetier/types": "*",
+    "lib-types": "*",
     "@types/cors": "^2.8.12",
     "@types/formidable": "^2.0.2",
     "@types/node": "^17.0.8",

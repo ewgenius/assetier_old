@@ -4,7 +4,7 @@ import { SessionProvider, signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-import type { AppPropsExtended, OrganizationWithPlan } from "@assetier/types";
+import type { AppPropsExtended, OrganizationWithPlan } from "lib-types";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { AppTopBar } from "@components/AppTopBar";
 import { Footer } from "@components/Footer";

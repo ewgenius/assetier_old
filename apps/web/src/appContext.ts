@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { OrganizationWithPlan } from "@assetier/types";
+import type { OrganizationWithPlan } from "lib-types";
 
 export interface AppContextInterface {
   organization: OrganizationWithPlan;

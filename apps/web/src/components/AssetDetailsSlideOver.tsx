@@ -7,7 +7,7 @@ import {
   SlideOverHeading,
   SlideOverBody,
 } from "@components/SlideOver";
-import type { GithubFile } from "@assetier/types";
+import type { GithubFile } from "lib-types";
 import { useAssetCommits } from "@hooks/useAssetCommits";
 import { Spinner } from "./Spinner";
 

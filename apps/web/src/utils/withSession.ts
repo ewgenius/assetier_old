@@ -4,7 +4,7 @@ import type {
   SessionWithId,
   NextApiRequestWithSession,
   Middleware,
-} from "@assetier/types";
+} from "lib-types";
 import { UnauthorizedError } from "./httpErrors";
 import { withHttpError } from "./withHttpError";
 import { getToken } from "next-auth/jwt";

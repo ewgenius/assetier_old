@@ -1,6 +1,6 @@
 import useSWR, { useSWRConfig } from "swr";
 import { fetcher } from "@utils/fetcher";
-import type { GithubFile } from "@assetier/types";
+import type { GithubFile } from "lib-types";
 import { useOrganization } from "@hooks/useOrganization";
 
 export function useProjectContents(projectId: string, branch?: string) {

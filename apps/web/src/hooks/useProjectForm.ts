@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Project } from "lib-prisma";
 
 import { useInputState } from "@hooks/useInputState";
-import type { GithubConnection } from "@assetier/types";
+import type { GithubConnection } from "lib-types";
 
 export function useProjectForm(project?: Partial<Project>) {
   const [name, setName, resetName, setNameValue] = useInputState(project?.name);

@@ -3,7 +3,7 @@ import { HttpError, NotAllowedError } from "@utils/httpErrors";
 import { getProjectInstallation } from "@utils/getProjectInstallation";
 import { getOctokit } from "@utils/getOctokit";
 import { getProjectRepository } from "@utils/getProjectRepository";
-import type { GithubCommit, OctokitError } from "@assetier/types";
+import type { GithubCommit, OctokitError } from "lib-types";
 
 export default withProject<GithubCommit[]>(
   async ({ method, project, query }, res) => {

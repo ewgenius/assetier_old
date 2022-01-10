@@ -1,7 +1,7 @@
 import { NotAllowedError, NotFoundError } from "@utils/httpErrors";
 import { withSession } from "@utils/withSession";
 import { prisma } from "@utils/prisma";
-import type { UserMe, UserWithOrganizations } from "@assetier/types";
+import type { UserMe, UserWithOrganizations } from "lib-types";
 import { runCors } from "@utils/corsMiddleware";
 
 export default withSession<UserMe>(async (req, res) => {

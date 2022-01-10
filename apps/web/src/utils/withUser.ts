@@ -5,7 +5,7 @@ import type {
   NextApiHandlerWithUser,
   NextApiRequestWithUser,
   Middleware,
-} from "@assetier/types";
+} from "lib-types";
 import { ForbiddenError, NotFoundError } from "./httpErrors";
 
 export const withUser = <T = any>(

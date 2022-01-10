@@ -4,7 +4,7 @@ import { getProjectInstallation } from "@utils/getProjectInstallation";
 import { getOctokit } from "@utils/getOctokit";
 import { getProjectRepository } from "@utils/getProjectRepository";
 import { getRepositoryBranches } from "@utils/getRepositoryBranches";
-import type { OctokitError } from "@assetier/types";
+import type { OctokitError } from "lib-types";
 
 export default withProject(async ({ method, project }, res) => {
   switch (method) {

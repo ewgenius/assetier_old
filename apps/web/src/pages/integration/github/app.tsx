@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 
-import type { SessionWithId } from "@assetier/types";
+import type { SessionWithId } from "lib-types";
 import { prisma } from "@utils/prisma";
 import { Spinner } from "@components/Spinner";
 import { getOctokit } from "@utils/getOctokit";

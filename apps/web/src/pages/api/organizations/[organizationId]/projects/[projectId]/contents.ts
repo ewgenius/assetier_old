@@ -1,4 +1,4 @@
-import type { GithubFile, OctokitError } from "@assetier/types";
+import type { GithubFile, OctokitError } from "lib-types";
 import { withProject } from "@utils/withProject";
 import { getProjectRepositoryContents } from "@utils/getProjectRepositoryContents";
 import { HttpError, NotAllowedError } from "@utils/httpErrors";

@@ -3,7 +3,7 @@ import type {
   NextApiRequestWithSession,
   NextApiHandlerWithOrganization,
   Middleware,
-} from "@assetier/types";
+} from "lib-types";
 import { prisma } from "@utils/prisma";
 import { withSession } from "@utils/withSession";
 import { ForbiddenError, NotFoundError } from "./httpErrors";

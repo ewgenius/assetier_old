@@ -10,7 +10,7 @@ import {
   UserIcon,
 } from "@heroicons/react/outline";
 
-import type { OrganizationWithPlan } from "@assetier/types";
+import type { OrganizationWithPlan } from "lib-types";
 import { classNames } from "@utils/classNames";
 import { useMe } from "@hooks/useMe";
 import { OrganizationType } from "lib-prisma";

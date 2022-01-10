@@ -16,7 +16,7 @@ import {
 import { mergePullRequest } from "@utils/mergePullRequest";
 import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 import { prisma } from "@utils/prisma";
-import type { GHTree, Repository } from "@assetier/types";
+import type { GHTree, Repository } from "lib-types";
 import { withProject } from "@utils/withProject";
 import { v4 as uuidv4 } from "uuid";
 
