@@ -164,6 +164,13 @@ export interface GithubBranch {
   protection_url?: string;
 }
 
+export interface GHTree {
+  path: string;
+  mode: "100644";
+  type: "blob";
+  content: string;
+}
+
 export interface FigmaOauthConnection {
   user_id: number;
   access_token: string;
