@@ -13,7 +13,7 @@ import {
 import type { OrganizationWithPlan } from "@assetier/types";
 import { classNames } from "@utils/classNames";
 import { useMe } from "@hooks/useMe";
-import { OrganizationType } from "@assetier/prisma";
+import { OrganizationType } from "lib-prisma";
 import { useOrganization } from "@hooks/useOrganization";
 
 export interface OrganizationMenuItemProps {

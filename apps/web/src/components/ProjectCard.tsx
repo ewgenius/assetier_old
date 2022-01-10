@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import Link from "next/link";
-import type { Project } from "@assetier/prisma";
+import type { Project } from "lib-prisma";
 
 import { stringToColor } from "@utils/stringToColor";
 import { useOrganization } from "@hooks/useOrganization";

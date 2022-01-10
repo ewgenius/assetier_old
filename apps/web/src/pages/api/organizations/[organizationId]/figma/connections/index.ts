@@ -1,4 +1,4 @@
-import type { FigmaOauthConnection } from "@assetier/prisma";
+import type { FigmaOauthConnection } from "lib-prisma";
 
 import { prisma } from "@utils/prisma";
 import { withOrganization } from "@utils/withOrganization";

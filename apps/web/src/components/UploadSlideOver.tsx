@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import type { Project } from "@assetier/prisma";
+import type { Project } from "lib-prisma";
 import { useDropzone } from "react-dropzone";
 import { XIcon } from "@heroicons/react/outline";
 

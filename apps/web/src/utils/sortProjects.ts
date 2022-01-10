@@ -1,4 +1,4 @@
-import type { Project } from "@assetier/prisma";
+import type { Project } from "lib-prisma";
 
 export function sortProjects(projectA: Project, projectB: Project) {
   return (

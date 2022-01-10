@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { Project } from "@assetier/prisma";
+import type { Project } from "lib-prisma";
 
 import type { SlideOverProps } from "@components/SlideOver";
 import {

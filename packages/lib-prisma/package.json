@@ -1,5 +1,5 @@
 {
-  "name": "@assetier/prisma",
+  "name": "lib-prisma",
   "version": "0.0.0",
   "main": "index.ts",
   "types": "index.ts",

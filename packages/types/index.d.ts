@@ -7,12 +7,7 @@ import type {
 } from "next";
 import type { AppProps } from "next/app";
 import type { Session } from "next-auth/core/types";
-import type {
-  User,
-  Organization,
-  OrganizationPlan,
-  Project,
-} from "@assetier/prisma";
+import type { User, Organization, OrganizationPlan, Project } from "lib-prisma";
 import type { ComponentType } from "react";
 
 export type WithNavId<W = {}> = {

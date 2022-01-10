@@ -1,5 +1,5 @@
 import type { Octokit } from "@octokit/core";
-import type { Project } from "@assetier/prisma";
+import type { Project } from "lib-prisma";
 import { runCors } from "@utils/corsMiddleware";
 import { createBranch } from "@utils/createBranch";
 import { createPullRequest } from "@utils/createPullRequest";

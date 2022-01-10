@@ -1,3 +1,3 @@
-import { PrismaClient } from "@assetier/prisma";
+import { PrismaClient } from "lib-prisma";
 
 export const prisma = new PrismaClient();
