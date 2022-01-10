@@ -1,8 +1,5 @@
 {
   "extends": "tsconfig/library.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"],
-  "compilerOptions": {
-    "outDir": "dist"
-  }
+  "exclude": ["dist", "build", "node_modules"]
 }
