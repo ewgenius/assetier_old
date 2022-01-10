@@ -61,6 +61,15 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// Figma Integration Auth
+
+model FigmaReadWritePair {
+  readKey   String   @unique @default(cuid())
+  writeKey  String   @unique @default(cuid())
+  createdAt DateTime @default(now())
+  token     String?
+}
+
 // Org
 
 enum Role {

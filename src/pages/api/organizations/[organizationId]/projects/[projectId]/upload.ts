@@ -11,9 +11,11 @@ import { getOctokit } from "@utils/getOctokit";
 import { withProject } from "@utils/withProject";
 import { BadRequestError, NotAllowedError } from "@utils/httpErrors";
 import { getProjectInstallation } from "@utils/getProjectInstallation";
-import type { Repository } from "@utils/types";
+import type { Repository, GHTree } from "@utils/types";
 import { getProjectRepository } from "@utils/getProjectRepository";
 import { getRepositoryBranches } from "@utils/getRepositoryBranches";
+import { createPullRequest } from "@utils/createPullRequest";
+import { mergePullRequest } from "@utils/mergePullRequest";
 
 export const config = {
   api: {
@@ -88,13 +90,6 @@ async function prepareFiles(files: formidable.Files): Promise<FileForUpload[]> {
   );
 }
 
-export interface GHTree {
-  path: string;
-  mode: "100644";
-  type: "blob";
-  content: string;
-}
-
 async function uploadFiles(
   project: Project,
   repository: Repository,
@@ -148,38 +143,6 @@ async function uploadFiles(
   );
 
   return updatedBranch.data;
-}
-
-async function createPullRequest(
-  repository: Repository,
-  baseBranchName: string,
-  branchName: string,
-  octokit: Octokit
-) {
-  const pr = await octokit.request("POST /repos/{owner}/{repo}/pulls", {
-    owner: repository.owner.login as string,
-    repo: repository.name as string,
-    title: "Assetier update",
-    base: baseBranchName,
-    head: branchName,
-  });
-
-  return pr.data;
-}
-
-async function mergePullRequest(
-  repository: Repository,
-  pullNumber: number,
-  octokit: Octokit
-) {
-  return octokit.request(
-    "PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge",
-    {
-      owner: repository.owner.login as string,
-      repo: repository.name as string,
-      pull_number: pullNumber,
-    }
-  );
 }
 
 export default withProject(async (req, res) => {

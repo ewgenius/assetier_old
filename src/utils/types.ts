@@ -29,6 +29,11 @@ export type AppPropsExtended<P = {}> = AppProps<P> & {
   Component: NextComponentType<NextPageContext, {}, P> & WithNavId;
 };
 
+export type Middleware = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => Promise<any>;
+
 export type NextApiRequestWithSession = NextApiRequest & {
   session: SessionWithId;
 };
@@ -157,6 +162,13 @@ export interface GithubBranch {
     };
   };
   protection_url?: string;
+}
+
+export interface GHTree {
+  path: string;
+  mode: "100644";
+  type: "blob";
+  content: string;
 }
 
 export interface FigmaOauthConnection {

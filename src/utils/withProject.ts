@@ -1,12 +1,16 @@
 import { prisma } from "@utils/prisma";
 import { withOrganization } from "@utils/withOrganization";
 import type {
+  Middleware,
   NextApiHandlerWithProject,
   NextApiRequestWithProject,
 } from "@utils/types";
 import { ForbiddenError, NotFoundError } from "./httpErrors";
 
-export const withProject = <T = any>(handler: NextApiHandlerWithProject<T>) =>
+export const withProject = <T = any>(
+  handler: NextApiHandlerWithProject<T>,
+  middleware?: Middleware
+) =>
   withOrganization(async (req, res) => {
     const project = await prisma.project.findUnique({
       where: {
@@ -25,4 +29,4 @@ export const withProject = <T = any>(handler: NextApiHandlerWithProject<T>) =>
     (req as NextApiRequestWithProject).project = project;
 
     return handler(req as NextApiRequestWithProject, res);
-  });
+  }, middleware);
