@@ -1,6 +1,6 @@
 import type { Octokit } from "@octokit/core";
 
-import type { Repository } from "lib-types";
+import type { Repository } from "@assetier/types";
 
 export async function getRepositoryBranches(
   repository: Repository,

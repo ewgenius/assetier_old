@@ -1,4 +1,4 @@
-import type { NextPageExtended } from "lib-types";
+import type { NextPageExtended } from "@assetier/types";
 import { Page } from "@components/Page";
 import { getProviders, signIn } from "next-auth/react";
 import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";

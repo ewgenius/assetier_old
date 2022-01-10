@@ -1,6 +1,6 @@
 import type { Project } from "lib-prisma";
 import { getOctokit } from "@utils/getOctokit";
-import type { GithubFile } from "lib-types";
+import type { GithubFile } from "@assetier/types";
 import { getProjectInstallation } from "./getProjectInstallation";
 import { getProjectRepository } from "@utils/getProjectRepository";
 

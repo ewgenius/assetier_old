@@ -1,4 +1,4 @@
-import type { NextPageExtended } from "lib-types";
+import type { NextPageExtended } from "@assetier/types";
 import type { ProjectPageWrapperProps } from "@components/PageWrappers/ProjectWrapper";
 import { ProjectPageWrapper } from "@components/PageWrappers/ProjectWrapper";
 import { LayoutBlock } from "@components/LayoutBlock";

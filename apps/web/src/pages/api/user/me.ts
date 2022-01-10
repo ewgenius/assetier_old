@@ -1,7 +1,7 @@
 import { NotAllowedError, NotFoundError } from "@utils/httpErrors";
 import { withSession } from "@utils/withSession";
 import { prisma } from "@utils/prisma";
-import type { UserMe, UserWithOrganizations } from "lib-types";
+import type { UserMe, UserWithOrganizations } from "@assetier/types";
 
 export default withSession<UserMe>(async ({ method, session }, res) => {
   switch (method) {

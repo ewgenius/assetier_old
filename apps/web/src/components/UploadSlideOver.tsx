@@ -14,7 +14,7 @@ import {
 import { Spinner } from "./Spinner";
 import { useProjectContents } from "@hooks/useProjectContents";
 import { Toggle } from "@components/Toggle";
-import type { GithubBranch } from "lib-types";
+import type { GithubBranch } from "@assetier/types";
 
 export interface UploadSlideOverProps extends SlideOverProps {
   project: Project;

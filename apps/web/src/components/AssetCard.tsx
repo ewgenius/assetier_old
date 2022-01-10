@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { GithubFile } from "lib-types";
+import type { GithubFile } from "@assetier/types";
 
 export interface AssetCardProps {
   asset: GithubFile;

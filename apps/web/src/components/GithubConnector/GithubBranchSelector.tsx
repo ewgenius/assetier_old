@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import { Select } from "@components/Select";
-import type { GithubBranch } from "lib-types";
+import type { GithubBranch } from "@assetier/types";
 import { classNames } from "@utils/classNames";
 
 export interface GithubBranchSelectorProps {
