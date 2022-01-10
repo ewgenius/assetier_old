@@ -1,4 +1,4 @@
-import type { NextPageExtended } from "@utils/types";
+import type { NextPageExtended } from "@assetier/types";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { PageHeader } from "@components/PageHeader";

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { GetServerSideProps, NextPage } from "next";
 
-import type { FigmaOauthConnection, FigmaUser } from "@utils/types";
+import type { FigmaOauthConnection, FigmaUser } from "@assetier/types";
 import { fetcher } from "@utils/fetcher";
 import { prisma } from "@utils/prisma";
 import { Spinner } from "@components/Spinner";

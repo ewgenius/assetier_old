@@ -1,4 +1,4 @@
-import type { GithubFile } from "@utils/types";
+import type { GithubFile } from "@assetier/types";
 import type { FC } from "react";
 import { AssetCard } from "@components/AssetCard";
 import { LayoutBlock } from "@components/LayoutBlock";

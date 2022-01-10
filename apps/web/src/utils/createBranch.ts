@@ -1,5 +1,5 @@
 import type { Octokit } from "@octokit/core";
-import type { Repository } from "@utils/types";
+import type { Repository } from "@assetier/types";
 
 export async function createBranch(
   repository: Repository,

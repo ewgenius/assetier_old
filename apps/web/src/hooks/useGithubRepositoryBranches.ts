@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import type { Project } from "@assetier/prisma";
-import type { GithubBranch } from "@utils/types";
+import type { GithubBranch } from "@assetier/types";
 
 import { useOrganization } from "@hooks/useOrganization";
 import { fetcher } from "@utils/fetcher";

@@ -2,7 +2,7 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import type { Project } from "@assetier/prisma";
 
 import { prisma } from "@utils/prisma";
-import type { GithubFile } from "@utils/types";
+import type { GithubFile } from "@assetier/types";
 import { getProjectRepositoryContents } from "@utils/getProjectRepositoryContents";
 import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";

@@ -1,5 +1,9 @@
 import { useState } from "react";
-import type { GithubBranch, GithubFile, NextPageExtended } from "@utils/types";
+import type {
+  GithubBranch,
+  GithubFile,
+  NextPageExtended,
+} from "@assetier/types";
 import { AssetsGrid } from "@components/AssetsGrid";
 import {
   ProjectPageWrapper,

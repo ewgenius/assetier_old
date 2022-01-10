@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { SearchIcon } from "@heroicons/react/outline";
 import type { Project } from "@assetier/prisma";
-import type { GithubBranch } from "@utils/types";
+import type { GithubBranch } from "@assetier/types";
 import { GithubBranchSelector } from "./GithubConnector/GithubBranchSelector";
 import { LayoutBlock } from "./LayoutBlock";
 import { Spinner } from "./Spinner";

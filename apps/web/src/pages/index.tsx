@@ -1,4 +1,4 @@
-import type { NextPageExtended } from "@utils/types";
+import type { NextPageExtended } from "@assetier/types";
 import Head from "next/head";
 
 const Home: NextPageExtended = () => {

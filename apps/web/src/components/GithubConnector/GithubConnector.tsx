@@ -7,7 +7,7 @@ import { useGithubAccounts } from "@hooks/useGithubAccounts";
 import type { Repository } from "@hooks/useGithubAccountRepositories";
 import { useGithubAccountRepositories } from "@hooks/useGithubAccountRepositories";
 import { useGithubRepositoryBranches } from "@hooks/useGithubRepositoryBranches";
-import type { GithubBranch, GithubConnection } from "@utils/types";
+import type { GithubBranch, GithubConnection } from "@assetier/types";
 import { GithubBranchSelector } from "./GithubBranchSelector";
 import { GithubAccountSelector } from "./GithubAccountSelector";
 import { GithubRepositorySelector } from "./GithubRepositorySelector";
