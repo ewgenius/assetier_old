@@ -1,0 +1,44 @@
+{
+  "folders": [
+    {
+      "name": "*",
+      "path": "."
+    },
+    {
+      "name": "[app]: @assetier/web",
+      "path": "apps/figma-plugin"
+    },
+    {
+      "name": "[app]: @assetier/figma-plugin",
+      "path": "apps/web"
+    },
+    {
+      "name": "[package]: @assetier/prisma",
+      "path": "packages/prisma"
+    },
+    {
+      "name": "[package]: @assetier/types",
+      "path": "packages/types"
+    },
+    {
+      "name": "[package]: @assetier/config",
+      "path": "packages/config"
+    },
+    {
+      "name": "[package]: @assetier/tsconfig",
+      "path": "packages/tsconfig"
+    }
+  ],
+  "settings": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "[prisma]": {
+      "editor.defaultFormatter": "Prisma.prisma"
+    },
+    "files.exclude": {
+      "**/.next": true,
+      "**/.parcel-cache": true,
+      "**/.turbo": true
+    }
+  }
+}
