@@ -12,6 +12,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Use PNPM
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.25.1
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
