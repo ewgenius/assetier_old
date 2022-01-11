@@ -67,10 +67,79 @@ export const SignIn: FC<SignInProps> = ({ onSignIn }) => {
   );
 };
 
+const ProfileTopbar = () => {
+  const { user } = useMe();
+
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <div className="flex items-center p-2 border-b border-gray-200 bg-white">
+      <span className="flex-grow text-sm">{user.user.name}</span>
+      {user.user.image && (
+        <img className="w-5 h-5 rounded-full" src={user.user.image} />
+      )}
+    </div>
+  );
+};
+
+const OrgProjectSelector: FC = () => {
+  const { organizationId, projectId, setOrgProject } = useAppContext();
+  const { user } = useMe();
+
+  const [orgId, setOrgId] = useState(organizationId || "");
+  const [projId, setProjectId] = useState(projectId || "");
+
+  const submit = useCallback(() => {
+    setOrgProject(orgId, projId);
+  }, [orgId, projId]);
+
+  if (!user) {
+    return (
+      <div className="h-full p-2 flex flex-col justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-full flex flex-col">
+      <ProfileTopbar />
+      <div className="p-2 flex flex-col">
+        <div>
+          <label className="text-xs">org id</label>
+          <input
+            value={orgId}
+            onChange={({ target: { value } }) => setOrgId(value)}
+          />
+        </div>
+
+        <div>
+          <label className="text-xs">project id</label>
+          <input
+            value={projId}
+            onChange={({ target: { value } }) => setProjectId(value)}
+          />
+        </div>
+
+        <button
+          type="button"
+          disabled={!orgId || !projId}
+          className="flex w-full items-center px-2.5 py-1.5 mb-2 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          onClick={submit}
+        >
+          <span>Save</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Main: FC<{
   selectedNodes: SelectedNode[];
 }> = ({ selectedNodes }) => {
-  const { token } = useAppContext();
+  const { token, organizationId, projectId } = useAppContext();
   const { user } = useMe();
   const [exporting, setExporting] = useState(false);
 
@@ -93,15 +162,20 @@ const Main: FC<{
   }, [selectedNodes]);
 
   if (!user) {
-    return null;
+    return (
+      <div className="h-full p-2 flex flex-col justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (!organizationId || !projectId) {
+    return <OrgProjectSelector />;
   }
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex items-center p-2 border-b border-gray-200 bg-white">
-        <span className="flex-grow text-sm">{user.user.name}</span>
-        <img className="w-5 h-5 rounded-full" src={user.user.image} />
-      </div>
+      <ProfileTopbar />
 
       <div className="p-2 flex-grow overflow-y-auto">
         {selectedNodes && selectedNodes.length > 0 ? (
@@ -140,7 +214,18 @@ export const App: FC = () => {
 
   const [initialized, setInitialized] = useState(false);
   const [token, setToken] = useState<string | null>(null);
+  const [organizationId, setOrganizationId] = useState<string | null>(null);
+  const [projectId, setProjectId] = useState<string | null>(null);
   const [selectedNodes, setSelectedNodes] = useState<SelectedNode[]>([]);
+
+  function setOrgProject(organizationId: string, projectId: string) {
+    setOrganizationId(organizationId);
+    setProjectId(projectId);
+    postMessage(MessageType.SetOrgProject, {
+      organizationId,
+      projectId,
+    });
+  }
 
   function onSignIn(token: string) {
     setToken(token);
@@ -150,7 +235,7 @@ export const App: FC = () => {
   }
 
   useEffect(() => {
-    const onMessage: EventListener = ({
+    const onMessage = ({
       data: { pluginMessage },
     }: MessageEvent<{
       pluginMessage: Message;
@@ -159,6 +244,8 @@ export const App: FC = () => {
         case MessageType.Init: {
           if (pluginMessage.data.token) {
             setToken(pluginMessage.data.token);
+            setOrganizationId(pluginMessage.data.organizationId);
+            setProjectId(pluginMessage.data.projectId);
           }
           setInitialized(true);
           break;
@@ -189,7 +276,9 @@ export const App: FC = () => {
   }
 
   return (
-    <AppContext.Provider value={{ token }}>
+    <AppContext.Provider
+      value={{ token, organizationId, projectId, setOrgProject }}
+    >
       <Main selectedNodes={selectedNodes} />
     </AppContext.Provider>
   );

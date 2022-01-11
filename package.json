@@ -12,6 +12,7 @@
     "build:figma-plugin:local": "turbo run build:local --scope=@assetier/figma-plugin --include-dependencies --no-deps",
     "build:figma-plugin:production": "turbo run build:production --scope=@assetier/figma-plugin --include-dependencies --no-deps",
     "dev": "turbo run dev --parallel",
+    "dev:web": "turbo run dev --scope=@assetier/web --include-dependencies --no-deps",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

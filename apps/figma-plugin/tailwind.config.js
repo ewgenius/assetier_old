@@ -9,5 +9,5 @@ module.exports = {
       sans: ["Inter var", ...defaultTheme.fontFamily.sans],
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

@@ -28,7 +28,13 @@ export const handler: NextApiHandler = async (req, res) => {
         throw new NotFoundError();
       }
 
-      // TODO: delete if it has access token
+      if (readWritePair.token) {
+        await prisma.figmaReadWritePair.delete({
+          where: {
+            readKey: query.readKey as string,
+          },
+        });
+      }
 
       return res.status(200).json(readWritePair);
     }
