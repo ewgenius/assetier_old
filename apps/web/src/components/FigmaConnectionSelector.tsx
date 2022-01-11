@@ -45,9 +45,14 @@ export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
                   alt=""
                   className="flex-shrink-0 h-5 w-5 border border-zinc-200 bg-white rounded-full"
                 />
-                <span className="ml-3 block truncate">
-                  {connection.userHandle}
-                </span>
+                <div className="ml-3">
+                  <span className="block truncate">
+                    {connection.userHandle}
+                  </span>
+                  <span className="block truncate text-xs">
+                    {connection.createdAt}
+                  </span>
+                </div>
               </span>
             )}
             renderBefore={() => (
@@ -67,14 +72,19 @@ export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
                   alt=""
                   className="flex-shrink-0 h-5 w-5 border border-zinc-200 rounded-full"
                 />
-                <span
-                  className={classNames(
-                    selected ? "font-semibold" : "font-normal",
-                    "ml-3 block truncate flex-grow"
-                  )}
-                >
-                  {connection.userHandle}
-                </span>
+                <div className="ml-3">
+                  <span
+                    className={classNames(
+                      selected ? "font-semibold" : "font-normal",
+                      "block truncate flex-grow"
+                    )}
+                  >
+                    {connection.userHandle}
+                  </span>
+                  <span className="block truncate text-xs">
+                    {connection.createdAt}
+                  </span>
+                </div>
               </div>
             )}
           />
