@@ -1,0 +1,8 @@
+{
+  "name": "Assetier",
+  "id": "1062657561061979781",
+  "api": "1.0.0",
+  "editorType": ["figma"],
+  "main": "index.js",
+  "ui": "index.html"
+}

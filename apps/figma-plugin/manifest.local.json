@@ -2,7 +2,7 @@
   "name": "Assetier (dev)",
   "id": "1061989412454102067",
   "api": "1.0.0",
-  "main": "dist/index.js",
   "editorType": ["figma"],
-  "ui": "dist/index.html"
+  "main": "index.js",
+  "ui": "index.html"
 }

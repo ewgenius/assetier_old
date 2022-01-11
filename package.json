@@ -9,7 +9,8 @@
   "scripts": {
     "build": "turbo run build",
     "build:web": "turbo run build --scope=@assetier/web --include-dependencies --no-deps",
-    "build:figma-plugin": "turbo run build --scope=@assetier/figma-plugin --include-dependencies --no-deps",
+    "build:figma-plugin:local": "turbo run build:local --scope=@assetier/figma-plugin --include-dependencies --no-deps",
+    "build:figma-plugin:production": "turbo run build:production --scope=@assetier/figma-plugin --include-dependencies --no-deps",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -28,6 +29,22 @@
         "outputs": [
           "dist/**",
           ".next/**"
+        ]
+      },
+      "build:local": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "dist/**"
+        ]
+      },
+      "build:production": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "dist/**"
         ]
       },
       "lint": {
