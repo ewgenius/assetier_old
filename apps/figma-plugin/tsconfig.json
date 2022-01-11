@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es6", "DOM"],
+    "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"]
+  }
+}
