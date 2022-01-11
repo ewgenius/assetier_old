@@ -8,6 +8,8 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "build:web": "turbo run build --scope=@assetier/web --include-dependencies --no-deps",
+    "build:figma-plugin": "turbo run build --scope=@assetier/figma-plugin --include-dependencies --no-deps",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
