@@ -6,11 +6,11 @@
     },
     {
       "name": "[app]: @assetier/web",
-      "path": "apps/figma-plugin"
+      "path": "apps/web"
     },
     {
       "name": "[app]: @assetier/figma-plugin",
-      "path": "apps/web"
+      "path": "apps/figma-plugin"
     },
     {
       "name": "[package]: @assetier/prisma",
