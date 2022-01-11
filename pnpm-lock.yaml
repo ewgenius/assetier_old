@@ -12,6 +12,9 @@ importers:
 
   apps/figma-plugin:
     specifiers:
+      '@assetier/config': workspace:*
+      '@assetier/tsconfig': workspace:*
+      '@assetier/types': workspace:*
       '@figma/plugin-typings': ^1.40.0
       '@parcel/transformer-inline-string': ^2.1.1
       '@types/react': ^17.0.38
@@ -29,6 +32,9 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       swr: 1.1.2_react@17.0.2
     devDependencies:
+      '@assetier/config': link:../../packages/config
+      '@assetier/tsconfig': link:../../packages/tsconfig
+      '@assetier/types': link:../../packages/types
       '@figma/plugin-typings': 1.40.0
       '@parcel/transformer-inline-string': 2.1.1
       '@types/react': 17.0.38

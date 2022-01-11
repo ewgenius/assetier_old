@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FC, useEffect, useState, useCallback } from "react";
 import { render } from "react-dom";
-import { Message, MessageInit, MessageType } from "../types";
+import { Message, MessageType } from "../types";
 import { Spinner } from "./components/Spinner";
 import { useMe } from "./hooks/useMe";
 import { authFetcher } from "./utils/fetcher";

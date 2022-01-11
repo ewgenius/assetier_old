@@ -13,6 +13,9 @@
   "author": "",
   "license": "",
   "devDependencies": {
+    "@assetier/config": "workspace:*",
+    "@assetier/tsconfig": "workspace:*",
+    "@assetier/types": "workspace:*",
     "@figma/plugin-typings": "^1.40.0",
     "@parcel/transformer-inline-string": "^2.1.1",
     "@types/react": "^17.0.38",
