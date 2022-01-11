@@ -3,5 +3,10 @@
   "editor.formatOnSave": true,
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "files.exclude": {
+    "**/.next": true,
+    "**/.parcel-cache": true,
+    "**/.turbo": true
   }
 }
