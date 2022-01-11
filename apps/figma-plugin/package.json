@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "build": "API_URL=http://localhost:3000 parcel build --dist-dir dist",
-    "dev": "parcel"
+    "dev": "parcel",
+    "lint": "eslint --ext .tsx,.ts src"
   },
   "author": "",
   "license": "",

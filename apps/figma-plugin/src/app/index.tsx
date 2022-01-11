@@ -87,7 +87,7 @@ const Main: FC<{
           "Content-Type": "application/json",
         },
       }
-    ).then((r) => {
+    ).then(() => {
       setExporting(false);
     });
   }, [selectedNodes]);
@@ -134,9 +134,9 @@ const Main: FC<{
 };
 
 export const App: FC = () => {
-  function getNodes() {
-    postMessage(MessageType.GetSelectedNodes);
-  }
+  // function getNodes() {
+  //   postMessage(MessageType.GetSelectedNodes);
+  // }
 
   const [initialized, setInitialized] = useState(false);
   const [token, setToken] = useState<string | null>(null);
