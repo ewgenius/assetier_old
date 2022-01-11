@@ -119,6 +119,12 @@ export interface GithubCommit {
   };
 }
 
+export interface GithubMergedPullRequest {
+  sha: string;
+  merged: boolean;
+  message: string;
+}
+
 export interface Repository {
   owner: {
     login: string;

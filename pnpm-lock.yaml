@@ -12,7 +12,9 @@ importers:
 
   apps/web:
     specifiers:
+      '@assetier/config': workspace:*
       '@assetier/prisma': workspace:*
+      '@assetier/tsconfig': workspace:*
       '@assetier/types': workspace:*
       '@headlessui/react': ^1.4.2
       '@heroicons/react': ^1.0.5
@@ -66,6 +68,8 @@ importers:
       swr: 1.1.2_react@17.0.2
       uuid: 8.3.2
     devDependencies:
+      '@assetier/config': link:../../packages/config
+      '@assetier/tsconfig': link:../../packages/tsconfig
       '@assetier/types': link:../../packages/types
       '@types/cors': 2.8.12
       '@types/formidable': 2.0.3
@@ -93,17 +97,17 @@ importers:
 
   packages/prisma:
     specifiers:
+      '@assetier/config': workspace:*
+      '@assetier/tsconfig': workspace:*
       '@prisma/client': ^3.7.0
-      config: '*'
       prisma: ^3.7.0
-      tsconfig: '*'
       typescript: ^4.5.3
     dependencies:
       '@prisma/client': 3.7.0_prisma@3.7.0
     devDependencies:
-      config: 3.3.6
+      '@assetier/config': link:../config
+      '@assetier/tsconfig': link:../tsconfig
       prisma: 3.7.0
-      tsconfig: 7.0.0
       typescript: 4.5.4
 
   packages/tsconfig:
@@ -111,18 +115,18 @@ importers:
 
   packages/types:
     specifiers:
+      '@assetier/config': workspace:*
       '@assetier/prisma': workspace:*
-      config: workspace:*
+      '@assetier/tsconfig': workspace:*
       next: 12.0.7
       next-auth: ^4.0.6
-      tsconfig: workspace:*
       typescript: ^4.5.3
     devDependencies:
+      '@assetier/config': link:../config
       '@assetier/prisma': link:../prisma
-      config: link:../config
+      '@assetier/tsconfig': link:../tsconfig
       next: 12.0.7
       next-auth: 4.1.0
-      tsconfig: link:../tsconfig
       typescript: 4.5.4
 
 packages:
@@ -750,14 +754,6 @@ packages:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
     dev: true
 
-  /@types/strip-bom/3.0.0:
-    resolution: {integrity: sha1-FKjsOVbC6B7bdSB5CuzyHCkK69I=}
-    dev: true
-
-  /@types/strip-json-comments/0.0.30:
-    resolution: {integrity: sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==}
-    dev: true
-
   /@types/uuid/8.3.4:
     resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
     dev: true
@@ -1362,13 +1358,6 @@ packages:
 
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
-
-  /config/3.3.6:
-    resolution: {integrity: sha512-Hj5916C5HFawjYJat1epbyY2PlAgLpBtDUlr0MxGLgo3p5+7kylyvnRY18PqJHgnNWXcdd0eWDemT7eYWuFgwg==}
-    engines: {node: '>= 10.0.0'}
-    dependencies:
-      json5: 2.2.0
-    dev: true
 
   /constants-browserify/1.0.0:
     resolution: {integrity: sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=}
@@ -2576,14 +2565,6 @@ packages:
     dependencies:
       minimist: 1.2.5
 
-  /json5/2.2.0:
-    resolution: {integrity: sha512-f+8cldu7X/y7RAJurMEJmdoKXGB/X550w2Nr3tTbezL6RwEE/iMcm+tZnXeoZtKuOq6ft8+CqzEkrIgx1fPoQA==}
-    engines: {node: '>=6'}
-    hasBin: true
-    dependencies:
-      minimist: 1.2.5
-    dev: true
-
   /jsonwebtoken/8.5.1:
     resolution: {integrity: sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==}
     engines: {node: '>=4', npm: '>=1.4.28'}
@@ -3707,11 +3688,6 @@ packages:
     resolution: {integrity: sha1-IzTBjpx1n3vdVv3vfprj1YjmjtM=}
     engines: {node: '>=4'}
 
-  /strip-json-comments/2.0.1:
-    resolution: {integrity: sha1-PFMZQukIwml8DsNEhYwobHygpgo=}
-    engines: {node: '>=0.10.0'}
-    dev: true
-
   /strip-json-comments/3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
@@ -3902,15 +3878,6 @@ packages:
       json5: 1.0.1
       minimist: 1.2.5
       strip-bom: 3.0.0
-
-  /tsconfig/7.0.0:
-    resolution: {integrity: sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==}
-    dependencies:
-      '@types/strip-bom': 3.0.0
-      '@types/strip-json-comments': 0.0.30
-      strip-bom: 3.0.0
-      strip-json-comments: 2.0.1
-    dev: true
 
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}

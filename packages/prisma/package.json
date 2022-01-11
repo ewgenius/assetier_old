@@ -14,9 +14,9 @@
     "@prisma/client": "^3.7.0"
   },
   "devDependencies": {
-    "config": "*",
+    "@assetier/config": "workspace:*",
+    "@assetier/tsconfig": "workspace:*",
     "prisma": "^3.7.0",
-    "tsconfig": "*",
     "typescript": "^4.5.3"
   }
 }

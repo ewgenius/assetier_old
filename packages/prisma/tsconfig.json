@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/library.json",
+  "extends": "@assetier/tsconfig/library.json",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"]
 }

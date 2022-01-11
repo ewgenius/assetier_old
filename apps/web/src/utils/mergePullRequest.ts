@@ -1,12 +1,12 @@
 import type { Octokit } from "@octokit/core";
-import type { Repository } from "@assetier/types";
+import type { Repository, GithubMergedPullRequest } from "@assetier/types";
 
 export async function mergePullRequest(
   repository: Repository,
   pullNumber: number,
   octokit: Octokit
-) {
-  return octokit.request(
+): Promise<GithubMergedPullRequest> {
+  const pr = await octokit.request(
     "PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge",
     {
       owner: repository.owner.login as string,
@@ -14,4 +14,6 @@ export async function mergePullRequest(
       pull_number: pullNumber,
     }
   );
+
+  return pr.data as GithubMergedPullRequest;
 }
