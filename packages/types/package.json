@@ -1,0 +1,14 @@
+{
+  "name": "@assetier/types",
+  "version": "0.0.0",
+  "main": "index.d.ts",
+  "types": "index.d.ts",
+  "devDependencies": {
+    "@assetier/config": "workspace:*",
+    "@assetier/tsconfig": "workspace:*",
+    "@assetier/prisma": "workspace:*",
+    "typescript": "^4.5.3",
+    "next": "12.0.7",
+    "next-auth": "^4.0.6"
+  }
+}

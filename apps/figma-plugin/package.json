@@ -1,0 +1,35 @@
+{
+  "name": "@assetier/figma-plugin",
+  "version": "0.0.0",
+  "description": "Your Figma plugin",
+  "source": [
+    "./src/index.ts",
+    "./src/index.html"
+  ],
+  "scripts": {
+    "build": "API_URL=http://localhost:3000 parcel build --dist-dir dist",
+    "dev": "parcel",
+    "lint": "eslint --ext .tsx,.ts src"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@assetier/config": "workspace:*",
+    "@assetier/tsconfig": "workspace:*",
+    "@assetier/types": "workspace:*",
+    "@figma/plugin-typings": "^1.40.0",
+    "@parcel/transformer-inline-string": "^2.1.1",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "autoprefixer": "^10.4.2",
+    "parcel": "^2.1.1",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.12",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "swr": "^1.1.2"
+  }
+}
