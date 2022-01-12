@@ -4,8 +4,10 @@ import type { FigmaOauthConnection } from "@assetier/prisma";
 import { classNames } from "@utils/classNames";
 import { Select } from "@components/Select";
 import { ConnectFigmaButton } from "./ConnectFigmaButton";
+import type { OrganizationWithPlan } from "@assetier/types";
 
 export interface FigmaConnectionSelectorProps {
+  organization?: OrganizationWithPlan;
   selectedConnection: FigmaOauthConnection | null;
   onChange: (connection: FigmaOauthConnection | null) => void;
   connections?: FigmaOauthConnection[];
@@ -14,6 +16,7 @@ export interface FigmaConnectionSelectorProps {
 }
 
 export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
+  organization,
   onChange,
   selectedConnection,
   connections,
@@ -27,7 +30,7 @@ export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
           <div className="block mb-1 text-sm font-medium text-gray-700">
             Figma Connection
           </div>
-          <ConnectFigmaButton mode="button" />
+          <ConnectFigmaButton mode="button" organization={organization} />
         </>
       ) : (
         <>
@@ -57,7 +60,7 @@ export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
             )}
             renderBefore={() => (
               <li>
-                <ConnectFigmaButton mode="option" />
+                <ConnectFigmaButton mode="option" organization={organization} />
                 <div className="w-full px-2 py-1">
                   <div className="border-b border-gray-100" />
                 </div>

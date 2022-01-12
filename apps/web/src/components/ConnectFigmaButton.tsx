@@ -2,13 +2,18 @@ import type { FC } from "react";
 import { PlusSmIcon } from "@heroicons/react/outline";
 
 import { useOrganization } from "@hooks/useOrganization";
+import type { OrganizationWithPlan } from "@assetier/types";
 
 export interface ConnectFigmaButton {
+  organization?: OrganizationWithPlan;
   mode?: "button" | "option";
 }
 
-export const ConnectFigmaButton: FC<ConnectFigmaButton> = ({ mode }) => {
-  const { organization } = useOrganization();
+export const ConnectFigmaButton: FC<ConnectFigmaButton> = ({
+  organization: org,
+  mode,
+}) => {
+  const { organization } = useOrganization(org);
   return (
     <button
       type="button"
