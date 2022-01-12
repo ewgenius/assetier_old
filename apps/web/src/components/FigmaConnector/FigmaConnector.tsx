@@ -47,6 +47,7 @@ export const FigmaConnector: FC<FigmaConnectorProps> = ({
         )}
       >
         <FigmaConnectionSelector
+          organization={organization}
           disabled={disabled}
           selectedConnection={selectedConnection}
           connections={connections}
