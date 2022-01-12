@@ -9,7 +9,7 @@
   "scripts": {
     "build:local": "NODE_ENV=development API_URL=http://localhost:3000 parcel build --dist-dir dist/local && cp ./manifest.local.json ./dist/local/manifest.json",
     "build:production": "NODE_ENV=production API_URL=https://www.assetier.app parcel build --dist-dir dist/production && cp ./manifest.production.json ./dist/production/manifest.json",
-    "dev": "NODE_ENV=development API_URL=http://localhost:3000 parcel",
+    "dev": "NODE_ENV=development API_URL=http://localhost:3000 parcel ./src/dev/index.html ./src/index.html",
     "lint": "eslint --ext .tsx,.ts src"
   },
   "author": "",
