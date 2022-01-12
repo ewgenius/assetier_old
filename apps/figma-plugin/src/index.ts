@@ -1,4 +1,4 @@
-import { Message, MessageType } from "./types";
+import { PluginMessage, MessageType } from "./types";
 
 figma.showUI(__html__, {
   width: 300,
@@ -6,11 +6,10 @@ figma.showUI(__html__, {
 });
 
 function updateSelection() {
-  console.log(figma.currentPage.selection);
   figma.ui.postMessage({
     type: MessageType.ReceiveSelectedNodes,
     data: {
-      selection: figma.currentPage.selection,
+      nodes: figma.currentPage.selection,
     },
   });
 }
@@ -40,7 +39,7 @@ figma.on("selectionchange", () => {
   updateSelection();
 });
 
-figma.ui.onmessage = async ({ type, data }: Message) => {
+figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
   switch (type) {
     case MessageType.SetToken: {
       await figma.clientStorage.setAsync("assetier-token", data.token);
@@ -53,16 +52,6 @@ figma.ui.onmessage = async ({ type, data }: Message) => {
         data.organizationId
       );
       await figma.clientStorage.setAsync("assetier-project-id", data.projectId);
-      break;
-    }
-
-    case MessageType.GetSelectedNodes: {
-      figma.ui.postMessage({
-        type: MessageType.ReceiveSelectedNodes,
-        data: {
-          selection: figma.currentPage.selection,
-        },
-      });
       break;
     }
   }

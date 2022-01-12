@@ -7,11 +7,11 @@ export enum MessageType {
   ReceiveSelectedNodes = "receive-selected-nodes",
 }
 
-export interface Message<T = any> {
+export interface PluginMessage<T = any> {
   type: MessageType;
   data: T;
 }
 
-export interface MessageInit extends Message<{ token: string }> {
+export interface MessageInit extends PluginMessage<{ token: string }> {
   type: MessageType.Init;
 }
