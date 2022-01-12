@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FC, useEffect, useState, useCallback } from "react";
 import { render } from "react-dom";
-import { Message, MessageType } from "../types";
+import { MessageType, PluginMessage } from "../types";
 import { Spinner } from "./components/Spinner";
 import { ProfileTopbar } from "./components/ProfileTopbar";
 import { useMe } from "./hooks/useMe";
@@ -11,6 +11,12 @@ import { AppContext, useAppContext } from "./AppContext";
 import { App } from "./App";
 import { SignInPage } from "./pages/SignInPage";
 import { SettingsPage } from "./pages/SettingsPage";
+
+// @ts-ignore
+if (module.hot) {
+  // @ts-ignore
+  module.hot.accept();
+}
 
 export type SelectedNode = Pick<SceneNode, "id">;
 
@@ -27,20 +33,22 @@ const Main: FC<{
 
   const exportNodes = useCallback(() => {
     setExporting(true);
-    authFetcher(token)(
-      `${process.env.API_URL}/api/organizations/ckxxi36d30541ujndn755fii3/projects/cky0ly54k0072jmnd5q3fmqrl/figma/import`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          nodes: selectedNodes.map((node) => node.id),
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then(() => {
-      setExporting(false);
-    });
+    if (token) {
+      authFetcher(token)(
+        `${process.env.API_URL}/api/organizations/ckxxi36d30541ujndn755fii3/projects/cky0ly54k0072jmnd5q3fmqrl/figma/import`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            nodes: selectedNodes.map((node) => node.id),
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then(() => {
+        setExporting(false);
+      });
+    }
   }, [selectedNodes]);
 
   if (!user) {
@@ -120,7 +128,7 @@ export const Root: FC = () => {
     const onMessage = ({
       data: { pluginMessage },
     }: MessageEvent<{
-      pluginMessage: Message;
+      pluginMessage: PluginMessage;
     }>) => {
       if (pluginMessage) {
         switch (pluginMessage.type) {
@@ -156,7 +164,7 @@ export const Root: FC = () => {
   }
 
   if (!token) {
-    return <SignInPage onSignIn={onSignIn} />;
+    return <SignInPage />;
   }
 
   return (
