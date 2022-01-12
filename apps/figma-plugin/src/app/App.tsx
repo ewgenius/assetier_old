@@ -55,6 +55,8 @@ export const App: FC = () => {
               payload: data.token
                 ? {
                     token: data.token,
+                    organizationId: data.organizationId,
+                    projectId: data.projectId,
                     page: AppPage.Main,
                   }
                 : {

@@ -11,6 +11,7 @@ import { AppContext, useAppContext } from "./AppContext";
 import { App } from "./App";
 import { SignInPage } from "./pages/SignInPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { postMessage } from "./utils/postMessage";
 
 // // @ts-ignore
 // if (module.hot) {
@@ -19,10 +20,6 @@ import { SettingsPage } from "./pages/SettingsPage";
 // }
 
 export type SelectedNode = Pick<SceneNode, "id">;
-
-function postMessage(type: MessageType, data?: any) {
-  parent.postMessage({ pluginMessage: { type, data } }, "*");
-}
 
 const Main: FC<{
   selectedNodes: SelectedNode[];

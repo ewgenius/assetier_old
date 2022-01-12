@@ -62,7 +62,8 @@ export interface NextPageAction extends Action {
   type: ActionType.NextPage;
 }
 
-export interface SingedInAction extends Action<{ token: string }> {
+export interface SingedInAction
+  extends Action<{ token: string; organizationId: string; projectId: string }> {
   type: ActionType.SignedIn;
 }
 
@@ -99,6 +100,8 @@ export const appStateReducer: Reducer<AppState, Actions> = (
       return {
         ...state,
         token: payload.token,
+        organizationId: payload.organizationId,
+        projectId: payload.projectId,
         page: AppPage.Main,
       };
 

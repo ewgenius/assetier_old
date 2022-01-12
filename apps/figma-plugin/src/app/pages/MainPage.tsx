@@ -16,7 +16,7 @@ export const MainPage: FC = () => {
     setExporting(true);
     if (token) {
       authFetcher(token)(
-        `${process.env.API_URL}/api/organizations/ckxxi36d30541ujndn755fii3/projects/cky0ly54k0072jmnd5q3fmqrl/figma/import`,
+        `${process.env.API_URL}/api/organizations/${organizationId}/projects/${projectId}/figma/import`,
         {
           method: "POST",
           body: JSON.stringify({
@@ -30,7 +30,7 @@ export const MainPage: FC = () => {
         setExporting(false);
       });
     }
-  }, [selectedNodes, token]);
+  }, [selectedNodes, organizationId, projectId, token]);
 
   if (!user) {
     return (

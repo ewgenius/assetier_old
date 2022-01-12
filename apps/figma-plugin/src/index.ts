@@ -43,6 +43,11 @@ figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
   switch (type) {
     case MessageType.SetToken: {
       await figma.clientStorage.setAsync("assetier-token", data.token);
+      await figma.clientStorage.setAsync(
+        "assetier-organization-id",
+        data.organizationId
+      );
+      await figma.clientStorage.setAsync("assetier-project-id", data.projectId);
       break;
     }
 

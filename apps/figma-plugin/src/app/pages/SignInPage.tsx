@@ -1,7 +1,11 @@
 import * as React from "react";
 import { FC, useState, useCallback } from "react";
+import { FigmaReadWritePair } from "@assetier/types";
 import { ActionType, useAppContext } from "../AppContext";
 import { Spinner } from "../components/Spinner";
+import { fetcher } from "../utils/fetcher";
+import { postMessage } from "../utils/postMessage";
+import { MessageType } from "../../types";
 
 export const SignInPage: FC = () => {
   const { dispatch } = useAppContext();
@@ -29,18 +33,30 @@ export const SignInPage: FC = () => {
 
   const refresh = useCallback(() => {
     if (pair?.readKey) {
-      fetch(`${process.env.API_URL}/api/figma/auth/${pair.readKey}`)
-        .then((r) => r.json())
-        .then((updatedPair) => {
-          if (updatedPair?.token) {
-            dispatch({
-              type: ActionType.SignedIn,
-              payload: {
-                token: updatedPair?.token,
-              },
-            });
-          }
-        });
+      fetcher<FigmaReadWritePair>(
+        `${process.env.API_URL}/api/figma/auth/${pair.readKey}`
+      ).then((updatedPair) => {
+        console.log(updatedPair);
+        if (
+          updatedPair?.token &&
+          updatedPair?.organizationId &&
+          updatedPair?.projectId
+        ) {
+          dispatch({
+            type: ActionType.SignedIn,
+            payload: {
+              token: updatedPair.token,
+              organizationId: updatedPair.organizationId,
+              projectId: updatedPair.projectId,
+            },
+          });
+          postMessage(MessageType.SetToken, {
+            token: updatedPair.token,
+            organizationId: updatedPair.organizationId,
+            projectId: updatedPair.projectId,
+          });
+        }
+      });
     }
   }, [pair?.readKey]);
 
