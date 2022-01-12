@@ -1,10 +1,11 @@
+import { OrganizationWithPlan } from "@assetier/types";
 import { useAppContext } from "./useAppContext";
 
-export function useOrganization() {
+export function useOrganization(defaultOrganization?: OrganizationWithPlan) {
   const { organization, setOrganization } = useAppContext();
 
   return {
-    organization,
+    organization: defaultOrganization || organization,
     setOrganization,
   };
 }

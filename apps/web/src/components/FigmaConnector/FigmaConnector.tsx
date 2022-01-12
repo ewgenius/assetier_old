@@ -4,8 +4,10 @@ import type { FigmaOauthConnection } from "@assetier/prisma";
 import { classNames } from "@utils/classNames";
 import { FigmaConnectionSelector } from "@components/FigmaConnectionSelector";
 import { useFigmaConnections } from "@hooks/useFigmaConnections";
+import { OrganizationWithPlan } from "@assetier/types";
 
 export interface FigmaConnectorProps {
+  organization?: OrganizationWithPlan;
   connectionId?: string;
   layout?: "column" | "row";
   disabled?: boolean;
@@ -13,12 +15,13 @@ export interface FigmaConnectorProps {
 }
 
 export const FigmaConnector: FC<FigmaConnectorProps> = ({
+  organization,
   connectionId,
   layout,
   disabled,
   onChange,
 }) => {
-  const { connections } = useFigmaConnections();
+  const { connections } = useFigmaConnections(organization);
   const [selectedConnection, setSelectedConnection] =
     useState<FigmaOauthConnection | null>(null);
 

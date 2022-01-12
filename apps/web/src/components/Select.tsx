@@ -97,8 +97,8 @@ export const Select: FC<SelectProps> = ({
                       key={getItemId(item)}
                       className={({ active }) =>
                         classNames(
-                          active ? "text-white bg-zinc-600" : "text-gray-900",
-                          "cursor-pointer select-none relative py-2 pl-3 pr-9"
+                          active ? "bg-zinc-100" : "",
+                          "cursor-pointer select-none relative py-2 pl-3 pr-9 text-gray-900"
                         )
                       }
                       value={item}
@@ -111,7 +111,6 @@ export const Select: FC<SelectProps> = ({
                           {selected ? (
                             <span
                               className={classNames(
-                                active ? "text-white" : "text-zinc-600",
                                 "absolute inset-y-0 right-0 flex items-center pr-4"
                               )}
                             >

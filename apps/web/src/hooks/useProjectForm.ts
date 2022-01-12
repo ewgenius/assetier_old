@@ -40,14 +40,12 @@ export function useProjectForm(project?: Partial<Project>) {
 
   const reset = useCallback(() => {
     if (project) {
-      project.name && setNameValue(project.name);
-      project.alias && setAliasValue(project.alias);
-      project.figmaFileUrl && setFigmaFileUrlValue(project.figmaFileUrl);
-      project.figmaOauthConnectionId &&
-        setFigmaOauthConnectionId(project.figmaOauthConnectionId);
-      project.assetsPath && setAssetsPathValue(project.assetsPath);
-      project.publicPageEnabled !== undefined &&
-        setPublicPageEnabled(project.publicPageEnabled);
+      setNameValue(project.name || "");
+      setAliasValue(project.alias || "");
+      setFigmaFileUrlValue(project.figmaFileUrl || "");
+      setFigmaOauthConnectionId(project.figmaOauthConnectionId);
+      setAssetsPathValue(project.assetsPath || "");
+      setPublicPageEnabled(project.publicPageEnabled || false);
     } else {
       resetName();
       resetAlias();
@@ -61,7 +59,7 @@ export function useProjectForm(project?: Partial<Project>) {
 
   useEffect(() => {
     reset();
-  }, [project]);
+  }, [project?.id]);
 
   const projectData: Partial<Project> = useMemo(() => {
     const data: Partial<Project> = {
