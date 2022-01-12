@@ -8,7 +8,8 @@ import type { GetServerSideProps, NextApiRequest } from "next";
 import { getToken } from "next-auth/jwt";
 import { prisma } from "@utils/prisma";
 import { signIn } from "next-auth/react";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { FC } from "react";
 import Image from "next/image";
 import {
   CheckCircleIcon,
@@ -19,13 +20,11 @@ import {
 import { useMe } from "@hooks/useMe";
 import { Select } from "@components/Select";
 import { classNames } from "@utils/classNames";
-import { useProjects } from "@hooks/useProjects";
 import { useOrganizationProjects } from "@hooks/useOrganizationProjects";
 import { Spinner } from "@components/Spinner";
 import { OrganizationType } from "@assetier/prisma";
 import { fetcher } from "@utils/fetcher";
 import { useRouter } from "next/router";
-import { useInputState } from "@hooks/useInputState";
 import { TextInput } from "@components/TextInput";
 import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 import { useProjectForm } from "@hooks/useProjectForm";

@@ -4,7 +4,7 @@ import type { FigmaOauthConnection } from "@assetier/prisma";
 import { classNames } from "@utils/classNames";
 import { FigmaConnectionSelector } from "@components/FigmaConnectionSelector";
 import { useFigmaConnections } from "@hooks/useFigmaConnections";
-import { OrganizationWithPlan } from "@assetier/types";
+import type { OrganizationWithPlan } from "@assetier/types";
 
 export interface FigmaConnectorProps {
   organization?: OrganizationWithPlan;
