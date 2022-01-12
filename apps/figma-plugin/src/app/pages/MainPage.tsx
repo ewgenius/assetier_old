@@ -52,7 +52,7 @@ export const MainPage: FC<{
     <div className="h-full flex flex-col">
       <ProfileTopbar />
 
-      <div className="p-2 flex-grow overflow-y-auto">
+      <div className="p-4 flex-grow overflow-y-auto">
         {selectedNodes && selectedNodes.length > 0 ? (
           <>
             <button

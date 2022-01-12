@@ -37,11 +37,15 @@ export const App: FC = () => {
   });
 
   useEffect(() => {
-    function onMessage({
-      data: { pluginMessage },
-    }: MessageEvent<{
-      pluginMessage: PluginMessage;
-    }>) {
+    function onMessage(
+      message: MessageEvent<{
+        pluginMessage: PluginMessage;
+      }>
+    ) {
+      console.log(message);
+      const {
+        data: { pluginMessage },
+      } = message;
       if (pluginMessage) {
         const { type, data } = pluginMessage;
         switch (type) {
