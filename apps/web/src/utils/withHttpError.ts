@@ -1,3 +1,4 @@
+import { Middleware } from "@assetier/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { HttpError } from "./httpErrors";
 
@@ -16,13 +17,19 @@ export type WithHttpError = <
   RequestType extends NextApiRequest,
   ResponseType extends NextApiResponse
 >(
-  handler: (req: RequestType, res: ResponseType) => void | Promise<void>
+  handler: (req: RequestType, res: ResponseType) => void | Promise<void>,
+  middleware?: Middleware
 ) => (req: RequestType, res: ResponseType) => void | Promise<void>;
 
-export const withHttpError: WithHttpError = (handler) => async (req, res) => {
-  try {
-    return await handler(req, res);
-  } catch (error) {
-    return handleError(res, error as HttpError);
-  }
-};
+export const withHttpError: WithHttpError =
+  (handler, middleware) => async (req, res) => {
+    if (middleware) {
+      await middleware(req, res);
+    }
+
+    try {
+      return await handler(req, res);
+    } catch (error) {
+      return handleError(res, error as HttpError);
+    }
+  };

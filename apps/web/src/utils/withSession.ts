@@ -20,10 +20,6 @@ export const withSession = <T = any>(
 ) =>
   withHttpError(
     async (req: NextApiRequestWithSession, res: NextApiResponse) => {
-      if (middleware) {
-        await middleware(req, res);
-      }
-
       let session = (await getSession({ req })) as SessionWithId;
       if (!session) {
         session = (await getToken({
@@ -39,5 +35,6 @@ export const withSession = <T = any>(
       req.session = session;
 
       return handler(req, res);
-    }
+    },
+    middleware
   );
