@@ -9,6 +9,7 @@ class MyDocument extends Document {
           <meta name="theme-color" content="#f3f4f6" />
 
           <link rel="icon" href="/favicon.ico" />
+          <link rel="manifest" href="/site.webmanifest"></link>
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         </Head>
         <body className="h-full">
