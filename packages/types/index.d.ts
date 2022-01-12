@@ -15,6 +15,12 @@ import type {
 } from "@assetier/prisma";
 import type { ComponentType } from "react";
 
+export type { User } from "@assetier/prisma";
+export type { Organization } from "@assetier/prisma";
+export type { Project } from "@assetier/prisma";
+export type { FigmaOauthConnection } from "@assetier/prisma";
+export type { FigmaReadWritePair } from "@assetier/prisma";
+
 export type WithNavId<W = {}> = {
   type: "site" | "app" | "auth";
   navId?: string;

@@ -64,10 +64,12 @@ model VerificationToken {
 // Figma Integration Auth
 
 model FigmaReadWritePair {
-  readKey   String   @unique @default(cuid())
-  writeKey  String   @unique @default(cuid())
-  createdAt DateTime @default(now())
-  token     String?
+  readKey        String   @unique @default(cuid())
+  writeKey       String   @unique @default(cuid())
+  createdAt      DateTime @default(now())
+  token          String?
+  organizationId String?
+  projectId      String?
 }
 
 // Org
