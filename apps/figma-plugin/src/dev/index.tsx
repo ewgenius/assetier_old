@@ -3,11 +3,11 @@ import { FC, useRef, useCallback } from "react";
 import { render } from "react-dom";
 import { MessageType, PluginMessage } from "../types";
 
-// @ts-ignore
-if (module.hot) {
-  // @ts-ignore
-  module.hot.accept();
-}
+// // @ts-ignore
+// if (module.hot) {
+//   // @ts-ignore
+//   module.hot.accept();
+// }
 
 export const DebugShell: FC = () => {
   const frameRef = useRef<HTMLIFrameElement>(null);

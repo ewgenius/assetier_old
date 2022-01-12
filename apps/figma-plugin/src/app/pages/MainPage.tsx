@@ -1,17 +1,13 @@
 import * as React from "react";
 import { FC, useState, useCallback } from "react";
-import { MessageType } from "../../types";
 import { Spinner } from "../components/Spinner";
 import { ProfileTopbar } from "../components/ProfileTopbar";
 import { useMe } from "../hooks/useMe";
 import { authFetcher } from "../utils/fetcher";
 import { useAppContext } from "../AppContext";
+import { Page } from "../components/Page";
 
-import { SettingsPage } from "../pages/SettingsPage";
-
-export const MainPage: FC<{
-  // selectedNodes: SelectedNode[];
-}> = () => {
+export const MainPage: FC = () => {
   const { token, selectedNodes, organizationId, projectId } = useAppContext();
   const { user } = useMe();
   const [exporting, setExporting] = useState(false);
@@ -49,7 +45,7 @@ export const MainPage: FC<{
   // }
 
   return (
-    <div className="h-full flex flex-col">
+    <Page>
       <ProfileTopbar />
 
       <div className="p-4 flex-grow overflow-y-auto">
@@ -78,6 +74,6 @@ export const MainPage: FC<{
           <p className="text-xs text-gray-600">Select some elements first</p>
         )}
       </div>
-    </div>
+    </Page>
   );
 };

@@ -12,11 +12,11 @@ import { App } from "./App";
 import { SignInPage } from "./pages/SignInPage";
 import { SettingsPage } from "./pages/SettingsPage";
 
-// @ts-ignore
-if (module.hot) {
-  // @ts-ignore
-  module.hot.accept();
-}
+// // @ts-ignore
+// if (module.hot) {
+//   // @ts-ignore
+//   module.hot.accept();
+// }
 
 export type SelectedNode = Pick<SceneNode, "id">;
 
