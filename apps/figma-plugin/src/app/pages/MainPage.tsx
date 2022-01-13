@@ -20,7 +20,10 @@ export const MainPage: FC = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            nodes: selectedNodes.map((node) => node.id),
+            nodes: selectedNodes.map((node) => ({
+              id: node.id,
+              name: node.name,
+            })),
           }),
           headers: {
             "Content-Type": "application/json",
@@ -65,7 +68,7 @@ export const MainPage: FC = () => {
             <div>
               {selectedNodes.map((node) => (
                 <div key={node.id} className="p-2 flex text-xs">
-                  node #{node.id}
+                  #{node.id} {node.name}
                 </div>
               ))}
             </div>

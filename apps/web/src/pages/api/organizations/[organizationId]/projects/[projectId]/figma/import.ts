@@ -96,12 +96,18 @@ export const handler = withProject(async ({ method, body, project }, res) => {
         throw new NotFoundError("no figma connection");
       }
 
-      const selectedNodeIds = body.nodes as string[];
+      const selectedNodes = body.nodes as { id: string; name: string }[];
+      // const nodesMap = selectedNodes.reduce<
+      //   Record<string, { id: string; name: string }>
+      // >((map, node) => {
+      //   map[node.id] = node;
+      //   return map;
+      // }, {});
 
       const svgs: string[] = await fetcher(
         `https://api.figma.com/v1/images/${
           figmaFileDetails.key
-        }?ids=${selectedNodeIds.join(",")}&format=svg`,
+        }?ids=${selectedNodes.map((n) => n.id).join(",")}&format=svg`,
         {
           headers: {
             Authorization: `Bearer ${connection?.accessToken}`,
