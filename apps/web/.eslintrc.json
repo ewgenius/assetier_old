@@ -5,7 +5,7 @@
   "plugins": ["@typescript-eslint"],
 
   "rules": {
-    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/consistent-type-imports": "warning",
     "@next/next/no-img-element": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-explicit-any": "off"
