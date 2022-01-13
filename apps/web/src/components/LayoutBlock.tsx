@@ -30,7 +30,7 @@ export const LayoutBlock: FC<PropsWithChildren<LayoutBlockProps>> = ({
     <div
       className={classNames(
         className,
-        mode === "secondary" ? "bg-gray-100" : "bg-white",
+        mode === "secondary" ? "bg-white" : "bg-white",
         (borderTop || borderBottom) && "border-gray-200",
         borderTop && "border-t",
         borderBottom && "border-b",

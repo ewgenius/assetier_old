@@ -23,7 +23,7 @@ export const AppTopBar: FC<AppTopBarProps> = () => {
 
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-100 top-0 left-0 right-0">
+      <Disclosure as="nav" className="top-0 left-0 right-0">
         {({ open, close }) => (
           <>
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

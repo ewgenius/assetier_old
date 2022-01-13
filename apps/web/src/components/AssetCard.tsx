@@ -13,7 +13,7 @@ export const AssetCard: FC<AssetCardProps> = ({ asset, onClick }) => {
         className="max-w-full flex flex-col flex-grow justify-center items-center group"
         onClick={() => onClick && onClick(asset)}
       >
-        <div className="h-28 w-full p-2 overflow-hidden flex flex-col flex-grow justify-center items-center rounded-md bg-white group-hover:outline outline-offset-2 outline-2 outline-zinc-500">
+        <div className="h-28 w-full p-2 overflow-hidden flex flex-col flex-grow justify-center items-center rounded-md bg-gray-100 group-hover:outline outline-offset-2 outline-2 outline-zinc-500">
           <img
             className="w-[28px] h-[28px]"
             src={`${asset.download_url}?nocache=${Date.now()}`}

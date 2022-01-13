@@ -3,10 +3,10 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 class MyDocument extends Document {
   render() {
     return (
-      <Html className="h-full bg-gray-100">
+      <Html className="h-full bg-white">
         <Head>
           <meta name="description" content="Assetier" />
-          <meta name="theme-color" content="#f3f4f6" />
+          <meta name="theme-color" content="#ffffff" />
 
           <link rel="icon" href="/favicon.ico" />
           <link rel="manifest" href="/site.webmanifest"></link>
