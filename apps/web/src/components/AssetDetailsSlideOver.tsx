@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { FC, useMemo } from "react";
 import type { Project } from "@assetier/prisma";
 
 import type { SlideOverProps } from "@components/SlideOver";
@@ -25,8 +25,20 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
   const close = () => {
     onClose();
   };
-
   const { commits } = useAssetCommits(project.id, asset?.path);
+
+  const getAssetUrlForCommit = useMemo(() => {
+    const groups = asset?.download_url.match(
+      new RegExp(
+        `(https:\/\/raw\.githubusercontent\.com\/(.+)\/(.+))\/(.+)\/(${project.assetsPath}\/(.+))`
+      )
+    );
+    if (groups && groups.length === 7) {
+      console.log(groups);
+      return (commit: string) => `${groups[1]}/${commit}/${groups[5]}`;
+    }
+    return (commit: string) => "";
+  }, [asset?.download_url]);
 
   return (
     <SlideOver open={open} onClose={close} size="xl">
@@ -93,11 +105,24 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
                                 <p className="text-sm text-gray-500">
                                   {commit.commit.message}
                                 </p>
+                                <p className="text-xs text-gray-500">
+                                  <time dateTime={commit.commit.author?.date}>
+                                    {commit.commit.author?.date}
+                                  </time>
+                                </p>
                               </div>
                               <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                                <time dateTime={commit.commit.author?.date}>
-                                  {commit.commit.author?.date}
-                                </time>
+                                <div className="p-4 border border-gray-200 rounded-md">
+                                  <img
+                                    src={getAssetUrlForCommit(commit.sha)}
+                                    className=" h-8 w-8"
+                                    onError={({ currentTarget }) => {
+                                      currentTarget.onerror = null;
+                                      currentTarget.src =
+                                        location.origin + "/none.png";
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
