@@ -5,6 +5,7 @@ import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 
 import { classNames } from "@utils/classNames";
 import { Spinner } from "@components/Spinner";
+import { XCircleIcon } from "@heroicons/react/outline";
 
 export interface SelectProps<T = any> {
   label?: string;
@@ -22,6 +23,7 @@ export interface SelectProps<T = any> {
     item: T,
     options: { selected?: boolean; active?: boolean }
   ) => ReactNode;
+  onDelete?: (item: T) => void;
   isItemDisabled?: (item: T) => boolean;
 }
 
@@ -39,6 +41,7 @@ export const Select: FC<SelectProps> = ({
   renderBefore,
   renderItem,
   isItemDisabled,
+  onDelete,
 }) => {
   useEffect(() => {
     if (items && items.length > 0 && !selectedItem && preselectedId) {
@@ -119,6 +122,22 @@ export const Select: FC<SelectProps> = ({
                                 aria-hidden="true"
                               />
                             </span>
+                          ) : onDelete ? (
+                            <div className="absolute inset-y-0 right-0 p-2 flex flex-col justify-center items-center">
+                              <button
+                                className="px-2 py-1.5 rounded-md hover:bg-gray-200"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+
+                                  onDelete(item);
+
+                                  return false;
+                                }}
+                              >
+                                <XCircleIcon className="w-5 h-6" />
+                              </button>
+                            </div>
                           ) : null}
                         </>
                       )}

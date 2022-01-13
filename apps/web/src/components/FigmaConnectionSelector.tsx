@@ -13,6 +13,7 @@ export interface FigmaConnectionSelectorProps {
   connections?: FigmaOauthConnection[];
   defaultConnectionId?: string;
   disabled?: boolean;
+  onDelete?: (connection: FigmaOauthConnection) => void;
 }
 
 export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
@@ -22,6 +23,7 @@ export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
   connections,
   defaultConnectionId,
   disabled,
+  onDelete,
 }) => {
   return (
     <>
@@ -41,6 +43,7 @@ export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
             selectedItem={selectedConnection}
             items={connections}
             onChange={onChange}
+            onDelete={onDelete}
             renderButton={(connection: FigmaOauthConnection) => (
               <span className="flex items-center">
                 <img
@@ -48,7 +51,7 @@ export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
                   alt=""
                   className="flex-shrink-0 h-5 w-5 border border-zinc-200 bg-white rounded-full"
                 />
-                <div className="ml-3">
+                <div className="ml-3 flex-grow">
                   <span className="block truncate">
                     {connection.userHandle}
                   </span>
@@ -75,7 +78,7 @@ export const FigmaConnectionSelector: FC<FigmaConnectionSelectorProps> = ({
                   alt=""
                   className="flex-shrink-0 h-5 w-5 border border-zinc-200 rounded-full"
                 />
-                <div className="ml-3">
+                <div className="ml-3 flex-grow">
                   <span
                     className={classNames(
                       selected ? "font-semibold" : "font-normal",

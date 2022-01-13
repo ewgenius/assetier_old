@@ -21,7 +21,7 @@ export const FigmaConnector: FC<FigmaConnectorProps> = ({
   disabled,
   onChange,
 }) => {
-  const { connections } = useFigmaConnections(organization);
+  const { connections, deleteConnection } = useFigmaConnections(organization);
   const [selectedConnection, setSelectedConnection] =
     useState<FigmaOauthConnection | null>(null);
 
@@ -53,6 +53,7 @@ export const FigmaConnector: FC<FigmaConnectorProps> = ({
           connections={connections}
           onChange={selectConnection}
           defaultConnectionId={connectionId}
+          onDelete={deleteConnection}
         />
       </div>
     </div>
