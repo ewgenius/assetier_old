@@ -23,16 +23,19 @@ import { v4 as uuidv4 } from "uuid";
 async function uploadSVGFiles(
   project: Project,
   repository: Repository,
-  files: string[],
+  files: { name: string; content: string }[],
   branchName: string,
   branchSha: string,
   octokit: Octokit
 ) {
   const treeForUpload = files.map<GHTree>((file, i) => ({
-    path: project.assetsPath + "/" + i + ".svg",
+    path:
+      project.assetsPath +
+      "/" +
+      (file.name.endsWith(".svg") ? file.name : `${file.name}.svg`),
     mode: "100644",
     type: "blob",
-    content: file,
+    content: file.content,
   }));
 
   const baseCommit = await octokit.request(
@@ -97,14 +100,14 @@ export const handler = withProject(async ({ method, body, project }, res) => {
       }
 
       const selectedNodes = body.nodes as { id: string; name: string }[];
-      // const nodesMap = selectedNodes.reduce<
-      //   Record<string, { id: string; name: string }>
-      // >((map, node) => {
-      //   map[node.id] = node;
-      //   return map;
-      // }, {});
+      const nodesMap = selectedNodes.reduce<
+        Record<string, { id: string; name: string }>
+      >((map, node) => {
+        map[node.id] = node;
+        return map;
+      }, {});
 
-      const svgs: string[] = await fetcher(
+      const svgs: { name: string; content: string }[] = await fetcher(
         `https://api.figma.com/v1/images/${
           figmaFileDetails.key
         }?ids=${selectedNodes.map((n) => n.id).join(",")}&format=svg`,
@@ -118,8 +121,15 @@ export const handler = withProject(async ({ method, body, project }, res) => {
           throw results.err;
         }
         return Promise.all(
-          Object.values(results.images).map((url) => {
-            return fetch(url).then((r) => r.text());
+          Object.keys(results.images).map((key) => {
+            const url = results.images[key];
+            const name = nodesMap[key].name;
+            return fetch(url)
+              .then((r) => r.text())
+              .then((content) => ({
+                name,
+                content,
+              }));
           })
         );
       });

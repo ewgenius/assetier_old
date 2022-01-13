@@ -9,7 +9,10 @@ function updateSelection() {
   figma.ui.postMessage({
     type: MessageType.ReceiveSelectedNodes,
     data: {
-      nodes: figma.currentPage.selection,
+      nodes: figma.currentPage.selection.map((node) => ({
+        id: node.id,
+        name: node.name,
+      })),
     },
   });
 }
