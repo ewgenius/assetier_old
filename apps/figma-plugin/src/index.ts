@@ -18,12 +18,10 @@ function updateSelection() {
 }
 
 figma.on("run", async () => {
-  // await figma.clientStorage.setAsync("assetier-token", "");
-  const token = await figma.clientStorage.getAsync("assetier-token");
-  const organizationId = await figma.clientStorage.getAsync(
-    "assetier-organization-id"
-  );
-  const projectId = await figma.clientStorage.getAsync("assetier-project-id");
+  const token = await figma.root.getPluginData("assetier-token");
+  const organizationId = figma.root.getPluginData("assetier-organization-id");
+  const projectId = await figma.root.getPluginData("assetier-project-id");
+
   figma.ui.postMessage({
     type: MessageType.Init,
     data: {
@@ -45,21 +43,22 @@ figma.on("selectionchange", () => {
 figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
   switch (type) {
     case MessageType.SetToken: {
-      await figma.clientStorage.setAsync("assetier-token", data.token);
-      await figma.clientStorage.setAsync(
+      await figma.root.setPluginData("assetier-token", data.token);
+      await figma.root.setPluginData(
         "assetier-organization-id",
         data.organizationId
       );
-      await figma.clientStorage.setAsync("assetier-project-id", data.projectId);
+      await figma.root.setPluginData("assetier-project-id", data.projectId);
       break;
     }
 
     case MessageType.SetOrgProject: {
-      await figma.clientStorage.setAsync(
+      await figma.root.setPluginData(
         "assetier-organization-id",
         data.organizationId
       );
-      await figma.clientStorage.setAsync("assetier-project-id", data.projectId);
+      await figma.root.setPluginData("assetier-project-id", data.projectId);
+
       break;
     }
   }
