@@ -1,4 +1,5 @@
-import { FC, useMemo } from "react";
+import { useMemo } from "react";
+import type { FC } from "react";
 import type { Project } from "@assetier/prisma";
 
 import type { SlideOverProps } from "@components/SlideOver";
