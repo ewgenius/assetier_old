@@ -56,7 +56,12 @@ export const DebugShell: FC = () => {
             onClick={() =>
               postMessage({
                 type: MessageType.ReceiveSelectedNodes,
-                data: { nodes: [{ id: "0:0" }, { id: "0:1" }] },
+                data: {
+                  nodes: [
+                    { id: "0:0", name: "icon-one", size: 16 },
+                    { id: "0:1", name: "icon-two", size: 24 },
+                  ],
+                },
               })
             }
           >

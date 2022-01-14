@@ -1,15 +1,10 @@
 import { AssetMetaInfo } from "@assetier/types";
-import { PluginMessage, MessageType } from "./types";
+import { PluginMessage, MessageType, NodeInfo } from "./types";
 
 figma.showUI(__html__, {
   width: 300,
   height: 480,
 });
-
-interface NodeInfo {
-  id: string;
-  name: string;
-}
 
 function extractNodes(nodes: readonly SceneNode[]): NodeInfo[] {
   return nodes.reduce<NodeInfo[]>((list, node) => {
@@ -19,6 +14,7 @@ function extractNodes(nodes: readonly SceneNode[]): NodeInfo[] {
         {
           id: node.id,
           name: node.name,
+          size: Math.max(node.width, node.height),
         },
       ];
     }
@@ -77,7 +73,6 @@ function setupAssetierGroup() {
     frame.x = -320 - 50;
     frame.cornerRadius = 4;
     frame.resize(320, 200);
-    frame.locked = true;
 
     const organizationId = figma.root.getPluginData("assetier-organization-id");
     const projectId = figma.root.getPluginData("assetier-project-id");
@@ -96,8 +91,34 @@ function setupAssetierGroup() {
     const group = figma.group([frame], figma.root.children[0], 0);
     group.name = "[assetier]:meta";
     group.locked = true;
+    frame.locked = true;
+
     figma.root.setPluginData("assetier.group", group.id);
   }
+}
+
+interface NodeMetaInfo {
+  ["assetier.repo.owner"]: string;
+  ["assetier.repo.name"]: string;
+  ["assetier.repo.sha"]: string;
+  ["assetier.repo.url"]: string;
+  ["assetier.node.link"]: string;
+}
+
+function setNodeMetaInfo(node: SceneNode, meta: NodeMetaInfo) {
+  Object.keys(meta).forEach((key) => {
+    node.setPluginData(key, meta[key as keyof NodeMetaInfo]);
+  });
+}
+
+function getNodeMetaInfo(node: SceneNode): NodeMetaInfo {
+  return {
+    ["assetier.repo.owner"]: node.getPluginData("assetier.repo.owner"),
+    ["assetier.repo.name"]: node.getPluginData("assetier.repo.name"),
+    ["assetier.repo.sha"]: node.getPluginData("assetier.repo.sha"),
+    ["assetier.repo.url"]: node.getPluginData("assetier.repo.url"),
+    ["assetier.node.link"]: node.getPluginData("assetier.node.link"),
+  };
 }
 
 figma.ui.onmessage = async ({ type, data }: PluginMessage) => {

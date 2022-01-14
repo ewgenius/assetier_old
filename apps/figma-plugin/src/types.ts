@@ -17,3 +17,9 @@ export interface PluginMessage<T = any> {
 export interface MessageInit extends PluginMessage<{ token: string }> {
   type: MessageType.Init;
 }
+
+export interface NodeInfo {
+  id: string;
+  name: string;
+  size: number;
+}

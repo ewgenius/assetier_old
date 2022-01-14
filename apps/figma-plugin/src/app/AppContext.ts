@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { Reducer, Dispatch } from "react";
+import { NodeInfo } from "../types";
 
 export enum AppPage {
   Boot,
@@ -11,7 +12,7 @@ export enum AppPage {
 export interface AppState {
   page: AppPage;
   token: string | null;
-  selectedNodes: SceneNode[];
+  selectedNodes: NodeInfo[];
   organizationId?: string | null;
   projectId?: string | null;
   setOrgProject?: (organizationId: string, projectId: string) => void;
@@ -68,7 +69,7 @@ export interface SingedInAction
 }
 
 export interface SelectedNodesUpdatedAction
-  extends Action<{ selectedNodes: SceneNode[] }> {
+  extends Action<{ selectedNodes: NodeInfo[] }> {
   type: ActionType.SelectedNodesUpdated;
 }
 
