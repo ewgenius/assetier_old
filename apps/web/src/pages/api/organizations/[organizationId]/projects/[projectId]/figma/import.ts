@@ -23,16 +23,13 @@ import { v4 as uuidv4 } from "uuid";
 async function uploadSVGFiles(
   project: Project,
   repository: Repository,
-  files: { name: string; content: string }[],
+  files: { id: string; name: string; content: string }[],
   branchName: string,
   branchSha: string,
   octokit: Octokit
 ) {
   const treeForUpload = files.map<GHTree>((file, i) => ({
-    path:
-      project.assetsPath +
-      "/" +
-      (file.name.endsWith(".svg") ? file.name : `${file.name}.svg`),
+    path: project.assetsPath + "/" + file.name,
     mode: "100644",
     type: "blob",
     content: file.content,
@@ -75,7 +72,10 @@ async function uploadSVGFiles(
     }
   );
 
-  return updatedBranch.data;
+  return {
+    commit: commit.data,
+    updatedBranch: updatedBranch.data,
+  };
 }
 
 export const handler = withProject(async ({ method, body, project }, res) => {
@@ -107,32 +107,37 @@ export const handler = withProject(async ({ method, body, project }, res) => {
         return map;
       }, {});
 
-      const svgs: { name: string; content: string }[] = await fetcher(
-        `https://api.figma.com/v1/images/${
-          figmaFileDetails.key
-        }?ids=${selectedNodes.map((n) => n.id).join(",")}&format=svg`,
-        {
-          headers: {
-            Authorization: `Bearer ${connection?.accessToken}`,
-          },
-        }
-      ).then((results: { images: { [key: string]: string }; err: any }) => {
-        if (results.err) {
-          throw results.err;
-        }
-        return Promise.all(
-          Object.keys(results.images).map((key) => {
-            const url = results.images[key];
-            const name = nodesMap[key].name;
-            return fetch(url)
-              .then((r) => r.text())
-              .then((content) => ({
-                name,
-                content,
-              }));
-          })
-        );
-      });
+      const svgs: { id: string; name: string; content: string }[] =
+        await fetcher(
+          `https://api.figma.com/v1/images/${
+            figmaFileDetails.key
+          }?ids=${selectedNodes.map((n) => n.id).join(",")}&format=svg`,
+          {
+            headers: {
+              Authorization: `Bearer ${connection?.accessToken}`,
+            },
+          }
+        ).then((results: { images: { [key: string]: string }; err: any }) => {
+          if (results.err) {
+            throw results.err;
+          }
+          return Promise.all(
+            Object.keys(results.images).map((key) => {
+              const url = results.images[key];
+              const nodeName = nodesMap[key].name;
+              const name = nodeName.endsWith(".svg")
+                ? nodeName
+                : `${nodeName}.svg`;
+              return fetch(url)
+                .then((r) => r.text())
+                .then((content) => ({
+                  id: key,
+                  name,
+                  content,
+                }));
+            })
+          );
+        });
 
       const installation = await getProjectInstallation(project);
       const octokit = await getOctokit(installation.installationId);
@@ -156,7 +161,7 @@ export const handler = withProject(async ({ method, body, project }, res) => {
         octokit
       );
 
-      await uploadSVGFiles(
+      const updatedBranch = await uploadSVGFiles(
         project,
         repository,
         svgs,
@@ -176,7 +181,29 @@ export const handler = withProject(async ({ method, body, project }, res) => {
         await mergePullRequest(repository, pr.number, octokit);
       }
 
-      return res.status(200).json({});
+      const results = svgs.reduce<
+        Record<
+          string,
+          {
+            repoOwner: string;
+            repoName: string;
+            repoSha: string;
+            url: string;
+          }
+        >
+      >((map, svg) => {
+        map[svg.id] = {
+          repoOwner: repository.owner.login,
+          repoName: repository.name,
+          repoSha: updatedBranch.commit.sha,
+          url: `https://github.com/${repository.owner.login}/${repository.name}/blob/${updatedBranch.commit.sha}/${project.assetsPath}/${svg.name}`,
+        };
+        return map;
+      }, {});
+
+      console.log(results);
+
+      return res.status(200).json(results);
     }
 
     default: {
