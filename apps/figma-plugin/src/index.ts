@@ -82,7 +82,7 @@ function setupAssetierGroup() {
     const organizationId = figma.root.getPluginData("assetier-organization-id");
     const projectId = figma.root.getPluginData("assetier-project-id");
     const assetierLink = figma.createText();
-    assetierLink.characters = "assetier project [↗]";
+    assetierLink.characters = "assetier project ↗";
     assetierLink.hyperlink = {
       type: "URL",
       value: `${process.env.API_URL}/app/${organizationId}/projects/${projectId}`,
@@ -144,7 +144,7 @@ figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
           ) {
             const link = figma.createText();
             link.name = `[assetier]:link ${node.name}`;
-            link.characters = "github [↗]";
+            link.characters = "github ↗";
             link.fontSize = 8;
             link.hyperlink = {
               type: "URL",
