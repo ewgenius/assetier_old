@@ -9,8 +9,8 @@ export const fetcher = <T = any>(input: RequestInfo, init?: RequestInit) =>
   });
 
 export const authFetcher =
-  (token: string) =>
-  <T = any>(input: RequestInfo, init?: RequestInit) =>
+  <T = any>(token: string) =>
+  (input: RequestInfo, init?: RequestInit) =>
     fetcher<T>(input, {
       ...init,
       headers: {
