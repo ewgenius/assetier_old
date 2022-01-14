@@ -2,6 +2,7 @@ export enum MessageType {
   Init = "init",
   SetToken = "set-token",
   SetOrgProject = "set-org-project",
+  ExportNodes = "export-nodes",
 
   GetSelectedNodes = "get-selected-nodes",
   ReceiveSelectedNodes = "receive-selected-nodes",

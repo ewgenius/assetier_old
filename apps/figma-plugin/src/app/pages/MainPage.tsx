@@ -6,6 +6,8 @@ import { useMe } from "../hooks/useMe";
 import { authFetcher } from "../utils/fetcher";
 import { useAppContext } from "../AppContext";
 import { Page } from "../components/Page";
+import { postMessage } from "../utils/postMessage";
+import { MessageType } from "../../types";
 
 export const MainPage: FC = () => {
   const { token, selectedNodes, organizationId, projectId } = useAppContext();
@@ -15,7 +17,7 @@ export const MainPage: FC = () => {
   const exportNodes = useCallback(() => {
     setExporting(true);
     if (token) {
-      authFetcher(token)(
+      authFetcher<Record<string, string>>(token)(
         `${process.env.API_URL}/api/organizations/${organizationId}/projects/${projectId}/figma/import`,
         {
           method: "POST",
@@ -29,9 +31,14 @@ export const MainPage: FC = () => {
             "Content-Type": "application/json",
           },
         }
-      ).then(() => {
-        setExporting(false);
-      });
+      )
+        .then((results) => {
+          postMessage(MessageType.ExportNodes, results);
+          setExporting(false);
+        })
+        .catch(() => {
+          setExporting(false);
+        });
     }
   }, [selectedNodes, organizationId, projectId, token]);
 
