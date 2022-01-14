@@ -1,6 +1,7 @@
 export enum MessageType {
   Init = "init",
   SetToken = "set-token",
+  Setup = "setup",
   SetOrgProject = "set-org-project",
   ExportNodes = "export-nodes",
 

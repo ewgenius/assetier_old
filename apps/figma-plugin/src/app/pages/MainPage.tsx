@@ -14,6 +14,10 @@ export const MainPage: FC = () => {
   const { user } = useMe();
   const [exporting, setExporting] = useState(false);
 
+  function setup() {
+    postMessage(MessageType.Setup);
+  }
+
   const exportNodes = useCallback(() => {
     setExporting(true);
     if (token) {
@@ -58,13 +62,20 @@ export const MainPage: FC = () => {
     <Page>
       <ProfileTopbar />
 
-      <div className="p-4 flex-grow overflow-y-auto">
+      <div className="p-4 flex-grow overflow-y-auto flex flex-col gap-2">
+        <button
+          type="button"
+          className="flex w-full items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          onClick={setup}
+        >
+          <span>Setup</span>
+        </button>
         {selectedNodes && selectedNodes.length > 0 ? (
           <>
             <button
               type="button"
               disabled={exporting}
-              className="flex w-full items-center px-2.5 py-1.5 mb-2 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="flex w-full items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               onClick={exportNodes}
             >
               <span>Export selected nodes</span>
