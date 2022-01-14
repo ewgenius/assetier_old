@@ -196,3 +196,10 @@ export interface FigmaUser {
   handle: string;
   img_url: string;
 }
+
+export interface AssetMetaInfo {
+  repoOwner: string;
+  repoName: string;
+  repoSha: string;
+  url: string;
+}

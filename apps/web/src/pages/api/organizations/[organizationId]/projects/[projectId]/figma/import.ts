@@ -16,7 +16,7 @@ import {
 import { mergePullRequest } from "@utils/mergePullRequest";
 import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 import { prisma } from "@utils/prisma";
-import type { GHTree, Repository } from "@assetier/types";
+import type { AssetMetaInfo, GHTree, Repository } from "@assetier/types";
 import { withProject } from "@utils/withProject";
 import { v4 as uuidv4 } from "uuid";
 
@@ -181,17 +181,7 @@ export const handler = withProject(async ({ method, body, project }, res) => {
         await mergePullRequest(repository, pr.number, octokit);
       }
 
-      const results = svgs.reduce<
-        Record<
-          string,
-          {
-            repoOwner: string;
-            repoName: string;
-            repoSha: string;
-            url: string;
-          }
-        >
-      >((map, svg) => {
+      const results = svgs.reduce<Record<string, AssetMetaInfo>>((map, svg) => {
         map[svg.id] = {
           repoOwner: repository.owner.login,
           repoName: repository.name,
