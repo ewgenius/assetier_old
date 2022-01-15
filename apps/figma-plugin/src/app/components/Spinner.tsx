@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import type { FC, SVGProps } from "react";
 import { classNames } from "../utils/classNames";
 

@@ -1,6 +1,11 @@
 import { AssetMetaInfo } from "@assetier/types";
 import { PluginMessage, MessageType, NodeInfo, NodeMetaInfo } from "./types";
 
+figma.showUI(__html__, {
+  width: 300,
+  height: 480,
+});
+
 function extractNodes(nodes: readonly SceneNode[]): NodeInfo[] {
   return nodes.reduce<NodeInfo[]>((list, node) => {
     if (node.type === "FRAME" || node.type === "COMPONENT") {
@@ -103,9 +108,15 @@ function getNodeMetaInfo(node: SceneNode): NodeMetaInfo {
 figma.on("run", async () => {
   figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
-  const token = figma.root.getPluginData("assetier-token");
+  const token = await figma.clientStorage.getAsync("assetier-token");
   const organizationId = figma.root.getPluginData("assetier-organization-id");
   const projectId = figma.root.getPluginData("assetier-project-id");
+
+  console.log({
+    token,
+    organizationId,
+    projectId,
+  });
 
   figma.ui.postMessage({
     type: MessageType.Init,
@@ -128,7 +139,7 @@ figma.on("selectionchange", () => {
 figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
   switch (type) {
     case MessageType.SetToken: {
-      figma.root.setPluginData("assetier-token", data.token);
+      await figma.clientStorage.setAsync("assetier-token", data.token);
       figma.root.setPluginData("assetier-organization-id", data.organizationId);
       figma.root.setPluginData("assetier-project-id", data.projectId);
 
@@ -198,8 +209,3 @@ figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
     }
   }
 };
-
-figma.showUI(__html__, {
-  width: 300,
-  height: 480,
-});

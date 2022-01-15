@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FC, useState, useCallback } from "react";
 import { Spinner } from "../components/Spinner";
 import { ProfileTopbar } from "../components/ProfileTopbar";

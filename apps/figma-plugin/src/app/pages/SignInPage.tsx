@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FC, useState, useCallback } from "react";
 import { FigmaReadWritePair } from "@assetier/types";
 import { ActionType, useAppContext } from "../AppContext";

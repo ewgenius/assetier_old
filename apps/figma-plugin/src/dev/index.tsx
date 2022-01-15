@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FC, useRef, useCallback } from "react";
 import { render } from "react-dom";
 import { MessageType, PluginMessage } from "../types";

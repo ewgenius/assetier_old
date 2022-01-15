@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { useReducer, useEffect } from "react";
 import type { FC } from "react";
 import { AppContext, AppPage, appStateReducer, ActionType } from "./AppContext";
@@ -42,27 +42,28 @@ export const App: FC = () => {
         pluginMessage: PluginMessage;
       }>
     ) {
-      console.log(message);
       const {
         data: { pluginMessage },
       } = message;
       if (pluginMessage) {
+        console.log(pluginMessage);
         const { type, data } = pluginMessage;
         switch (type) {
           case MessageType.Init: {
             dispatch({
               type: ActionType.StoredStateReceived,
-              payload: data.token
-                ? {
-                    token: data.token,
-                    organizationId: data.organizationId,
-                    projectId: data.projectId,
-                    page: AppPage.Main,
-                  }
-                : {
-                    token: null,
-                    page: AppPage.SignIn,
-                  },
+              payload:
+                data.token && data.organizationId && data.projectId
+                  ? {
+                      token: data.token,
+                      organizationId: data.organizationId,
+                      projectId: data.projectId,
+                      page: AppPage.Main,
+                    }
+                  : {
+                      token: null,
+                      page: AppPage.SignIn,
+                    },
             });
             break;
           }
@@ -100,7 +101,7 @@ export const App: FC = () => {
       <div className="h-full flex-grow">
         <PageRouter page={appState.page} />
       </div>
-      {false && process.env.NODE_ENV === "development" && (
+      {process.env.NODE_ENV === "development" && (
         <div className="bg-red-500 text-white text-xs font-mono p-2 flex flex-col gap-1">
           <button
             className="flex items-center text-center px-2 py-1 border border-red-700 shadow-sm text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700"
