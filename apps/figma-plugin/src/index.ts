@@ -1,10 +1,5 @@
 import { AssetMetaInfo } from "@assetier/types";
-import { PluginMessage, MessageType, NodeInfo } from "./types";
-
-figma.showUI(__html__, {
-  width: 300,
-  height: 480,
-});
+import { PluginMessage, MessageType, NodeInfo, NodeMetaInfo } from "./types";
 
 function extractNodes(nodes: readonly SceneNode[]): NodeInfo[] {
   return nodes.reduce<NodeInfo[]>((list, node) => {
@@ -30,38 +25,30 @@ function extractNodes(nodes: readonly SceneNode[]): NodeInfo[] {
 function updateSelection() {
   const nodes = extractNodes(figma.currentPage.selection);
 
-  figma.ui.postMessage({
+  if (nodes.length === 1) {
+    const node = figma.getNodeById(nodes[0].id) as SceneNode;
+    if (node) {
+      const meta = getNodeMetaInfo(node);
+
+      if (meta) {
+        nodes[0].meta = meta;
+        return figma.ui.postMessage({
+          type: MessageType.ReceiveSelectedNodes,
+          data: {
+            nodes: [nodes[0]],
+          },
+        });
+      }
+    }
+  }
+
+  return figma.ui.postMessage({
     type: MessageType.ReceiveSelectedNodes,
     data: {
       nodes,
     },
   });
 }
-
-figma.on("run", async () => {
-  figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-
-  const token = figma.root.getPluginData("assetier-token");
-  const organizationId = figma.root.getPluginData("assetier-organization-id");
-  const projectId = figma.root.getPluginData("assetier-project-id");
-
-  figma.ui.postMessage({
-    type: MessageType.Init,
-    data: {
-      token,
-      organizationId,
-      projectId,
-    },
-  });
-
-  if (token) {
-    updateSelection();
-  }
-});
-
-figma.on("selectionchange", () => {
-  updateSelection();
-});
 
 function setupAssetierGroup() {
   if (
@@ -97,14 +84,6 @@ function setupAssetierGroup() {
   }
 }
 
-interface NodeMetaInfo {
-  ["assetier.repo.owner"]: string;
-  ["assetier.repo.name"]: string;
-  ["assetier.repo.sha"]: string;
-  ["assetier.repo.url"]: string;
-  ["assetier.node.link"]: string;
-}
-
 function setNodeMetaInfo(node: SceneNode, meta: NodeMetaInfo) {
   Object.keys(meta).forEach((key) => {
     node.setPluginData(key, meta[key as keyof NodeMetaInfo]);
@@ -120,6 +99,31 @@ function getNodeMetaInfo(node: SceneNode): NodeMetaInfo {
     ["assetier.node.link"]: node.getPluginData("assetier.node.link"),
   };
 }
+
+figma.on("run", async () => {
+  figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+
+  const token = figma.root.getPluginData("assetier-token");
+  const organizationId = figma.root.getPluginData("assetier-organization-id");
+  const projectId = figma.root.getPluginData("assetier-project-id");
+
+  figma.ui.postMessage({
+    type: MessageType.Init,
+    data: {
+      token,
+      organizationId,
+      projectId,
+    },
+  });
+
+  if (token) {
+    updateSelection();
+  }
+});
+
+figma.on("selectionchange", () => {
+  updateSelection();
+});
 
 figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
   switch (type) {
@@ -157,6 +161,7 @@ figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
           node.setPluginData("assetier.repo.owner", meta.repoOwner);
           node.setPluginData("assetier.repo.name", meta.repoName);
           node.setPluginData("assetier.repo.sha", meta.repoSha);
+          node.setPluginData("assetier.repo.assetPath", meta.assetPath);
           node.setPluginData("assetier.repo.url", meta.url);
 
           if (
@@ -193,3 +198,8 @@ figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
     }
   }
 };
+
+figma.showUI(__html__, {
+  width: 300,
+  height: 480,
+});

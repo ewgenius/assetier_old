@@ -18,8 +18,17 @@ export interface MessageInit extends PluginMessage<{ token: string }> {
   type: MessageType.Init;
 }
 
+export interface NodeMetaInfo {
+  ["assetier.repo.owner"]: string;
+  ["assetier.repo.name"]: string;
+  ["assetier.repo.sha"]: string;
+  ["assetier.repo.url"]: string;
+  ["assetier.node.link"]: string;
+}
+
 export interface NodeInfo {
   id: string;
   name: string;
   size: number;
+  meta?: any;
 }

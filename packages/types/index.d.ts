@@ -201,5 +201,6 @@ export interface AssetMetaInfo {
   repoOwner: string;
   repoName: string;
   repoSha: string;
+  assetPath: string;
   url: string;
 }

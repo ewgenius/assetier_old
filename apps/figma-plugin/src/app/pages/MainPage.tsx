@@ -118,6 +118,12 @@ export const MainPage: FC = () => {
                 </div>
               ))}
             </div>
+
+            {selectedNodes &&
+              selectedNodes.length === 1 &&
+              selectedNodes[0].meta && (
+                <div>{JSON.stringify(selectedNodes[0].meta)}</div>
+              )}
           </>
         ) : (
           <p className="text-xs text-gray-600">Select some elements first</p>

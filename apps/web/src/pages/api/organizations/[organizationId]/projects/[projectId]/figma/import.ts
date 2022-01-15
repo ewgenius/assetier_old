@@ -146,6 +146,7 @@ export const handler = withProject(async ({ method, body, project }, res) => {
       const baseBranchName = project.defaultBranch || "main";
       const merge = true;
 
+      // TODO: request is paginated
       const branches = await getRepositoryBranches(repository, octokit);
       const baseBranch = branches.find((b) => b.name === baseBranchName);
 
@@ -186,6 +187,7 @@ export const handler = withProject(async ({ method, body, project }, res) => {
           repoOwner: repository.owner.login,
           repoName: repository.name,
           repoSha: updatedBranch.commit.sha,
+          assetPath: `${project.assetsPath}/${svg.name}`,
           url: `https://github.com/${repository.owner.login}/${repository.name}/blob/${updatedBranch.commit.sha}/${project.assetsPath}/${svg.name}`,
         };
         return map;
