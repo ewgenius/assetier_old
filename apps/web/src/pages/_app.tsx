@@ -1,5 +1,6 @@
 import "tailwindcss/tailwind.css";
 import { useCallback, useEffect, useState } from "react";
+import { UserProvider } from "@auth0/nextjs-auth0";
 import { SessionProvider, signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -39,10 +40,10 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
           (o) => o.id === query.organizationId
         );
         if (org) {
-          selectOrganization(org);
+          // selectOrganization(org);
         }
       } else {
-        selectOrganization(user.personalOrganization);
+        // selectOrganization(user.personalOrganization);
       }
     }
   }, [user, query?.organizationId, selectOrganization, organization]);
@@ -111,6 +112,14 @@ function App(props: AppPropsExtended) {
           <AppWithAuth {...props} />
           <Footer mode="primary" />
         </SessionProvider>
+      );
+    }
+
+    case "auth0": {
+      return (
+        <UserProvider>
+          <AppDefault {...props} />
+        </UserProvider>
       );
     }
 

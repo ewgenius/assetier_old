@@ -22,7 +22,7 @@ export type { FigmaOauthConnection } from "@assetier/prisma";
 export type { FigmaReadWritePair } from "@assetier/prisma";
 
 export type WithNavId<W = {}> = {
-  type: "site" | "app" | "auth";
+  type: "site" | "app" | "auth" | "auth0";
   navId?: string;
   Wrapper?: ComponentType<W>;
   wrapperProps?: W;
