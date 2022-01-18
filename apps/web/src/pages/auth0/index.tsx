@@ -1,5 +1,5 @@
 import { NextPageExtended } from "@assetier/types";
-import { useUser } from "@auth0/nextjs-auth0";
+import { getSession, useUser } from "@auth0/nextjs-auth0";
 import { GetServerSideProps } from "next";
 import { withPageAuthRequired, getAccessToken } from "@auth0/nextjs-auth0";
 import { fetcher } from "@utils/fetcher";
@@ -21,6 +21,9 @@ Auth0Page.type = "auth0";
 
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
   async getServerSideProps({ req, res }) {
+    const session = await getSession(req, res);
+    console.log(session);
+
     // get auth0 access token
     const token = await getAccessToken(req, res);
     console.log(token);
@@ -43,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
 
     // get auth0 oauth user (for figma authorization)
     const user = await fetcher(
-      `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/oauth2|figma|380769056016108526`,
+      `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${session?.user.sub}`,
       {
         headers: {
           Authorization: `Bearer ${mangementToken.access_token}`,
