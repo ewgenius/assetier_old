@@ -1,6 +1,5 @@
 import type { FC, MouseEvent } from "react";
 import { Fragment } from "react";
-import { signOut } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
 
 import { classNames } from "@utils/classNames";
@@ -14,7 +13,8 @@ export const userNavigation = [
     href: "#",
     action: (e: MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
-      signOut();
+      // TODO:
+      // signOut();
     },
   },
 ];

@@ -1,7 +1,6 @@
 import "tailwindcss/tailwind.css";
 import { useCallback, useEffect, useState } from "react";
-import { SessionProvider, signIn } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { UserProvider, useUser } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
 
 import type { AppPropsExtended, OrganizationWithPlan } from "@assetier/types";
@@ -14,9 +13,9 @@ import { Spinner } from "@components/Spinner";
 
 function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   const { push, query } = useRouter();
-  const { data: session } = useSession();
-  const { user } = useMe();
-  const [organization, setOrganization] = useState(user?.personalOrganization);
+  const user = useUser();
+  const { user: me } = useMe();
+  const [organization, setOrganization] = useState(me?.personalOrganization);
 
   const selectOrganization = useCallback(
     (org: OrganizationWithPlan) =>
@@ -27,27 +26,25 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   );
 
   useEffect(() => {
-    if (session === null) {
-      signIn();
+    if (!user.isLoading && (user.error || !user.user)) {
+      location.replace("/api/auth/login?returnTo=/app");
     }
-  }, [session, push]);
+  }, [user, user.isLoading, push]);
 
   useEffect(() => {
-    if (user && !organization) {
+    if (me && !organization) {
       if (query?.organizationId) {
-        const org = user.organizations.find(
-          (o) => o.id === query.organizationId
-        );
+        const org = me.organizations.find((o) => o.id === query.organizationId);
         if (org) {
           selectOrganization(org);
         }
       } else {
-        selectOrganization(user.personalOrganization);
+        selectOrganization(me.personalOrganization);
       }
     }
-  }, [user, query?.organizationId, selectOrganization, organization]);
+  }, [me, query?.organizationId, selectOrganization, organization]);
 
-  if (!session || !user || !organization) {
+  if (!user || !me || !organization) {
     return (
       <div className="min-h-screen">
         <div className="flex justify-center py-4">
@@ -57,10 +54,10 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
     );
   }
 
-  if (!user.user.verified) {
+  if (!me.user.verified) {
     return (
       <div className="min-h-screen">
-        <LayoutBlock>Hello {user.user.name}, you are in waitlist</LayoutBlock>
+        <LayoutBlock>Hello {me.user.name}, you are in waitlist</LayoutBlock>
       </div>
     );
   }
@@ -105,12 +102,11 @@ function AppAuth({ Component: Page, pageProps }: AppPropsExtended) {
 function App(props: AppPropsExtended) {
   switch (props.Component.type) {
     case "app": {
-      const { session } = props.pageProps;
       return (
-        <SessionProvider session={session}>
+        <UserProvider>
           <AppWithAuth {...props} />
           <Footer mode="primary" />
-        </SessionProvider>
+        </UserProvider>
       );
     }
 
@@ -131,7 +127,11 @@ function App(props: AppPropsExtended) {
       );
 
     default: {
-      return <AppDefault {...props} />;
+      return (
+        <UserProvider>
+          <AppDefault {...props} />
+        </UserProvider>
+      );
     }
   }
 }
