@@ -5,9 +5,8 @@ import type {
 } from "@assetier/types";
 import { Page } from "@components/Page";
 import type { GetServerSideProps, NextApiRequest } from "next";
-import { getToken } from "next-auth/jwt";
 import { prisma } from "@utils/prisma";
-import { signIn } from "next-auth/react";
+import { getAccessToken } from "@auth0/nextjs-auth0";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FC } from "react";
 import Image from "next/image";
@@ -267,7 +266,7 @@ export const FigmaIntegrationAuth: NextPageExtended<
 > = ({ success }) => {
   useEffect(() => {
     if (!success) {
-      signIn();
+      // signIn();
     }
   }, [success]);
 
@@ -290,12 +289,8 @@ export const FigmaIntegrationAuth: NextPageExtended<
 
 export const getServerSideProps: GetServerSideProps<
   FigmaIntegrationAuthProps
-> = async ({ req, params }) => {
-  const token = await getToken({
-    req: req as NextApiRequest,
-    secret: process.env.NEXTAUTH_SECRET as string,
-    raw: true,
-  });
+> = async ({ req, res, params }) => {
+  const { accessToken: token } = await getAccessToken(req, res);
 
   if (!token) {
     return {

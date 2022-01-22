@@ -41,6 +41,15 @@ export type Middleware = (
 ) => Promise<any>;
 
 export interface AuthSession extends Session {
+  user: {
+    nickname: string;
+    name: string;
+    picture: string;
+    updated_at: string;
+    email: string;
+    sub: string;
+  };
+
   userId: string;
 }
 

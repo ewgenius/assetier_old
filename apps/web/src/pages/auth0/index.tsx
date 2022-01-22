@@ -1,11 +1,11 @@
 import { NextPageExtended } from "@assetier/types";
 import { getSession, useUser } from "@auth0/nextjs-auth0";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { withPageAuthRequired, getAccessToken } from "@auth0/nextjs-auth0";
 import { fetcher } from "@utils/fetcher";
 import { FigmaFile } from "../api/organizations/[organizationId]/projects/[projectId]/figma";
 
-export const Auth0Page: NextPageExtended = () => {
+export const Auth0Page: NextPage = () => {
   const user = useUser();
   return (
     <div>
@@ -17,12 +17,10 @@ export const Auth0Page: NextPageExtended = () => {
   );
 };
 
-Auth0Page.type = "auth0";
-
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
   async getServerSideProps({ req, res }) {
     const session = await getSession(req, res);
-    console.log(session);
+    // console.log(session?.user);
 
     // get auth0 access token
     const token = await getAccessToken(req, res);

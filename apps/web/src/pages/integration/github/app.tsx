@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
+import { getSession } from "@auth0/nextjs-auth0";
 
-import type { SessionWithId } from "@assetier/types";
 import { prisma } from "@utils/prisma";
 import { Spinner } from "@components/Spinner";
 import { getOctokit } from "@utils/getOctokit";
@@ -21,11 +20,16 @@ export const GithubAppSetup: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = (await getSession(context)) as SessionWithId;
+  const session = getSession(context.req, context.res);
 
   // TODO: validate
+  if (!session || !session.user) {
+    return {
+      props: {},
+    };
+  }
 
-  const userId = session.userId;
+  const userId = session.user.sub;
   const installationId = Number(context.query.installation_id as string);
   const organizationId = context.query.state as string;
 
