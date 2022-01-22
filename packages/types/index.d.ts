@@ -6,7 +6,7 @@ import type {
   NextPageContext,
 } from "next";
 import type { AppProps } from "next/app";
-import type { Session } from "next-auth/core/types";
+import type { Session } from "@auth0/nextjs-auth0";
 import type {
   User,
   Organization,
@@ -40,8 +40,12 @@ export type Middleware = (
   res: NextApiResponse
 ) => Promise<any>;
 
+export interface AuthSession extends Session {
+  userId: string;
+}
+
 export type NextApiRequestWithSession = NextApiRequest & {
-  session: SessionWithId;
+  session: AuthSession;
 };
 
 export type NextApiRequestWithOrganization = NextApiRequestWithSession & {
@@ -71,10 +75,6 @@ export type NextApiHandlerWithProject<T = any> = (
   req: NextApiRequestWithProject,
   res: NextApiResponse<T>
 ) => void | Promise<void>;
-
-export type SessionWithId = Session & {
-  userId: string;
-};
 
 export type UserWithOrganizations = User & {
   organizations: {
