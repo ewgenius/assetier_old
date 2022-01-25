@@ -213,3 +213,28 @@ export interface AssetMetaInfo {
   assetPath: string;
   url: string;
 }
+
+export interface Auth0UserIdentity {
+  provider: string;
+  access_token: string;
+  refresh_token: string;
+  user_id: string;
+  connection: string;
+  isSocial: boolean;
+}
+
+export interface Auth0User {
+  created_at: string;
+  email: string;
+  handle: string;
+  identities: Auth0UserIdentity[];
+  img_url: string;
+  name: string;
+  nickname: string;
+  picture: string;
+  updated_at: string;
+  user_id: string;
+  last_ip: string;
+  last_login: string;
+  logins_count: number;
+}
