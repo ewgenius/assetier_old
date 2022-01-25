@@ -78,130 +78,136 @@ async function uploadSVGFiles(
   };
 }
 
-export const handler = withProject(async ({ method, body, project }, res) => {
-  switch (method) {
-    case "POST": {
-      if (!project.figmaOauthConnectionId || !project.figmaFileUrl) {
-        throw new NotFoundError("no connection details");
-      }
-      const figmaFileDetails = parseFigmaUrl(project.figmaFileUrl);
-      if (!figmaFileDetails) {
-        throw new NotFoundError("no figma file details");
-      }
+export const handler = withProject(
+  async ({ method, body, project, user }, res) => {
+    switch (method) {
+      case "POST": {
+        if (!project.figmaFileUrl) {
+          throw new NotFoundError("no connection details");
+        }
+        const figmaFileDetails = parseFigmaUrl(project.figmaFileUrl);
+        if (!figmaFileDetails) {
+          throw new NotFoundError("no figma file details");
+        }
 
-      const connection = await prisma.figmaOauthConnection.findUnique({
-        where: {
-          id: project.figmaOauthConnectionId,
-        },
-      });
-
-      if (!connection) {
-        throw new NotFoundError("no figma connection");
-      }
-
-      const selectedNodes = body.nodes as { id: string; name: string }[];
-      const nodesMap = selectedNodes.reduce<
-        Record<string, { id: string; name: string }>
-      >((map, node) => {
-        map[node.id] = node;
-        return map;
-      }, {});
-
-      const svgs: { id: string; name: string; content: string }[] =
-        await fetcher(
-          `https://api.figma.com/v1/images/${
-            figmaFileDetails.key
-          }?ids=${selectedNodes.map((n) => n.id).join(",")}&format=svg`,
-          {
-            headers: {
-              Authorization: `Bearer ${connection?.accessToken}`,
-            },
-          }
-        ).then((results: { images: { [key: string]: string }; err: any }) => {
-          if (results.err) {
-            throw results.err;
-          }
-          return Promise.all(
-            Object.keys(results.images).map((key) => {
-              const url = results.images[key];
-              const nodeName = nodesMap[key].name;
-              const name = nodeName.endsWith(".svg")
-                ? nodeName
-                : `${nodeName}.svg`;
-              return fetch(url)
-                .then((r) => r.text())
-                .then((content) => ({
-                  id: key,
-                  name,
-                  content,
-                }));
-            })
-          );
+        const credentials = await prisma.figmaAuthCredentials.findUnique({
+          where: {
+            userId: user.id,
+          },
         });
 
-      const installation = await getProjectInstallation(project);
-      const octokit = await getOctokit(installation.installationId);
-      const repository = await getProjectRepository(project, octokit);
+        if (!credentials) {
+          throw new NotFoundError("no figma connection");
+        }
 
-      const baseBranchName = project.defaultBranch || "main";
-      const merge = true;
+        const selectedNodes = body.nodes as { id: string; name: string }[];
+        const nodesMap = selectedNodes.reduce<
+          Record<string, { id: string; name: string }>
+        >((map, node) => {
+          map[node.id] = node;
+          return map;
+        }, {});
 
-      // TODO: request is paginated
-      const branches = await getRepositoryBranches(repository, octokit);
-      const baseBranch = branches.find((b) => b.name === baseBranchName);
+        const svgs: { id: string; name: string; content: string }[] =
+          await fetcher(
+            `https://api.figma.com/v1/images/${
+              figmaFileDetails.key
+            }?ids=${selectedNodes.map((n) => n.id).join(",")}&format=svg`,
+            {
+              headers: {
+                Authorization: `Bearer ${credentials.accessToken}`,
+              },
+            }
+          ).then((results: { images: { [key: string]: string }; err: any }) => {
+            if (results.err) {
+              throw results.err;
+            }
+            return Promise.all(
+              Object.keys(results.images).map((key) => {
+                const url = results.images[key];
+                const nodeName = nodesMap[key].name;
+                const name = nodeName.endsWith(".svg")
+                  ? nodeName
+                  : `${nodeName}.svg`;
+                return fetch(url)
+                  .then((r) => r.text())
+                  .then((content) => ({
+                    id: key,
+                    name,
+                    content,
+                  }));
+              })
+            );
+          });
 
-      if (!baseBranch) {
-        throw new BadRequestError(`Branch ${baseBranchName} does not exist`);
+        const installation = await getProjectInstallation(project);
+        const octokit = await getOctokit(installation.installationId);
+        const repository = await getProjectRepository(project, octokit);
+
+        const baseBranchName = project.defaultBranch || "main";
+        const merge = true;
+
+        // TODO: request is paginated
+        const branches = await getRepositoryBranches(repository, octokit);
+        const baseBranch = branches.find((b) => b.name === baseBranchName);
+
+        if (!baseBranch) {
+          throw new BadRequestError(`Branch ${baseBranchName} does not exist`);
+        }
+
+        const branchName = `assetier/upload/${uuidv4()}`;
+        const newBranch = await createBranch(
+          repository,
+          baseBranch.commit.sha,
+          branchName,
+          octokit
+        );
+
+        const updatedBranch = await uploadSVGFiles(
+          project,
+          repository,
+          svgs,
+          branchName,
+          newBranch.object.sha,
+          octokit
+        );
+
+        const pr = await createPullRequest(
+          repository,
+          baseBranchName,
+          branchName,
+          octokit
+        );
+
+        if (merge) {
+          await mergePullRequest(repository, pr.number, octokit);
+        }
+
+        const results = svgs.reduce<Record<string, AssetMetaInfo>>(
+          (map, svg) => {
+            map[svg.id] = {
+              repoOwner: repository.owner.login,
+              repoName: repository.name,
+              repoSha: updatedBranch.commit.sha,
+              assetPath: `${project.assetsPath}/${svg.name}`,
+              url: `https://github.com/${repository.owner.login}/${repository.name}/blob/${updatedBranch.commit.sha}/${project.assetsPath}/${svg.name}`,
+            };
+            return map;
+          },
+          {}
+        );
+
+        console.log(results);
+
+        return res.status(200).json(results);
       }
 
-      const branchName = `assetier/upload/${uuidv4()}`;
-      const newBranch = await createBranch(
-        repository,
-        baseBranch.commit.sha,
-        branchName,
-        octokit
-      );
-
-      const updatedBranch = await uploadSVGFiles(
-        project,
-        repository,
-        svgs,
-        branchName,
-        newBranch.object.sha,
-        octokit
-      );
-
-      const pr = await createPullRequest(
-        repository,
-        baseBranchName,
-        branchName,
-        octokit
-      );
-
-      if (merge) {
-        await mergePullRequest(repository, pr.number, octokit);
+      default: {
+        throw new NotAllowedError();
       }
-
-      const results = svgs.reduce<Record<string, AssetMetaInfo>>((map, svg) => {
-        map[svg.id] = {
-          repoOwner: repository.owner.login,
-          repoName: repository.name,
-          repoSha: updatedBranch.commit.sha,
-          assetPath: `${project.assetsPath}/${svg.name}`,
-          url: `https://github.com/${repository.owner.login}/${repository.name}/blob/${updatedBranch.commit.sha}/${project.assetsPath}/${svg.name}`,
-        };
-        return map;
-      }, {});
-
-      console.log(results);
-
-      return res.status(200).json(results);
     }
-
-    default: {
-      throw new NotAllowedError();
-    }
-  }
-}, runCors);
+  },
+  runCors
+);
 
 export default handler;

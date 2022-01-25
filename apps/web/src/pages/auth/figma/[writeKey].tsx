@@ -27,7 +27,6 @@ import { useRouter } from "next/router";
 import { TextInput } from "@components/TextInput";
 import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 import { useProjectForm } from "@hooks/useProjectForm";
-import { FigmaConnector } from "@components/FigmaConnector/FigmaConnector";
 
 export const OrganizationProjectConnector: FC = () => {
   const {
@@ -61,7 +60,6 @@ export const OrganizationProjectConnector: FC = () => {
         body: JSON.stringify({
           organizationId: selectedOrganization.id,
           projectId: selectedProject.id,
-          figmaOauthConnectionId: form.figmaOauthConnectionId,
           figmaFileUrl: form.figmaFileUrl,
         }),
       })
@@ -76,7 +74,6 @@ export const OrganizationProjectConnector: FC = () => {
     selectedOrganization?.id,
     selectedProject?.id,
     writeKey,
-    form.figmaOauthConnectionId,
     form.figmaFileUrl,
   ]);
 
@@ -202,32 +199,22 @@ export const OrganizationProjectConnector: FC = () => {
 
             {selectedProject && (
               <>
-                <FigmaConnector
-                  organization={selectedOrganization}
-                  connectionId={
-                    selectedProject.figmaOauthConnectionId || undefined
-                  }
-                  onChange={form.setFigmaOauthConnectionId}
-                />
-
                 <div>
-                  <div>
-                    <TextInput
-                      id="figma-file-url"
-                      name="figma-file-url"
-                      label="Figma file url"
-                      placeholder="https://www.figma.com/file/..."
-                      value={form.figmaFileUrl}
-                      onChange={form.setFigmaFileUrl}
-                    />
+                  <TextInput
+                    id="figma-file-url"
+                    name="figma-file-url"
+                    label="Figma file url"
+                    placeholder="https://www.figma.com/file/..."
+                    value={form.figmaFileUrl}
+                    onChange={form.setFigmaFileUrl}
+                  />
 
-                    {parsedFigmaUrl && (
-                      <div className="mt-2 font-mono text-xs text-gray-400">
-                        <p>key: {parsedFigmaUrl.key}</p>
-                        <p>title: {parsedFigmaUrl.title}</p>
-                      </div>
-                    )}
-                  </div>
+                  {parsedFigmaUrl && (
+                    <div className="mt-2 font-mono text-xs text-gray-400">
+                      <p>key: {parsedFigmaUrl.key}</p>
+                      <p>title: {parsedFigmaUrl.title}</p>
+                    </div>
+                  )}
                 </div>
               </>
             )}
@@ -239,19 +226,16 @@ export const OrganizationProjectConnector: FC = () => {
           </div>
         )}
 
-        {selectedOrganization &&
-          selectedProject &&
-          form.figmaOauthConnectionId &&
-          form.figmaFileUrl && (
-            <button
-              type="button"
-              disabled={state === "connecting"}
-              onClick={connect}
-              className="text-md mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-zinc-800 px-4 py-2 font-medium text-white shadow-sm hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-offset-2 disabled:bg-zinc-400"
-            >
-              <div className="text-center">Connect</div>
-            </button>
-          )}
+        {selectedOrganization && selectedProject && form.figmaFileUrl && (
+          <button
+            type="button"
+            disabled={state === "connecting"}
+            onClick={connect}
+            className="text-md mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-zinc-800 px-4 py-2 font-medium text-white shadow-sm hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-offset-2 disabled:bg-zinc-400"
+          >
+            <div className="text-center">Connect</div>
+          </button>
+        )}
       </div>
     </div>
   );

@@ -10,9 +10,6 @@ export function useProjectForm(project?: Partial<Project>) {
   const [alias, setAlias, resetAlias, setAliasValue] = useInputState(
     project?.alias || undefined
   );
-  const [figmaOauthConnectionId, setFigmaOauthConnectionId] = useState(
-    project?.figmaOauthConnectionId
-  );
   const [
     figmaFileUrl,
     setFigmaFileUrl,
@@ -43,7 +40,6 @@ export function useProjectForm(project?: Partial<Project>) {
       setNameValue(project.name || "");
       setAliasValue(project.alias || "");
       setFigmaFileUrlValue(project.figmaFileUrl || "");
-      setFigmaOauthConnectionId(project.figmaOauthConnectionId);
       setAssetsPathValue(project.assetsPath || "");
       setPublicPageEnabled(project.publicPageEnabled || false);
     } else {
@@ -53,7 +49,6 @@ export function useProjectForm(project?: Partial<Project>) {
       resetAssetsPath();
       setPublicPageEnabled(false);
       setGithubInstallation(null);
-      setFigmaOauthConnectionId(null);
     }
   }, [project]);
 
@@ -66,7 +61,6 @@ export function useProjectForm(project?: Partial<Project>) {
       name,
       assetsPath,
       figmaFileUrl,
-      figmaOauthConnectionId,
       publicPageEnabled,
       defaultBranch: githubInstallation?.branch,
       githubInstallationId: githubInstallation?.githubInstallationId as string,
@@ -80,7 +74,6 @@ export function useProjectForm(project?: Partial<Project>) {
     name,
     alias,
     figmaFileUrl,
-    figmaOauthConnectionId,
     assetsPath,
     publicPageEnabled,
     githubInstallation?.branch,
@@ -114,7 +107,6 @@ export function useProjectForm(project?: Partial<Project>) {
     name,
     alias,
     figmaFileUrl,
-    figmaOauthConnectionId,
     assetsPath,
     publicPageEnabled,
     githubInstallation,
@@ -122,7 +114,6 @@ export function useProjectForm(project?: Partial<Project>) {
     setName,
     setAlias,
     setFigmaFileUrl,
-    setFigmaOauthConnectionId,
     setAssetsPath,
     setPublicPageEnabled,
     setGithubInstallation,

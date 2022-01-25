@@ -42,21 +42,10 @@ export const handler: NextApiHandler = async (req, res) => {
     case "PUT": {
       const {
         query,
-        body: {
-          organizationId,
-          projectId,
-          figmaOauthConnectionId,
-          figmaFileUrl,
-        },
+        body: { organizationId, projectId, figmaFileUrl },
       } = req;
 
-      if (
-        !query.key ||
-        !organizationId ||
-        !projectId ||
-        !figmaOauthConnectionId ||
-        !figmaFileUrl
-      ) {
+      if (!query.key || !organizationId || !projectId || !figmaFileUrl) {
         throw new BadRequestError();
       }
 
@@ -80,13 +69,12 @@ export const handler: NextApiHandler = async (req, res) => {
         throw new NotFoundError();
       }
 
-      if (!project.figmaFileUrl || !project.figmaOauthConnectionId) {
+      if (!project.figmaFileUrl) {
         await prisma.project.update({
           where: {
             id: projectId,
           },
           data: {
-            figmaOauthConnectionId,
             figmaFileUrl,
           },
         });

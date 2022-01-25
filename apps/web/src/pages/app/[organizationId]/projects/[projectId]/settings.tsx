@@ -15,7 +15,6 @@ import { Toggle } from "@components/Toggle";
 import { useProjectUpdater } from "@hooks/useProjectUpdater";
 import { GithubConnector } from "@components/GithubConnector";
 import { parseFigmaUrl } from "@utils/parseFigmaUrl";
-import { FigmaConnector } from "@components/FigmaConnector/FigmaConnector";
 
 export const ProjectSettingsPage: NextPageExtended<
   {},
@@ -83,11 +82,6 @@ export const ProjectSettingsPage: NextPageExtended<
             />
 
             <div className="my-4 border-b border-gray-200" />
-
-            <FigmaConnector
-              connectionId={project.figmaOauthConnectionId || undefined}
-              onChange={form.setFigmaOauthConnectionId}
-            />
 
             <div>
               <TextInput

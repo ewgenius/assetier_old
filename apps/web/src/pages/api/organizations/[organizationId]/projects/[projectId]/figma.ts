@@ -13,10 +13,10 @@ export interface FigmaFile {
   };
 }
 
-export default withProject<any[]>(async ({ method, project }, res) => {
+export default withProject<any[]>(async ({ method, project, user }, res) => {
   switch (method) {
     case "GET": {
-      if (!project.figmaOauthConnectionId || !project.figmaFileUrl) {
+      if (!project.figmaFileUrl) {
         throw new NotFoundError("no connection details");
       }
       const figmaFileDetails = parseFigmaUrl(project.figmaFileUrl);
@@ -24,13 +24,13 @@ export default withProject<any[]>(async ({ method, project }, res) => {
         throw new NotFoundError("no figma file details");
       }
 
-      const connection = await prisma.figmaOauthConnection.findUnique({
+      const credentials = await prisma.figmaAuthCredentials.findUnique({
         where: {
-          id: project.figmaOauthConnectionId,
+          userId: user.id,
         },
       });
 
-      if (!connection) {
+      if (!credentials) {
         throw new NotFoundError("no figma connection");
       }
 
@@ -38,7 +38,7 @@ export default withProject<any[]>(async ({ method, project }, res) => {
         `https://api.figma.com/v1/files/${figmaFileDetails.key}`,
         {
           headers: {
-            Authorization: `Bearer ${connection?.accessToken}`,
+            Authorization: `Bearer ${credentials.accessToken}`,
           },
         }
       );

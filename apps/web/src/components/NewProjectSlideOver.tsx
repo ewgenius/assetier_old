@@ -16,7 +16,6 @@ import { useProjectCreator } from "@hooks/useProjectCreator";
 import { useOrganization } from "@hooks/useOrganization";
 import { useProjects } from "@hooks/useProjects";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
-import { FigmaConnector } from "./FigmaConnector/FigmaConnector";
 import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
@@ -101,11 +100,6 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         />
 
         <div className="border-b border-gray-200" />
-
-        <FigmaConnector
-          disabled={reachedLimit || creating}
-          onChange={form.setFigmaOauthConnectionId}
-        />
 
         <div>
           <TextInput
