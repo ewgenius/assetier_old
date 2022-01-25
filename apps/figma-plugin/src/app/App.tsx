@@ -102,15 +102,15 @@ export const App: FC = () => {
         <PageRouter page={appState.page} />
       </div>
       {process.env.NODE_ENV === "development" && (
-        <div className="bg-red-500 text-white text-xs font-mono p-2 flex flex-col gap-1">
+        <div className="flex flex-col gap-1 bg-red-500 p-2 font-mono text-xs text-white">
           <button
-            className="flex items-center text-center px-2 py-1 border border-red-700 shadow-sm text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700"
+            className="flex items-center rounded border border-red-700 bg-red-600 px-2 py-1 text-center text-xs font-medium text-white shadow-sm hover:bg-red-700"
             onClick={() => dispatch({ type: ActionType.NextPage })}
           >
             next page
           </button>
 
-          <div className="w-full p-1 overflow-auto text-[8px]">
+          <div className="w-full overflow-auto p-1 text-[8px]">
             {JSON.stringify(appState, null, 2)}
           </div>
         </div>

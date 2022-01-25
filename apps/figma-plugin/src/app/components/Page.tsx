@@ -12,8 +12,8 @@ export const Page: FC<React.PropsWithChildren<PageProps>> = ({
 }) => (
   <div
     className={classNames(
-      layout === "center" && "justify-center items-center",
-      "h-full flex flex-col"
+      layout === "center" && "items-center justify-center",
+      "flex h-full flex-col"
     )}
   >
     {children}

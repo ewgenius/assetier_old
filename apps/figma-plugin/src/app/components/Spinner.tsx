@@ -11,8 +11,8 @@ export const Spinner: FC<SpinnerProps> = ({ className, size }) => (
     className={classNames(
       className,
       "animate-spin opacity-75",
-      size === 4 && "w-4 h-4",
-      size === 2 && "w-2 h-2"
+      size === 4 && "h-4 w-4",
+      size === 2 && "h-2 w-2"
     )}
     xmlns="http://www.w3.org/2000/svg"
     fill="none"

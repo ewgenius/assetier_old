@@ -15,7 +15,7 @@ export const Button: FC<PropsWithChildren<{ onClick: () => void }>> = ({
 }) => (
   <button
     type="button"
-    className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-gray-700 hover:bg-gray-800"
+    className="inline-flex items-center rounded border border-transparent bg-gray-700 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-gray-800"
     onClick={onClick}
   >
     {children}
@@ -53,11 +53,11 @@ export const DebugShell: FC = () => {
   );
 
   return (
-    <div className="h-full w-full flex">
-      <div className="bg-gray-900 text-gray-200 h-full flex flex-col min-w-[320px]">
-        <div className="p-4 border-b border-gray-700">Plugin controls</div>
+    <div className="flex h-full w-full">
+      <div className="flex h-full min-w-[320px] flex-col bg-gray-900 text-gray-200">
+        <div className="border-b border-gray-700 p-4">Plugin controls</div>
 
-        <div className="flex-grow p-4 flex flex-col gap-2 max-w-sm">
+        <div className="flex max-w-sm flex-grow flex-col gap-2 p-4">
           <Button
             onClick={() =>
               postMessage({
@@ -99,7 +99,7 @@ export const DebugShell: FC = () => {
             emulate: plugin started (user token and org/project)
           </Button>
 
-          <div className="border-b border-gray-700 my-2" />
+          <div className="my-2 border-b border-gray-700" />
 
           <Button
             onClick={() =>
@@ -119,16 +119,16 @@ export const DebugShell: FC = () => {
         </div>
       </div>
 
-      <div className="h-full flex flex-col items-center p-4 flex-grow bg-gray-500">
-        <div className="max-w-[300px] flex-grow flex flex-col shadow-lg overflow-hidden">
-          <div className="border-b flex items-center border-gray-200 px-1 py-1 rounded-t-[2px] bg-white">
+      <div className="flex h-full flex-grow flex-col items-center bg-gray-500 p-4">
+        <div className="flex max-w-[300px] flex-grow flex-col overflow-hidden shadow-lg">
+          <div className="flex items-center rounded-t-[2px] border-b border-gray-200 bg-white px-1 py-1">
             <div className="p-[8px]">
-              <div className="w-[16px] h-[16px] bg-gray-500 rounded-sm"></div>
+              <div className="h-[16px] w-[16px] rounded-sm bg-gray-500"></div>
             </div>
-            <span className="text-[#333] font-[600] text-[11px]">Assetier</span>
+            <span className="text-[11px] font-[600] text-[#333]">Assetier</span>
           </div>
 
-          <div className="flex-grow flex flex-col bg-white">
+          <div className="flex flex-grow flex-col bg-white">
             <iframe
               ref={frameRef}
               id="plugin-frame"

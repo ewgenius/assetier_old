@@ -53,7 +53,7 @@ export const MainPage: FC = () => {
 
   if (!user) {
     return (
-      <div className="h-full p-2 flex flex-col justify-center items-center">
+      <div className="flex h-full flex-col items-center justify-center p-2">
         <Spinner />
       </div>
     );
@@ -67,10 +67,10 @@ export const MainPage: FC = () => {
     <Page>
       <ProfileTopbar />
 
-      <div className="p-4 flex-grow overflow-y-auto flex flex-col gap-2">
+      <div className="flex flex-grow flex-col gap-2 overflow-y-auto p-4">
         <button
           type="button"
-          className="flex w-full items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zink-500"
+          className="focus:ring-zink-500 flex w-full items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
           onClick={setup}
         >
           <span>Setup</span>
@@ -80,7 +80,7 @@ export const MainPage: FC = () => {
             <button
               type="button"
               disabled={exporting}
-              className="flex w-full items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zink-500"
+              className="focus:ring-zink-500 flex w-full items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
               onClick={exportNodes}
             >
               <span>Export selected nodes</span>
@@ -89,12 +89,12 @@ export const MainPage: FC = () => {
             </button>
 
             <div className="relative flex items-start">
-              <div className="flex items-center h-5">
+              <div className="flex h-5 items-center">
                 <input
                   id="postfix-size"
                   name="postfix-size"
                   type="checkbox"
-                  className="focus:ring-zink-500 h-4 w-4 text-zink-600 border-gray-300 rounded"
+                  className="focus:ring-zink-500 text-zink-600 h-4 w-4 rounded border-gray-300"
                   checked={postfixSize}
                   onClick={togglePostfixSize}
                 />
@@ -106,13 +106,13 @@ export const MainPage: FC = () => {
                 >
                   Size in postfix
                 </label>
-                <p className="text-gray-500 font-mono">icon-16.svg</p>
+                <p className="font-mono text-gray-500">icon-16.svg</p>
               </div>
             </div>
 
             <div>
               {selectedNodes.map((node) => (
-                <div key={node.id} className="p-2 flex text-xs">
+                <div key={node.id} className="flex p-2 text-xs">
                   #{node.id}{" "}
                   {postfixSize ? `${node.name}-${node.size}` : node.name}
                 </div>

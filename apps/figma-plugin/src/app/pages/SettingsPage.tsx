@@ -18,16 +18,16 @@ export const SettingsPage: FC = () => {
 
   if (!user) {
     return (
-      <div className="h-full p-2 flex flex-col justify-center items-center">
+      <div className="flex h-full flex-col items-center justify-center p-2">
         <Spinner />
       </div>
     );
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="flex h-full flex-col">
       <ProfileTopbar />
-      <div className="p-2 flex flex-col">
+      <div className="flex flex-col p-2">
         <div>
           <label className="text-xs">org id</label>
           <input
@@ -47,7 +47,7 @@ export const SettingsPage: FC = () => {
         <button
           type="button"
           disabled={!orgId || !projId}
-          className="flex w-full items-center px-2.5 py-1.5 mb-2 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="mb-2 flex w-full items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={submit}
         >
           <span>Save</span>

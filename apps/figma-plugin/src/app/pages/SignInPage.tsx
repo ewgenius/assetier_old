@@ -61,18 +61,18 @@ export const SignInPage: FC = () => {
   }, [pair?.readKey]);
 
   return (
-    <div className="h-full p-2 flex flex-col justify-center items-center">
+    <div className="flex h-full flex-col items-center justify-center p-2">
       <img
         src="https://www.assetier.app/logo-256x256.png"
-        className="w-16 h-16"
+        className="h-16 w-16"
       />
-      <h1 className="text-lg my-2 font-semibold">Assetier</h1>
+      <h1 className="my-2 text-lg font-semibold">Assetier</h1>
 
-      <div className="mt-16 w-full max-w-[200px] flex flex-col px-4">
+      <div className="mt-16 flex w-full max-w-[200px] flex-col px-4">
         <button
           type="button"
           disabled={state === "sent"}
-          className="inline-flex items-center text-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+          className="inline-flex items-center justify-center rounded border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none"
           onClick={state === "pooling" ? refresh : signIn}
         >
           {state === "pooling" ? "Refresh" : "Sign In"}
