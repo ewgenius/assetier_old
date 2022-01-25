@@ -18,7 +18,6 @@ import type { ComponentType } from "react";
 export type { User } from "@assetier/prisma";
 export type { Organization } from "@assetier/prisma";
 export type { Project } from "@assetier/prisma";
-export type { FigmaOauthConnection } from "@assetier/prisma";
 export type { FigmaReadWritePair } from "@assetier/prisma";
 
 export type WithNavId<W = {}> = {
@@ -190,13 +189,6 @@ export interface GHTree {
   mode: "100644";
   type: "blob";
   content: string;
-}
-
-export interface FigmaOauthConnection {
-  user_id: number;
-  access_token: string;
-  refresh_token: string;
-  expires_in: number;
 }
 
 export interface FigmaUser {
