@@ -29,7 +29,7 @@ export const ProfileDropdown: FC = () => {
   return (
     <Menu as="div" className="relative">
       <div>
-        <Menu.Button className="max-w-xs flex items-center hover:bg-gray-300 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
+        <Menu.Button className="flex max-w-xs items-center rounded-md text-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2">
           <span className="sr-only">Open user menu</span>
           {user.user.image && (
             <img
@@ -49,7 +49,7 @@ export const ProfileDropdown: FC = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           {userNavigation.map((item) => (
             <Menu.Item key={item.name}>
               {({ active }) => (

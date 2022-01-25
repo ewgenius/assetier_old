@@ -24,7 +24,7 @@ export const ProjectPublicPage: NextPage<ProjectPublicPageProps> = ({
   return (
     <Page title={() => <PageHeader>{project.name}</PageHeader>}>
       <LayoutBlock>
-        <div className="mt-4 grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-1">
+        <div className="mt-4 grid grid-cols-2 gap-1 md:grid-cols-4 lg:grid-cols-8">
           {contents.map((asset) => (
             <AssetCard key={asset.sha} asset={asset} />
           ))}

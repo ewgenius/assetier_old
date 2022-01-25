@@ -62,7 +62,7 @@ export const Select: FC<SelectProps> = ({
             </Listbox.Label>
           )}
           <div className="relative">
-            <Listbox.Button className="bg-white cursor-pointer relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm">
+            <Listbox.Button className="relative w-full cursor-pointer rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 sm:text-sm">
               {selectedItem ? (
                 renderButton(selectedItem)
               ) : renderPlaceholder ? (
@@ -72,7 +72,7 @@ export const Select: FC<SelectProps> = ({
                   {placeholder}
                 </span>
               )}
-              <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 {items ? (
                   <SelectorIcon
                     className="h-5 w-5 text-gray-400"
@@ -91,7 +91,7 @@ export const Select: FC<SelectProps> = ({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {renderBefore && renderBefore()}
 
                 {items ? (
@@ -101,7 +101,7 @@ export const Select: FC<SelectProps> = ({
                       className={({ active }) =>
                         classNames(
                           active ? "bg-zinc-100" : "",
-                          "cursor-pointer select-none relative py-2 pl-3 pr-9 text-gray-900"
+                          "relative cursor-pointer select-none py-2 pl-3 pr-9 text-gray-900"
                         )
                       }
                       value={item}
@@ -123,9 +123,9 @@ export const Select: FC<SelectProps> = ({
                               />
                             </span>
                           ) : onDelete ? (
-                            <div className="absolute inset-y-0 right-0 p-2 flex flex-col justify-center items-center">
+                            <div className="absolute inset-y-0 right-0 flex flex-col items-center justify-center p-2">
                               <button
-                                className="px-2 py-1.5 rounded-md hover:bg-gray-200"
+                                className="rounded-md px-2 py-1.5 hover:bg-gray-200"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
@@ -135,7 +135,7 @@ export const Select: FC<SelectProps> = ({
                                   return false;
                                 }}
                               >
-                                <XCircleIcon className="w-5 h-6" />
+                                <XCircleIcon className="h-6 w-5" />
                               </button>
                             </div>
                           ) : null}
@@ -144,7 +144,7 @@ export const Select: FC<SelectProps> = ({
                     </Listbox.Option>
                   ))
                 ) : (
-                  <div className="flex pt-3 pb-4 justify-center">
+                  <div className="flex justify-center pt-3 pb-4">
                     <Spinner />
                   </div>
                 )}

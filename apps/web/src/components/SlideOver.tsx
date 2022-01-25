@@ -38,7 +38,7 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
             leaveTo="opacity-0"
           />
 
-          <div className="fixed inset-y-0 max-w-full right-0 flex">
+          <div className="fixed inset-y-0 right-0 flex max-w-full">
             <Transition.Child
               as={Fragment}
               enter="transform transition ease-in-out duration-500"
@@ -50,7 +50,7 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
             >
               <div
                 className={classNames(
-                  "w-screen h-screen p-2",
+                  "h-screen w-screen p-2",
                   size === "sm" && "max-w-sm",
                   size === "md" && "max-w-md",
                   size === "lg" && "max-w-lg",
@@ -65,7 +65,7 @@ export const SlideOver: FC<PropsWithChildren<SlideOverProps>> = ({
                     onSubmit && onSubmit();
                     return false;
                   }}
-                  className="h-full box-border overflow-hidden rounded-xl flex flex-col bg-white shadow-xl"
+                  className="box-border flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-xl"
                 >
                   {children}
                 </form>
@@ -93,12 +93,12 @@ export const SlideOverHeading: FC<SlideOverHeadingProps> = ({
   onClose,
 }) => {
   return (
-    <div className="py-6 px-4 sm:px-6 rounded-t-lg border-b border-gray-200">
+    <div className="rounded-t-lg border-b border-gray-200 py-6 px-4 sm:px-6">
       <div className="flex items-center justify-between">
         <Dialog.Title className="text-lg font-medium text-gray-900">
           {title}
         </Dialog.Title>
-        <div className="ml-3 h-7 flex items-center">
+        <div className="ml-3 flex h-7 items-center">
           <button
             type="button"
             className="rounded-md text-gray-400 hover:text-gray-500"
@@ -119,19 +119,17 @@ export const SlideOverHeading: FC<SlideOverHeadingProps> = ({
   );
 };
 
-export const SlideOverFooter: FC<PropsWithChildren<{}>> = ({
-  children,
-}) => (
-  <div className="flex-shrink-0 px-4 py-4 flex justify-end border-t border-gray-200">
+export const SlideOverFooter: FC<PropsWithChildren<{}>> = ({ children }) => (
+  <div className="flex flex-shrink-0 justify-end border-t border-gray-200 px-4 py-4">
     {children}
   </div>
 );
 
 export const SlideOverBody: FC<PropsWithChildren<{}>> = ({ children }) => (
-  <div className="flex-1 flex flex-col h-0 overflow-y-auto">
-    <div className="flex-1 flex flex-col flex-grow justify-between">
-      <div className="flex-1 flex flex-col flex-grow px-4 sm:px-6">
-        <div className="flex-1 flex flex-col flex-grow space-y-6 pt-6 pb-5">
+  <div className="flex h-0 flex-1 flex-col overflow-y-auto">
+    <div className="flex flex-1 flex-grow flex-col justify-between">
+      <div className="flex flex-1 flex-grow flex-col px-4 sm:px-6">
+        <div className="flex flex-1 flex-grow flex-col space-y-6 pt-6 pb-5">
           {children}
         </div>
       </div>

@@ -14,7 +14,7 @@ export const AssetsGrid: FC<AssetsGridProps> = ({ assets, onClick }) => {
     <LayoutBlock>
       {assets && assets.length ? (
         <div className="flex flex-col">
-          <div className="grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-8">
             {assets.map((asset) => (
               <AssetCard key={asset.name} asset={asset} onClick={onClick} />
             ))}

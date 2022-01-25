@@ -57,14 +57,14 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
       <SlideOverHeading onClose={close} title="New Project" />
 
       {reachedLimit && (
-        <div className="px-4 sm:px-6 py-2 bg-zinc-200 text-zinc-600 flex gap-2 items-center">
-          <ExclamationCircleIcon className="w-5 h-5" />
+        <div className="flex items-center gap-2 bg-zinc-200 px-4 py-2 text-zinc-600 sm:px-6">
+          <ExclamationCircleIcon className="h-5 w-5" />
           <span className="flex-grow text-sm">
             You&apos;ve reached projects limit
           </span>
           <button
             type="button"
-            className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+            className="inline-flex items-center rounded border border-transparent bg-zinc-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2"
           >
             Upgrade
           </button>
@@ -119,7 +119,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
           />
 
           {parsedFigmaUrl && (
-            <div className="mt-2 text-xs font-mono text-gray-400">
+            <div className="mt-2 font-mono text-xs text-gray-400">
               <p>key: {parsedFigmaUrl.key}</p>
               <p>title: {parsedFigmaUrl.title}</p>
             </div>
@@ -153,7 +153,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
       <SlideOverFooter>
         <button
           type="button"
-          className="bg-white py-2 px-4 border disabled:opacity-50 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+          className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 disabled:opacity-50"
           disabled={creating}
           onClick={close}
         >
@@ -162,7 +162,7 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
         <button
           type="submit"
           disabled={reachedLimit || creating || !form.isValid}
-          className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+          className="ml-4 inline-flex items-center justify-center rounded-md border border-transparent bg-zinc-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 disabled:opacity-50"
         >
           <span>Create</span>
           {creating && <Spinner className="ml-2" />}

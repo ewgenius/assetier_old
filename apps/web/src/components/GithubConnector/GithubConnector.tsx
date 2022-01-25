@@ -84,7 +84,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
         layout === "column" && "flex-col space-y-4",
         layout === "row" && "flex-row sm:space-x-2 md:space-x-4",
         !layout &&
-          "flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 md:space-x-4"
+          "flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-2 md:space-x-4"
       )}
     >
       <div
@@ -126,8 +126,8 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
       {(selectedRepository || connection) && (
         <div
           className={classNames(
-            layout === "row" && "flex-1 flex-shrink-0 max-w-[220px]",
-            !layout && "sm:flex-1 sm:flex-shrink-0 sm:max-w-[220px]"
+            layout === "row" && "max-w-[220px] flex-1 flex-shrink-0",
+            !layout && "sm:max-w-[220px] sm:flex-1 sm:flex-shrink-0"
           )}
         >
           <GithubBranchSelector

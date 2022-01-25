@@ -52,7 +52,7 @@ export const ProjectSettingsPage: NextPageExtended<
         }}
         className="flex flex-col space-y-4"
       >
-        <div className="py-4 flex flex-col sm:flex-row sm:space-x-8 space-y-4 sm:space-y-0">
+        <div className="flex flex-col space-y-4 py-4 sm:flex-row sm:space-x-8 sm:space-y-0">
           <div className="flex-1 space-y-4">
             <TextInput
               id="project-name"
@@ -64,7 +64,7 @@ export const ProjectSettingsPage: NextPageExtended<
               onChange={form.setName}
             />
 
-            <div className="border-b border-gray-200 my-4" />
+            <div className="my-4 border-b border-gray-200" />
 
             <GithubConnector
               connection={form.githubInstallation}
@@ -82,7 +82,7 @@ export const ProjectSettingsPage: NextPageExtended<
               onChange={form.setAssetsPath}
             />
 
-            <div className="border-b border-gray-200 my-4" />
+            <div className="my-4 border-b border-gray-200" />
 
             <FigmaConnector
               connectionId={project.figmaOauthConnectionId || undefined}
@@ -100,14 +100,14 @@ export const ProjectSettingsPage: NextPageExtended<
               />
 
               {parsedFigmaUrl && (
-                <div className="mt-2 text-xs font-mono text-gray-400">
+                <div className="mt-2 font-mono text-xs text-gray-400">
                   <p>key: {parsedFigmaUrl.key}</p>
                   <p>title: {parsedFigmaUrl.title}</p>
                 </div>
               )}
             </div>
 
-            <div className="border-b border-gray-200 my-4" />
+            <div className="my-4 border-b border-gray-200" />
 
             <Toggle
               label="Enable public page?"
@@ -129,18 +129,18 @@ export const ProjectSettingsPage: NextPageExtended<
               />
             )}
 
-            <div className="border-b border-gray-200 my-4" />
+            <div className="my-4 border-b border-gray-200" />
 
             <button
               type="submit"
               disabled={updating || !form.isValid}
-              className="inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-zinc-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 disabled:opacity-50"
             >
               <span>Update</span>
               {updating && <Spinner className="ml-2" />}
             </button>
 
-            <div className="border-b border-gray-200 my-4" />
+            <div className="my-4 border-b border-gray-200" />
 
             <button
               type="button"
@@ -150,7 +150,7 @@ export const ProjectSettingsPage: NextPageExtended<
                 })
               }
               disabled={updating || deleting}
-              className="inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 disabled:opacity-50"
             >
               <span>Delete project</span>
               {deleting && <Spinner className="ml-2" />}

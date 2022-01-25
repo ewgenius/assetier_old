@@ -88,19 +88,19 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
 
       <SlideOverBody>
         <div>
-          <h2 className="font-medium mb-2">
+          <h2 className="mb-2 font-medium">
             {files?.length > 0
               ? `${files.length} files selected for upload:`
               : "Select files for upload"}
           </h2>
 
           <div
-            className="p-2 min-h-0 max-h-80 overflow-y-auto rounded-md bg-gray-100 border border-zinc-200"
+            className="max-h-80 min-h-0 overflow-y-auto rounded-md border border-zinc-200 bg-gray-100 p-2"
             {...getRootProps()}
           >
             <input {...getInputProps()} />
 
-            <div className="mb-2 last:mb-0 border-2 border-dotted border-gray-300 hover:border-gray-400 py-2 px-4 rounded-md cursor-pointer">
+            <div className="mb-2 cursor-pointer rounded-md border-2 border-dotted border-gray-300 py-2 px-4 last:mb-0 hover:border-gray-400">
               {isDragActive ? (
                 <div className="text-zinc-400">Drop the files here ...</div>
               ) : (
@@ -116,23 +116,23 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
                 {files.map((file, i) => {
                   return (
                     <div
-                      className="flex box-border p-2 bg-white rounded-md justify-center items-center"
+                      className="box-border flex items-center justify-center rounded-md bg-white p-2"
                       key={`file-${i}`}
                     >
-                      <div className="flex-shrink-0 rounded-lg p-2 border border-gray-100">
+                      <div className="flex-shrink-0 rounded-lg border border-gray-100 p-2">
                         <img
                           key={file.name}
-                          className="w-4 h-4"
+                          className="h-4 w-4"
                           src={URL.createObjectURL(file)}
                           alt={file.name}
                         />
                       </div>
 
-                      <div className="flex-grow flex flex-col justify-center px-4">
-                        <p className="text-xs text-mono text-gray-700">
+                      <div className="flex flex-grow flex-col justify-center px-4">
+                        <p className="text-mono text-xs text-gray-700">
                           {file.name}
                         </p>
-                        <p className="text-xs text-mono text-gray-400">
+                        <p className="text-mono text-xs text-gray-400">
                           {file.size}
                         </p>
                       </div>
@@ -143,9 +143,9 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
                           deleteFile(i);
                           return false;
                         }}
-                        className="hover:text-zinc-500 text-zinc-400 p-2"
+                        className="p-2 text-zinc-400 hover:text-zinc-500"
                       >
-                        <XIcon className="w-4 h-4" />
+                        <XIcon className="h-4 w-4" />
                       </button>
                     </div>
                   );
@@ -165,7 +165,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
       <SlideOverFooter>
         <button
           type="button"
-          className="bg-white py-2 px-4 border disabled:opacity-50 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+          className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 disabled:opacity-50"
           disabled={uploading}
           onClick={onClose}
         >
@@ -174,7 +174,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
         <button
           type="submit"
           disabled={uploading || !files?.length}
-          className="ml-4 inline-flex items-center disabled:opacity-50 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+          className="ml-4 inline-flex items-center justify-center rounded-md border border-transparent bg-zinc-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 disabled:opacity-50"
         >
           <span>Upload</span>
           {uploading && <Spinner className="ml-2" />}

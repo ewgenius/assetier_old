@@ -20,7 +20,7 @@ export const FigmaOauthSetup: NextPage<FigmaOauthSetupProps> = ({
   }, [success]);
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center">
+    <div className="flex h-screen w-full flex-col items-center justify-center">
       <Spinner />
     </div>
   );

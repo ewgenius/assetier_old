@@ -43,8 +43,8 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
         renderBefore={
           disablePrivateRepos
             ? () => (
-                <div className="p-2 bg-zinc-200 text-zinc-600 flex items-center gap-2">
-                  <ExclamationIcon className="w-4 h-4" />
+                <div className="flex items-center gap-2 bg-zinc-200 p-2 text-zinc-600">
+                  <ExclamationIcon className="h-4 w-4" />
                   <span>private repos not available on hobby plan</span>
                 </div>
               )
@@ -68,7 +68,7 @@ export const GithubRepositorySelector: FC<GithubRepositorySelectorProps> = ({
               @{repository.owner.login}/{repository.name}
             </span>
             {repository.private && (
-              <LockClosedIcon className="w-4 h-4 opacity-50" />
+              <LockClosedIcon className="h-4 w-4 opacity-50" />
             )}
           </div>
         )}

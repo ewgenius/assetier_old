@@ -48,17 +48,17 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
           <SlideOverHeading onClose={close} title="Asset details" />
 
           <SlideOverBody>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-shrink-0 flex justify-center align-center">
-                <div className="p-4 border border-gray-200 rounded-md">
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <div className="align-center flex flex-shrink-0 justify-center">
+                <div className="rounded-md border border-gray-200 p-4">
                   <img
                     src={asset.download_url}
-                    className="w-16 h-16"
+                    className="h-16 w-16"
                     alt={asset.name}
                   />
                 </div>
               </div>
-              <div className="flex-grow flex flex-col text-xs font-mono space-y-2">
+              <div className="flex flex-grow flex-col space-y-2 font-mono text-xs">
                 <p>name: {asset.name}</p>
                 <p>path: {asset.path}</p>
                 <p>size: {asset.size}B</p>
@@ -75,7 +75,7 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
               </div>
             </div>
 
-            <div className="border-b border-gray-200 my-4" />
+            <div className="my-4 border-b border-gray-200" />
 
             <div>
               {commits ? (
@@ -94,11 +94,11 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
                             <div className="">
                               <img
                                 src={commit.author?.avatar_url}
-                                className="border border-gray-200 h-6 w-6 rounded-full"
+                                className="h-6 w-6 rounded-full border border-gray-200"
                                 alt={commit.author?.login}
                               />
                             </div>
-                            <div className="min-w-0 flex-1 flex justify-between space-x-4">
+                            <div className="flex min-w-0 flex-1 justify-between space-x-4">
                               <div>
                                 <p className="text-sm">
                                   {commit.commit.author?.name}
@@ -112,8 +112,8 @@ export const AssetDetailsSlideOver: FC<AssetDetailsSlideOverProps> = ({
                                   </time>
                                 </p>
                               </div>
-                              <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                                <div className="p-4 border border-gray-200 rounded-md">
+                              <div className="whitespace-nowrap text-right text-sm text-gray-500">
+                                <div className="rounded-md border border-gray-200 p-4">
                                   <img
                                     src={getAssetUrlForCommit(commit.sha)}
                                     className=" h-8 w-8"

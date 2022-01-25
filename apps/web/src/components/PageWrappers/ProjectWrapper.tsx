@@ -67,21 +67,21 @@ export const ProjectPageWrapper: FC<
           <div className="pt-6">
             <div className="relative">
               <Link href={`/app/${organization.id}`}>
-                <a className="flex items-center lg:absolute lg:-left-8 lg:-top-1 py-2 text-zinc-400 hover:text-zinc-800">
-                  <ArrowCircleLeftIcon className="lg:w-6 lg:h-6 w-4 h-4" />
-                  <div className="lg:hidden ml-1 text-sm">projects</div>
+                <a className="flex items-center py-2 text-zinc-400 hover:text-zinc-800 lg:absolute lg:-left-8 lg:-top-1">
+                  <ArrowCircleLeftIcon className="h-4 w-4 lg:h-6 lg:w-6" />
+                  <div className="ml-1 text-sm lg:hidden">projects</div>
                 </a>
               </Link>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex-1 min-w-0">
-                <h2 className="text-xl leading-8 font-medium text-gray-900 truncate">
+              <div className="min-w-0 flex-1">
+                <h2 className="truncate text-xl font-medium leading-8 text-gray-900">
                   {organization.name ? `${organization.name} / ` : ""}
                   {project.name}
                 </h2>
               </div>
 
-              <div className="flex-shrink-0 flex">
+              <div className="flex flex-shrink-0">
                 {/* <button
                   type="button"
                   className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
@@ -104,8 +104,8 @@ export const ProjectPageWrapper: FC<
                         className={classNames(
                           isCurrent
                             ? "border-zinc-500 text-zinc-600"
-                            : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
-                          "whitespace-nowrap pb-3 px-1 border-b-2 font-medium text-sm"
+                            : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                          "whitespace-nowrap border-b-2 px-1 pb-3 text-sm font-medium"
                         )}
                         aria-current={isCurrent ? "page" : undefined}
                       >
@@ -116,7 +116,7 @@ export const ProjectPageWrapper: FC<
                               isCurrent
                                 ? "bg-zinc-100 text-zinc-600"
                                 : "bg-gray-100 text-gray-900",
-                              "hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"
+                              "ml-2 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block"
                             )}
                           >
                             {tab.count}

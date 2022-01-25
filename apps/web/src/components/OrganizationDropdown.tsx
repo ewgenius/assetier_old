@@ -35,14 +35,14 @@ export const OrganizationMenuItem: FC<OrganizationMenuItemProps> = ({
       className={classNames(
         active ? "bg-gray-100" : "",
         !!onClick ? "cursor-pointer hover:bg-gray-100" : "cursor-default",
-        "flex items-center w-full px-4 py-2 text-sm text-gray-700 text-left"
+        "flex w-full items-center px-4 py-2 text-left text-sm text-gray-700"
       )}
     >
-      <div className="bg-zinc-200 rounded-lg p-2 sm:p-1 mr-2 -ml-1">
+      <div className="mr-2 -ml-1 rounded-lg bg-zinc-200 p-2 sm:p-1">
         {organization.type === OrganizationType.PERSONAL ? (
-          <UserIcon className="w-4 h-4" />
+          <UserIcon className="h-4 w-4" />
         ) : (
-          <UserGroupIcon className="w-4 h-4" />
+          <UserGroupIcon className="h-4 w-4" />
         )}
       </div>
       <div className="flex flex-col">
@@ -51,7 +51,7 @@ export const OrganizationMenuItem: FC<OrganizationMenuItemProps> = ({
             ? user?.user.name
             : organization.name}
         </span>
-        <span className="text-sm sm:text-xs text-gray-400">
+        <span className="text-sm text-gray-400 sm:text-xs">
           {organization.type === OrganizationType.PERSONAL
             ? "personal"
             : "team"}
@@ -92,15 +92,15 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
   return (
     <Menu as="div" className="relative sm:w-auto">
       <div className="flex">
-        <Menu.Button className="sm:max-w-xs flex flex-grow items-center py-2 px-2 hover:bg-gray-300 sm:h-8 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
-          <div className="flex flex-grow mx-2">
-            <div className="font-medium text-lg sm:text-sm text-gray-800 mr-1">
+        <Menu.Button className="flex flex-grow items-center rounded-md py-2 px-2 text-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 sm:h-8 sm:max-w-xs">
+          <div className="mx-2 flex flex-grow">
+            <div className="mr-1 text-lg font-medium text-gray-800 sm:text-sm">
               {currentOrganization.type === OrganizationType.PERSONAL
                 ? user.user.name
                 : currentOrganization.name}
             </div>
             <div>
-              <div className="text-xs font-medium bg-zinc-600 text-white px-2 rounded-lg">
+              <div className="rounded-lg bg-zinc-600 px-2 text-xs font-medium text-white">
                 {currentOrganization.organizationPlan.name}
               </div>
             </div>
@@ -117,15 +117,15 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-full sm:w-56 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:w-56">
           <OrganizationMenuItem organization={currentOrganization} />
 
           <Menu.Item key="organization-settings">
             <button
               onClick={() => push(`/app/${currentOrganization.id}/settings`)}
-              className="flex items-center w-full px-4 py-2 text-md sm:text-sm text-gray-700 text-left hover:bg-gray-100"
+              className="text-md flex w-full items-center px-4 py-2 text-left text-gray-700 hover:bg-gray-100 sm:text-sm"
             >
-              <CogIcon className="sm:w-4 sm:h-4 w-6 h-6 mr-3" />
+              <CogIcon className="mr-3 h-6 w-6 sm:h-4 sm:w-4" />
               <span>Settings</span>
             </button>
           </Menu.Item>
@@ -133,15 +133,15 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
           <Menu.Item key="create-organization">
             <button
               onClick={() => onCreateOrganizationClick()}
-              className="flex items-center w-full px-4 py-2 text-md sm:text-sm text-gray-700 text-left hover:bg-gray-100"
+              className="text-md flex w-full items-center px-4 py-2 text-left text-gray-700 hover:bg-gray-100 sm:text-sm"
             >
-              <PlusCircleIcon className="sm:w-4 sm:h-4 w-6 h-6 mr-3" />
+              <PlusCircleIcon className="mr-3 h-6 w-6 sm:h-4 sm:w-4" />
               <span>Create New Organization</span>
             </button>
           </Menu.Item>
 
           {user.organizations.length > 1 && (
-            <div className="border-b border-gray-200 my-1 mx-2" />
+            <div className="my-1 mx-2 border-b border-gray-200" />
           )}
 
           {user.organizations

@@ -24,7 +24,7 @@ export const TextInput: FC<TextInputProps> = ({ label, ...inputProps }) => {
         <input
           {...inputProps}
           type="text"
-          className="block w-full shadow-sm disabled:opacity-50 sm:text-sm focus:ring-zinc-500 focus:border-zinc-500 border-gray-300 rounded-md"
+          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-500 focus:ring-zinc-500 disabled:opacity-50 sm:text-sm"
         />
       </div>
     </div>

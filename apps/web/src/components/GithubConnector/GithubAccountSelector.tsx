@@ -27,7 +27,7 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
     <>
       {accounts && accounts.length === 0 ? (
         <>
-          <div className="block mb-1 text-sm font-medium text-gray-700">
+          <div className="mb-1 block text-sm font-medium text-gray-700">
             Github Account
           </div>
           <AddGithubAccountButton mode="button" />
@@ -46,7 +46,7 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
                 <img
                   src={account.accountAvatarUrl}
                   alt=""
-                  className="flex-shrink-0 h-5 w-5 border border-zinc-200 bg-white rounded-full"
+                  className="h-5 w-5 flex-shrink-0 rounded-full border border-zinc-200 bg-white"
                 />
                 <span className="ml-3 block truncate">
                   {account.accountLogin}
@@ -74,12 +74,12 @@ export const GithubAccountSelector: FC<GithubAccountSelectorProps> = ({
                 <img
                   src={account.accountAvatarUrl}
                   alt=""
-                  className="flex-shrink-0 h-5 w-5 border border-zinc-200 rounded-full"
+                  className="h-5 w-5 flex-shrink-0 rounded-full border border-zinc-200"
                 />
                 <span
                   className={classNames(
                     selected ? "font-semibold" : "font-normal",
-                    "ml-3 block truncate flex-grow"
+                    "ml-3 block flex-grow truncate"
                   )}
                 >
                   {account.accountLogin}

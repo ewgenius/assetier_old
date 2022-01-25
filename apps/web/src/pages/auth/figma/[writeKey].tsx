@@ -102,16 +102,16 @@ export const OrganizationProjectConnector: FC = () => {
 
   if (state === "success") {
     return (
-      <div className="mt-16 flex flex-col justify-center items-center text-sm text-gray-500">
-        <CheckCircleIcon className="w-8 h-8 text-green-600" />
+      <div className="mt-16 flex flex-col items-center justify-center text-sm text-gray-500">
+        <CheckCircleIcon className="h-8 w-8 text-green-600" />
         Succesfully connected, you can close this page now
       </div>
     );
   }
 
   return (
-    <div className="mt-16 flex flex-col gap-4 items-center w-full max-w-sm">
-      <div className="w-full flex flex-col gap-2">
+    <div className="mt-16 flex w-full max-w-sm flex-col items-center gap-4">
+      <div className="flex w-full flex-col gap-2">
         <div>
           <Select
             label="Organization"
@@ -123,11 +123,11 @@ export const OrganizationProjectConnector: FC = () => {
             getItemId={(o: OrganizationWithPlan) => o.id}
             renderButton={(o: OrganizationWithPlan) => (
               <div className="flex items-center">
-                <div className="bg-zinc-200 rounded-lg p-2 sm:p-1 mr-3">
+                <div className="mr-3 rounded-lg bg-zinc-200 p-2 sm:p-1">
                   {o.type === OrganizationType.PERSONAL ? (
-                    <UserIcon className="w-4 h-4" />
+                    <UserIcon className="h-4 w-4" />
                   ) : (
-                    <UserGroupIcon className="w-4 h-4" />
+                    <UserGroupIcon className="h-4 w-4" />
                   )}
                 </div>
 
@@ -145,11 +145,11 @@ export const OrganizationProjectConnector: FC = () => {
             )}
             renderItem={(o: OrganizationWithPlan, { selected }) => (
               <div className="flex items-center">
-                <div className="bg-zinc-200 rounded-lg p-2 sm:p-1 mr-3">
+                <div className="mr-3 rounded-lg bg-zinc-200 p-2 sm:p-1">
                   {o.type === OrganizationType.PERSONAL ? (
-                    <UserIcon className="w-4 h-4" />
+                    <UserIcon className="h-4 w-4" />
                   ) : (
-                    <UserGroupIcon className="w-4 h-4" />
+                    <UserGroupIcon className="h-4 w-4" />
                   )}
                 </div>
 
@@ -222,7 +222,7 @@ export const OrganizationProjectConnector: FC = () => {
                     />
 
                     {parsedFigmaUrl && (
-                      <div className="mt-2 text-xs font-mono text-gray-400">
+                      <div className="mt-2 font-mono text-xs text-gray-400">
                         <p>key: {parsedFigmaUrl.key}</p>
                         <p>title: {parsedFigmaUrl.title}</p>
                       </div>
@@ -233,7 +233,7 @@ export const OrganizationProjectConnector: FC = () => {
             )}
           </>
         ) : (
-          <div className="text-gray-500 my-4 text-sm text-center">
+          <div className="my-4 text-center text-sm text-gray-500">
             <p>There are no projects in selected org</p>
             <p>Choose other organization, or create new project</p>
           </div>
@@ -247,7 +247,7 @@ export const OrganizationProjectConnector: FC = () => {
               type="button"
               disabled={state === "connecting"}
               onClick={connect}
-              className="flex mt-4 w-full justify-center items-center px-4 py-2 border border-transparent text-md font-medium rounded-md shadow-sm text-white bg-zinc-800 disabled:bg-zinc-400 hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-800"
+              className="text-md mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-zinc-800 px-4 py-2 font-medium text-white shadow-sm hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-offset-2 disabled:bg-zinc-400"
             >
               <div className="text-center">Connect</div>
             </button>
@@ -272,14 +272,14 @@ export const FigmaIntegrationAuth: NextPageExtended<
 
   return (
     <Page>
-      <div className="h-screen flex flex-col justify-center items-center align-middle">
-        <div className="h-[500px] flex flex-col w-full items-center px-4">
-          <div className="flex justify-center items-center gap-4">
+      <div className="flex h-screen flex-col items-center justify-center align-middle">
+        <div className="flex h-[500px] w-full flex-col items-center px-4">
+          <div className="flex items-center justify-center gap-4">
             <Image src="/logo-256x256.png" width="64" height="64" />
-            <PlusCircleIcon className="w-8 h-8" />
+            <PlusCircleIcon className="h-8 w-8" />
             <Image src="/figma-256x256.png" width="64" height="64" />
           </div>
-          <h1 className="text-xl mt-4">Connect Figma to Project</h1>
+          <h1 className="mt-4 text-xl">Connect Figma to Project</h1>
           <OrganizationProjectConnector />
         </div>
       </div>

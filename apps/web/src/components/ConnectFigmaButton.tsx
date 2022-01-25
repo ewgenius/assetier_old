@@ -19,8 +19,8 @@ export const ConnectFigmaButton: FC<ConnectFigmaButton> = ({
       type="button"
       className={
         mode === "option"
-          ? "w-full text-gray-900 cursor-pointer select-none relative py-2 pl-3 pr-9 hover:text-white hover:bg-zinc-600"
-          : "bg-white cursor-pointer relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
+          ? "relative w-full cursor-pointer select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-zinc-600 hover:text-white"
+          : "relative w-full cursor-pointer rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 sm:text-sm"
       }
       onClick={() => {
         const state = organization.id;
@@ -32,8 +32,8 @@ export const ConnectFigmaButton: FC<ConnectFigmaButton> = ({
       }}
     >
       <div className="flex items-center">
-        <PlusSmIcon className="flex-shrink-0 h-5 w-5" />
-        <span className="font-normal ml-3 block truncate">Connect Figma</span>
+        <PlusSmIcon className="h-5 w-5 flex-shrink-0" />
+        <span className="ml-3 block truncate font-normal">Connect Figma</span>
       </div>
     </button>
   );

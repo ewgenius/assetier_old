@@ -37,7 +37,7 @@ export const FigmaConnector: FC<FigmaConnectorProps> = ({
         layout === "column" && "flex-col space-y-4",
         layout === "row" && "flex-row sm:space-x-2 md:space-x-4",
         !layout &&
-          "flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 md:space-x-4"
+          "flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-2 md:space-x-4"
       )}
     >
       <div

@@ -10,18 +10,18 @@ export const AssetCard: FC<AssetCardProps> = ({ asset, onClick }) => {
   return (
     <div className="flex">
       <button
-        className="max-w-full flex flex-col flex-grow justify-center items-center group"
+        className="group flex max-w-full flex-grow flex-col items-center justify-center"
         onClick={() => onClick && onClick(asset)}
       >
-        <div className="h-28 w-full p-2 overflow-hidden flex flex-col flex-grow justify-center items-center rounded-md bg-gray-100 group-hover:outline outline-offset-2 outline-2 outline-zinc-500">
+        <div className="flex h-28 w-full flex-grow flex-col items-center justify-center overflow-hidden rounded-md bg-gray-100 p-2 outline-2 outline-offset-2 outline-zinc-500 group-hover:outline">
           <img
-            className="w-[28px] h-[28px]"
+            className="h-[28px] w-[28px]"
             src={`${asset.download_url}?nocache=${Date.now()}`}
             alt={asset.name}
           />
         </div>
-        <div className="p-2 overflow-hidden max-w-full">
-          <p className="font-mono text-[10px] truncate">{asset.name}</p>
+        <div className="max-w-full overflow-hidden p-2">
+          <p className="truncate font-mono text-[10px]">{asset.name}</p>
         </div>
       </button>
     </div>
