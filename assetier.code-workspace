@@ -1,10 +1,6 @@
 {
   "folders": [
     {
-      "name": "*",
-      "path": "."
-    },
-    {
       "name": "[app]: @assetier/web",
       "path": "apps/web"
     },
