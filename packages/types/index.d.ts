@@ -52,6 +52,13 @@ export interface AuthSession extends Session {
   userId: string;
 }
 
+export type NextApiRequestWithJWTUser = NextApiRequest & {
+  user: {
+    sub: string;
+    perimssions: string[];
+  };
+};
+
 export type NextApiRequestWithSession = NextApiRequest & {
   session: AuthSession;
 };
@@ -229,4 +236,22 @@ export interface Auth0User {
   last_ip: string;
   last_login: string;
   logins_count: number;
+}
+
+export interface Auth0DeviceCode {
+  device_code: string;
+  user_code: string;
+  verification_uri: string;
+  expires_in: number;
+  interval: number;
+  verification_uri_complete: string;
+}
+
+export interface Auth0DeviceToken {
+  access_token: string;
+  refresh_token: string;
+  id_token: string;
+  scope: string;
+  expires_in: number;
+  token_type: string;
 }

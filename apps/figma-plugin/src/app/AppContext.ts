@@ -11,7 +11,8 @@ export enum AppPage {
 
 export interface AppState {
   page: AppPage;
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   selectedNodes: NodeInfo[];
   organizationId?: string | null;
   projectId?: string | null;
@@ -24,7 +25,8 @@ export interface AppStateContext extends AppState {
 
 export const AppContext = React.createContext<AppStateContext>({
   page: AppPage.Boot,
-  token: null,
+  accessToken: null,
+  refreshToken: null,
   selectedNodes: [],
   dispatch: () => {},
   setOrgProject: () => {},
@@ -38,6 +40,8 @@ export const useAppContext = () => {
 
 export enum ActionType {
   Boot = "boot",
+  Authorized = "authorized",
+
   StoredStateReceived = "stored-state-received",
   SelectedNodesUpdated = "selected-nodes-updated",
   SignedIn = "signed-in",
@@ -68,6 +72,14 @@ export interface SingedInAction
   type: ActionType.SignedIn;
 }
 
+export interface AuthorizedAction
+  extends Action<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
+  type: ActionType.Authorized;
+}
+
 export interface SelectedNodesUpdatedAction
   extends Action<{ selectedNodes: NodeInfo[] }> {
   type: ActionType.SelectedNodesUpdated;
@@ -75,6 +87,7 @@ export interface SelectedNodesUpdatedAction
 
 export type Actions =
   | BootAction
+  | AuthorizedAction
   | StoredStateReceivedAction
   | NextPageAction
   | SingedInAction
@@ -92,6 +105,12 @@ export const appStateReducer: Reducer<AppState, Actions> = (
       };
 
     case ActionType.StoredStateReceived:
+      return {
+        ...state,
+        ...payload,
+      };
+
+    case ActionType.Authorized:
       return {
         ...state,
         ...payload,

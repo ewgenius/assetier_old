@@ -1,9 +1,12 @@
-import { NotAllowedError, NotFoundError } from "@utils/httpErrors";
-import { withSession } from "@utils/withSession";
+import {
+  ForbiddenError,
+  NotAllowedError,
+  NotFoundError,
+} from "@utils/httpErrors";
 import { prisma } from "@utils/prisma";
 import type {
   Middleware,
-  UserMe,
+  NextApiRequestWithJWTUser,
   UserWithOrganizations,
 } from "@assetier/types";
 import { runCors } from "@utils/corsMiddleware";
@@ -34,48 +37,50 @@ const jwtCheck: Middleware = (req: NextApiRequest, res: NextApiResponse) =>
     });
   });
 
-export default withMiddleware(
+export default withMiddleware<NextApiRequestWithJWTUser, NextApiResponse>(
   async (req, res) => {
     const { method } = req;
 
     switch (method) {
       case "GET": {
-        console.log((req as any).user);
-        return res.status(200).send({});
-        // const user = await prisma.user.findUnique({
-        //   where: {
-        //     id: "session.userId",
-        //   },
-        //   include: {
-        //     organizations: {
-        //       include: {
-        //         organization: {
-        //           include: {
-        //             organizationPlan: true,
-        //           },
-        //         },
-        //       },
-        //     },
-        //   },
-        // });
+        if (!req.user) {
+          throw new ForbiddenError();
+        }
 
-        // if (!user) {
-        //   throw new NotFoundError();
-        // }
+        const user = await prisma.user.findUnique({
+          where: {
+            id: req.user.sub,
+          },
+          include: {
+            organizations: {
+              include: {
+                organization: {
+                  include: {
+                    organizationPlan: true,
+                  },
+                },
+              },
+            },
+          },
+        });
 
-        // const personalOrganization = user.organizations.find(
-        //   (org) => org.isPersonal
-        // );
+        if (!user) {
+          throw new NotFoundError();
+        }
 
-        // if (!personalOrganization) {
-        //   throw new NotFoundError();
-        // }
+        const personalOrganization = user.organizations.find(
+          (org) => org.isPersonal
+        );
 
-        // return res.status(200).send({
-        //   user: user as UserWithOrganizations,
-        //   personalOrganization: personalOrganization.organization,
-        //   organizations: user.organizations.map((org) => org.organization),
-        // });
+        if (!personalOrganization) {
+          throw new NotFoundError();
+        }
+
+        return res.status(200).send({
+          user: user as UserWithOrganizations,
+          personalOrganization: personalOrganization.organization,
+          organizations: user.organizations.map((org) => org.organization),
+        });
       }
 
       default: {
