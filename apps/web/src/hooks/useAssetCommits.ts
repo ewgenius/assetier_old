@@ -1,14 +1,14 @@
 import useSWR from "swr";
 import { fetcher } from "@utils/fetcher";
 import type { GithubCommit } from "@assetier/types";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 
 export function useAssetCommits(projectId: string, path?: string) {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { data, error } = useSWR<GithubCommit[]>(
     [
-      `/api/organizations/${organization.id}/projects/${projectId}/commits?path=${path}`,
-      organization,
+      `/api/accounts/${account.id}/projects/${projectId}/commits?path=${path}`,
+      account,
       projectId,
       path,
     ],

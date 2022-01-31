@@ -1,17 +1,17 @@
 import useSWR, { useSWRConfig } from "swr";
 import { fetcher } from "@utils/fetcher";
 import type { GithubFile } from "@assetier/types";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 
 export function useProjectContents(projectId: string, branch?: string) {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { mutate } = useSWRConfig();
   const { data, error } = useSWR<GithubFile[]>(
     [
-      `/api/organizations/${organization.id}/projects/${projectId}/contents${
+      `/api/accounts/${account.id}/projects/${projectId}/contents${
         branch ? `?branch=${branch}` : ""
       }`,
-      organization,
+      account,
       projectId,
       branch,
     ],
@@ -20,10 +20,10 @@ export function useProjectContents(projectId: string, branch?: string) {
 
   const refresh = () => {
     mutate([
-      `/api/organizations/${organization.id}/projects/${projectId}/contents${
+      `/api/accounts/${account.id}/projects/${projectId}/contents${
         branch ? `?branch=${branch}` : ""
       }`,
-      organization,
+      account,
       projectId,
       branch,
     ]);

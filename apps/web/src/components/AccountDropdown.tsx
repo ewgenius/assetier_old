@@ -10,20 +10,20 @@ import {
   UserIcon,
 } from "@heroicons/react/outline";
 
-import type { OrganizationWithPlan } from "@assetier/types";
+import type { AccountWithPlan } from "@assetier/types";
 import { classNames } from "@utils/classNames";
 import { useMe } from "@hooks/useMe";
-import { OrganizationType } from "@assetier/prisma";
-import { useOrganization } from "@hooks/useOrganization";
+import { AccountType } from "@assetier/prisma";
+import { useAccount } from "@hooks/useAccount";
 
-export interface OrganizationMenuItemProps {
-  organization: OrganizationWithPlan;
-  onClick?: (organization: OrganizationWithPlan) => void;
+export interface AccountMenuItemProps {
+  account: AccountWithPlan;
+  onClick?: (account: AccountWithPlan) => void;
   active?: boolean;
 }
 
-export const OrganizationMenuItem: FC<OrganizationMenuItemProps> = ({
-  organization,
+export const AccountMenuItem: FC<AccountMenuItemProps> = ({
+  account,
   onClick,
   active,
 }) => {
@@ -31,7 +31,7 @@ export const OrganizationMenuItem: FC<OrganizationMenuItemProps> = ({
 
   return (
     <button
-      onClick={onClick && (() => onClick(organization))}
+      onClick={onClick && (() => onClick(account))}
       className={classNames(
         active ? "bg-gray-100" : "",
         !!onClick ? "cursor-pointer hover:bg-gray-100" : "cursor-default",
@@ -39,7 +39,7 @@ export const OrganizationMenuItem: FC<OrganizationMenuItemProps> = ({
       )}
     >
       <div className="mr-2 -ml-1 rounded-lg bg-zinc-200 p-2 sm:p-1">
-        {organization.type === OrganizationType.PERSONAL ? (
+        {account.type === AccountType.PERSONAL ? (
           <UserIcon className="h-4 w-4" />
         ) : (
           <UserGroupIcon className="h-4 w-4" />
@@ -47,42 +47,39 @@ export const OrganizationMenuItem: FC<OrganizationMenuItemProps> = ({
       </div>
       <div className="flex flex-col">
         <span className="text-md sm:text-xs">
-          {organization.type === OrganizationType.PERSONAL
+          {account.type === AccountType.PERSONAL
             ? user?.user.name
-            : organization.name}
+            : account.name}
         </span>
         <span className="text-sm text-gray-400 sm:text-xs">
-          {organization.type === OrganizationType.PERSONAL
-            ? "personal"
-            : "team"}
+          {account.type === AccountType.PERSONAL ? "personal" : "team"}
         </span>
       </div>
     </button>
   );
 };
 
-export interface OrganizationDropdownProps {
-  onCreateOrganizationClick: () => void;
-  onSelectOrganization?: () => void;
+export interface AccountDropdownProps {
+  onCreateAccountClick: () => void;
+  onSelectAccount?: () => void;
 }
 
-export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
-  onCreateOrganizationClick,
-  onSelectOrganization,
+export const AccountDropdown: FC<AccountDropdownProps> = ({
+  onCreateAccountClick,
+  onSelectAccount,
 }) => {
   const { push } = useRouter();
   const { user } = useMe();
-  const { organization: currentOrganization, setOrganization } =
-    useOrganization();
+  const { account: currentAccount, setAccount } = useAccount();
 
-  const selectOrganization = useCallback(
-    (organization: OrganizationWithPlan) => {
-      setOrganization(organization);
-      if (onSelectOrganization) {
-        onSelectOrganization();
+  const selectAccount = useCallback(
+    (account: AccountWithPlan) => {
+      setAccount(account);
+      if (onSelectAccount) {
+        onSelectAccount();
       }
     },
-    [onSelectOrganization, setOrganization]
+    [onSelectAccount, setAccount]
   );
 
   if (!user) {
@@ -95,17 +92,17 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
         <Menu.Button className="flex flex-grow items-center rounded-md py-2 px-2 text-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 sm:h-8 sm:max-w-xs">
           <div className="mx-2 flex flex-grow">
             <div className="mr-1 text-lg font-medium text-gray-800 sm:text-sm">
-              {currentOrganization.type === OrganizationType.PERSONAL
+              {currentAccount.type === AccountType.PERSONAL
                 ? user.user.name
-                : currentOrganization.name}
+                : currentAccount.name}
             </div>
             <div>
               <div className="rounded-lg bg-zinc-600 px-2 text-xs font-medium text-white">
-                {currentOrganization.organizationPlan.name}
+                {currentAccount.subscription?.subscriptionPlan.planType}
               </div>
             </div>
           </div>
-          <span className="sr-only">Open organization menu</span>
+          <span className="sr-only">Open account menu</span>
         </Menu.Button>
       </div>
       <Transition
@@ -118,11 +115,11 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:w-56">
-          <OrganizationMenuItem organization={currentOrganization} />
+          <AccountMenuItem account={currentAccount} />
 
-          <Menu.Item key="organization-settings">
+          <Menu.Item key="account-settings">
             <button
-              onClick={() => push(`/app/${currentOrganization.id}/settings`)}
+              onClick={() => push(`/app/${currentAccount.id}/settings`)}
               className="text-md flex w-full items-center px-4 py-2 text-left text-gray-700 hover:bg-gray-100 sm:text-sm"
             >
               <CogIcon className="mr-3 h-6 w-6 sm:h-4 sm:w-4" />
@@ -130,27 +127,27 @@ export const OrganizationDropdown: FC<OrganizationDropdownProps> = ({
             </button>
           </Menu.Item>
 
-          <Menu.Item key="create-organization">
+          <Menu.Item key="create-account">
             <button
-              onClick={() => onCreateOrganizationClick()}
+              onClick={() => onCreateAccountClick()}
               className="text-md flex w-full items-center px-4 py-2 text-left text-gray-700 hover:bg-gray-100 sm:text-sm"
             >
               <PlusCircleIcon className="mr-3 h-6 w-6 sm:h-4 sm:w-4" />
-              <span>Create New Organization</span>
+              <span>Create New Account</span>
             </button>
           </Menu.Item>
 
-          {user.organizations.length > 1 && (
+          {user.accounts.length > 1 && (
             <div className="my-1 mx-2 border-b border-gray-200" />
           )}
 
-          {user.organizations
-            .filter((org) => org.id !== currentOrganization.id)
-            .map((organization) => (
-              <Menu.Item key={organization.id}>
-                <OrganizationMenuItem
-                  organization={organization}
-                  onClick={(organization) => selectOrganization(organization)}
+          {user.accounts
+            .filter((acc) => acc.id !== currentAccount.id)
+            .map((account) => (
+              <Menu.Item key={account.id}>
+                <AccountMenuItem
+                  account={account}
+                  onClick={(account) => selectAccount(account)}
                 />
               </Menu.Item>
             ))}

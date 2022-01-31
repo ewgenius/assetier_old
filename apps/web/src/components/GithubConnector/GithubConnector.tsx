@@ -12,7 +12,7 @@ import { GithubBranchSelector } from "./GithubBranchSelector";
 import { GithubAccountSelector } from "./GithubAccountSelector";
 import { GithubRepositorySelector } from "./GithubRepositorySelector";
 import { classNames } from "@utils/classNames";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 
 export interface GithubConnectorProps {
   connection?: GithubConnection | null;
@@ -28,22 +28,27 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
   disabled,
 }) => {
   const {
-    organization: {
-      organizationPlan: { allowGithubOrgs, allowGithubPrivateRepos },
+    account: {
+      subscription,
+      // accountPlan: { allowGithubOrgs, allowGithubPrivateRepos },
     },
-  } = useOrganization();
+  } = useAccount();
   const { accounts } = useGithubAccounts();
   const [selectedAccount, setSelectedAccount] =
     useState<GithubInstallation | null>(null);
   const selectAccount = useCallback(
     (account: GithubInstallation | null) => {
-      if (!allowGithubOrgs && account?.accountType !== GithubAccountType.USER) {
+      if (
+        !subscription ||
+        (!subscription.subscriptionPlan.allowGithubOrgs &&
+          account?.accountType !== GithubAccountType.USER)
+      ) {
         return;
       } else {
         setSelectedAccount(account);
       }
     },
-    [setSelectedAccount, allowGithubOrgs]
+    [setSelectedAccount, subscription, subscription?.subscriptionPlan]
   );
 
   const { repositories } = useGithubAccountRepositories(
@@ -99,7 +104,7 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
           defaultAccountId={connection?.githubInstallationId}
           onChange={selectAccount}
           disabled={disabled}
-          disableOrgs={!allowGithubOrgs}
+          disableOrgs={!subscription?.subscriptionPlan.allowGithubOrgs}
         />
       </div>
 
@@ -118,7 +123,9 @@ export const GithubConnector: FC<GithubConnectorProps> = ({
             defaultRepositoryId={
               connection ? String(connection.repositoryId) : undefined
             }
-            disablePrivateRepos={!allowGithubPrivateRepos}
+            disablePrivateRepos={
+              !subscription?.subscriptionPlan.allowGithubPrivateRepos
+            }
           />
         </div>
       )}

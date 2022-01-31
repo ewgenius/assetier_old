@@ -10,7 +10,7 @@ import { LayoutBlock } from "@components/LayoutBlock";
 import { classNames } from "@utils/classNames";
 import { Spinner } from "@components/Spinner";
 import { ArrowCircleLeftIcon } from "@heroicons/react/outline";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 
 export type ProjectPageTabId = "index" | "settings" | "uploads";
 
@@ -47,7 +47,7 @@ export const ProjectPageWrapper: FC<
   PropsWithChildren<ProjectPageWrapperProps>
 > = ({ children, tabId }) => {
   const { query } = useRouter();
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { project } = useProject(query.projectId as string);
 
   if (!project) {
@@ -66,7 +66,7 @@ export const ProjectPageWrapper: FC<
         <LayoutBlock mode="primary" borderBottom borderTop padding="none">
           <div className="pt-6">
             <div className="relative">
-              <Link href={`/app/${organization.id}`}>
+              <Link href={`/app/${account.id}`}>
                 <a className="flex items-center py-2 text-zinc-400 hover:text-zinc-800 lg:absolute lg:-left-8 lg:-top-1">
                   <ArrowCircleLeftIcon className="h-4 w-4 lg:h-6 lg:w-6" />
                   <div className="ml-1 text-sm lg:hidden">projects</div>
@@ -76,7 +76,7 @@ export const ProjectPageWrapper: FC<
             <div className="flex items-center justify-between">
               <div className="min-w-0 flex-1">
                 <h2 className="truncate text-xl font-medium leading-8 text-gray-900">
-                  {organization.name ? `${organization.name} / ` : ""}
+                  {account.name ? `${account.name} / ` : ""}
                   {project.name}
                 </h2>
               </div>
@@ -98,7 +98,7 @@ export const ProjectPageWrapper: FC<
                   return (
                     <Link
                       key={tab.id}
-                      href={`/app/${organization.id}/projects/${project.id}/${tab.href}`}
+                      href={`/app/${account.id}/projects/${project.id}/${tab.href}`}
                     >
                       <a
                         className={classNames(

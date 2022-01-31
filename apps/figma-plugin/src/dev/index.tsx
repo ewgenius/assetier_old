@@ -30,8 +30,8 @@ export const DebugShell: FC = () => {
   const [token, setToken] = useState(
     localStorage.getItem("assetier.token") || ""
   );
-  const [organizationId, setOrganizationId] = useState(
-    localStorage.getItem("assetier.organizationId") || ""
+  const [accountId, setAccountId] = useState(
+    localStorage.getItem("assetier.accountId") || ""
   );
   const [projectId, setProjectId] = useState(
     localStorage.getItem("assetier.projectId") || ""
@@ -90,13 +90,13 @@ export const DebugShell: FC = () => {
                 data: {
                   token:
                     "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..GZBEKBJpKiyRBkoN.aM9MUdwcxQ8QKYcrwPTdtchQLMKZZwYrdO7EGkpcc1VE4ZjLW731GBjkkRE9ekX07hRRb2zOLTTiqw0wk6cIzv7Z4z8nlGj4DgJqq9LQKOk7XoObVXLz1-V05Ipjw1Mln7c0iRht_FGFunRHSsfW-ifKZqiywHmUuTtIp_LlondXJVZ3BsbdavtM4ZX835SesoOIvDdtGUcMQJdY40eDPgbM5i0gOmKBgvq7lNJT50HRkczE3YJRY-qbr6CMdkS-Kwmy2QRNVleRy0-rXJMtSUXz2frO70jBmA9JgeETIFIYVBvUBSDiZtwSugeXIBPoKmqsnytNbZNXjN3zabFlrkeoTTvnVCV1xhq4fUk.5VyILaOLGr4AiDwRRraBBA",
-                  organizationId: "ckxxi36d30541ujndn755fii3",
+                  accountId: "ckxxi36d30541ujndn755fii3",
                   projectId: "cky0ly54k0072jmnd5q3fmqrl",
                 },
               })
             }
           >
-            emulate: plugin started (user token and org/project)
+            emulate: plugin started (user token and account/project)
           </Button>
 
           <div className="my-2 border-b border-gray-700" />

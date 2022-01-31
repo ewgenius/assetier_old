@@ -3,14 +3,14 @@ import { Page } from "@components/Page";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { PageHeader } from "@components/PageHeader";
 
-export const OrganizationSettingsPage: NextPageExtended = () => {
+export const AccountSettingsPage: NextPageExtended = () => {
   return (
-    <Page title={() => <PageHeader>Organization Settings</PageHeader>}>
+    <Page title={() => <PageHeader>Account Settings</PageHeader>}>
       <LayoutBlock padding="lg"></LayoutBlock>
     </Page>
   );
 };
 
-OrganizationSettingsPage.type = "app";
+AccountSettingsPage.type = "app";
 
-export default OrganizationSettingsPage;
+export default AccountSettingsPage;

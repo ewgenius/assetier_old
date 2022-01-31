@@ -1,21 +1,21 @@
 import { useCallback, useState } from "react";
 import { useSWRConfig } from "swr";
 
-import type { OrganizationWithPlan } from "@assetier/types";
+import type { AccountWithPlan } from "@assetier/types";
 import { fetcher } from "@utils/fetcher";
 import { useInputState } from "./useInputState";
 import { useMe } from "./useMe";
 
-export function useOrganizationCreator() {
+export function useAccountCreator() {
   const { mutate } = useSWRConfig();
   const [creating, setCreating] = useState(false);
   const [name, setNameHandler] = useInputState("");
   const { user } = useMe();
 
-  const createOrganization = useCallback(() => {
+  const createAccount = useCallback(() => {
     setCreating(true);
 
-    return fetcher(`/api/organizations`, {
+    return fetcher(`/api/accounts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,22 +24,22 @@ export function useOrganizationCreator() {
         name,
       }),
     })
-      .then((organization) => {
+      .then((account) => {
         if (user) {
           mutate("/api/user/me", {
             ...user,
-            organizations: [...user?.organizations, organization],
+            accounts: [...user?.accounts, account],
           });
         }
 
-        return organization as OrganizationWithPlan;
+        return account as AccountWithPlan;
       })
       .finally(() => setCreating(false));
   }, [name, mutate, user]);
 
   return {
     creating,
-    createOrganization,
+    createAccount,
     name,
     setNameHandler,
   };

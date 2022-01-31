@@ -2,12 +2,12 @@ import useSWR from "swr";
 import type { GithubInstallation } from "@assetier/prisma";
 
 import { fetcher } from "@utils/fetcher";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 
 export function useGithubAccounts() {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { data, error } = useSWR<GithubInstallation[]>(
-    [`/api/organizations/${organization.id}/accounts`, organization],
+    [`/api/accounts/${account.id}/accounts`, account],
     fetcher
   );
 

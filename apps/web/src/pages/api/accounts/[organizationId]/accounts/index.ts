@@ -1,16 +1,16 @@
 import type { GithubInstallation } from "@assetier/prisma";
 
 import { prisma } from "@utils/prisma";
-import { withOrganization } from "@utils/withOrganization";
 import { NotAllowedError } from "@utils/httpErrors";
+import { withAccount } from "@utils/withAccount";
 
-export default withOrganization<GithubInstallation[]>(
-  async ({ method, organization }, res) => {
+export default withAccount<GithubInstallation[]>(
+  async ({ method, account }, res) => {
     switch (method) {
       case "GET": {
         const accounts = await prisma.githubInstallation.findMany({
           where: {
-            organization,
+            account,
           },
         });
         return res.status(200).send(accounts);

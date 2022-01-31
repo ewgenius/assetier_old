@@ -6,15 +6,15 @@ import { useMe } from "../hooks/useMe";
 import { useAppContext } from "../AppContext";
 
 export const SettingsPage: FC = () => {
-  const { organizationId, projectId, setOrgProject } = useAppContext();
+  const { accountId, projectId, setAccountProject } = useAppContext();
   const { user } = useMe();
 
-  const [orgId, setOrgId] = useState(organizationId || "");
+  const [accId, setAccId] = useState(accountId || "");
   const [projId, setProjectId] = useState(projectId || "");
 
   const submit = useCallback(() => {
-    // setOrgProject(orgId, projId);
-  }, [orgId, projId]);
+    // setAccountProject(accId, projId);
+  }, [accId, projId]);
 
   if (!user) {
     return (
@@ -31,8 +31,8 @@ export const SettingsPage: FC = () => {
         <div>
           <label className="text-xs">org id</label>
           <input
-            value={orgId}
-            onChange={({ target: { value } }) => setOrgId(value)}
+            value={accId}
+            onChange={({ target: { value } }) => setAccId(value)}
           />
         </div>
 
@@ -46,7 +46,7 @@ export const SettingsPage: FC = () => {
 
         <button
           type="button"
-          disabled={!orgId || !projId}
+          disabled={!accId || !projId}
           className="mb-2 flex w-full items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={submit}
         >

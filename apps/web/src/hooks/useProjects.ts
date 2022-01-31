@@ -2,17 +2,17 @@ import useSWR, { mutate } from "swr";
 import type { Project } from "@assetier/prisma";
 
 import { mapFetcher } from "@utils/fetcher";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 
 export function useProjects() {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { data, error } = useSWR<Record<string, Project>>(
-    [`/api/organizations/${organization.id}/projects`, organization],
+    [`/api/accounts/${account.id}/projects`, account],
     mapFetcher<Project>((project) => {
       mutate(
         [
-          `/api/organizations/${organization.id}/projects/${project.id}`,
-          organization,
+          `/api/accounts/${account.id}/projects/${project.id}`,
+          account,
           project.id,
         ],
         project
