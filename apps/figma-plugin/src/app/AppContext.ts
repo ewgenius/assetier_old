@@ -114,6 +114,7 @@ export const appStateReducer: Reducer<AppState, Actions> = (
       return {
         ...state,
         ...payload,
+        page: AppPage.Main,
       };
 
     case ActionType.SignedIn:
