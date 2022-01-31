@@ -7,7 +7,7 @@ import { getAuth0ManagementToken } from "@utils/getAuth0ManagementToken";
 import { getAuth0User } from "@utils/getAuth0User";
 
 async function createPersonalAccount(userId: string) {
-  let hobbyPlan = await prisma.subscriptionPlan.findUnique({
+  let defaultPlan = await prisma.subscriptionPlan.findUnique({
     where: {
       planType_active: {
         planType: SubscriptionPlanType.HOBBY,
@@ -16,24 +16,32 @@ async function createPersonalAccount(userId: string) {
     },
   });
 
-  if (!hobbyPlan) {
-    hobbyPlan = await prisma.subscriptionPlan.create({
+  if (!defaultPlan) {
+    defaultPlan = await prisma.subscriptionPlan.create({
       data: {
         planType: SubscriptionPlanType.HOBBY,
         // TODO: pass real sub id
-        paddleSubscriptionPlanId: 0,
+        paddleSubscriptionPlanId: 753376,
+
+        usersLimit: 1,
+        projectsLimit: 3,
+        allowGithubOrgs: false,
+        allowGithubPrivateRepos: false,
       },
     });
   }
 
-  // const subscription = await prisma.account.create({
-
-  // })
+  const subscription = await prisma.subscription.create({
+    data: {
+      subscriptionPlanId: defaultPlan.id,
+      // paddleSubscriptionId: 0,
+    },
+  });
 
   const account = await prisma.account.create({
     data: {
       type: AccountType.PERSONAL,
-      // subscriptionId: hobbyPlan.id,
+      subscriptionId: subscription.id,
     },
   });
 

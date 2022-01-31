@@ -20,7 +20,7 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   const selectAccount = useCallback(
     (acc: AccountWithPlan) =>
       push("/app/[accountId]", `/app/${acc.id}`).then(() => setAccount(acc)),
-    [setAccount, push]
+    [setAccount, push, query.accountId]
   );
 
   useEffect(() => {

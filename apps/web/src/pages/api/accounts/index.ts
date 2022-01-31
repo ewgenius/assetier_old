@@ -1,4 +1,4 @@
-import { AccountType, Role } from "@assetier/prisma";
+import { AccountType, Role, SubscriptionPlanType } from "@assetier/prisma";
 import { NotAllowedError } from "@utils/httpErrors";
 import { prisma } from "@utils/prisma";
 import { withUser } from "@utils/withUser";
@@ -6,31 +6,36 @@ import { withUser } from "@utils/withUser";
 export default withUser(async ({ method, user, body }, res) => {
   switch (method) {
     case "POST": {
-      // let plan = await prisma.subscriptionPlan.findUnique({
-      //   where: {
-      //     planType_active: {
-      //       planType: SubscriptionPlanType.TEAM_TRIAL,
-      //       active: true,
-      //     },
-      //   },
-      // });
+      let plan = await prisma.subscriptionPlan.findUnique({
+        where: {
+          planType_active: {
+            planType: SubscriptionPlanType.TEAM_TRIAL,
+            active: true,
+          },
+        },
+      });
 
-      // if (!plan) {
-      //   plan = await prisma.subscriptionPlan.create({
-      //     data: {
-      //       // name: "Trial",
-      //       planType: SubscriptionPlanType.TEAM_TRIAL,
-      //     },
-      //   });
-      // }
+      if (!plan) {
+        plan = await prisma.subscriptionPlan.create({
+          data: {
+            planType: SubscriptionPlanType.TEAM_TRIAL,
+            // paddleSubscriptionPlanId: -1,
+          },
+        });
+      }
 
-      console.log(body);
+      const subscription = await prisma.subscription.create({
+        data: {
+          subscriptionPlanId: plan.id,
+          // paddleSubscriptionId: -1,
+        },
+      });
 
       const { id: newAccountId } = await prisma.account.create({
         data: {
           name: body.name,
           type: AccountType.TEAM,
-          // accountPlanId: plan.name,
+          subscriptionId: subscription.id,
         },
       });
 

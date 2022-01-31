@@ -5,7 +5,7 @@ import { withAccount } from "@utils/withAccount";
 export default withAccount(async ({ method, query }, res) => {
   switch (method) {
     case "GET": {
-      const installationId = Number(query.accountId);
+      const installationId = Number(query.installationId);
       const octokit = await getOctokit(installationId);
       const branches = await octokit.request(
         "GET /repos/{owner}/{repo}/branches",

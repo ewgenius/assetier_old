@@ -5,7 +5,7 @@ import { NotAllowedError } from "@utils/httpErrors";
 export default withAccount(async ({ method, query }, res) => {
   switch (method) {
     case "GET": {
-      const installationId = Number(query.accountId);
+      const installationId = Number(query.installationId);
 
       const app = await getGithubApp();
       const repositories = [];
