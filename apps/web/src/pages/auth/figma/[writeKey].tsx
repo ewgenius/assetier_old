@@ -6,7 +6,7 @@ import type {
 import { Page } from "@components/Page";
 import type { GetServerSideProps, NextApiRequest } from "next";
 import { prisma } from "@utils/prisma";
-import { getAccessToken } from "@auth0/nextjs-auth0";
+import { getSession } from "@auth0/nextjs-auth0";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FC } from "react";
 import Image from "next/image";
@@ -27,6 +27,8 @@ import { useRouter } from "next/router";
 import { TextInput } from "@components/TextInput";
 import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 import { useProjectForm } from "@hooks/useProjectForm";
+import { getAuth0ManagementToken } from "@utils/getAuth0ManagementToken";
+import { getAuth0ApiToken } from "@utils/getAuth0ApiToken";
 
 export const OrganizationProjectConnector: FC = () => {
   const {
@@ -274,7 +276,8 @@ export const FigmaIntegrationAuth: NextPageExtended<
 export const getServerSideProps: GetServerSideProps<
   FigmaIntegrationAuthProps
 > = async ({ req, res, params }) => {
-  const { accessToken: token } = await getAccessToken(req, res);
+  const session = await getSession(req, res);
+  const token = await getAuth0ApiToken(); //session?.idToken;
 
   if (!token) {
     return {
@@ -283,6 +286,8 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
   }
+
+  console.log("TOKEN:", token);
 
   const pair = await prisma.figmaReadWritePair.findUnique({
     where: {
@@ -303,7 +308,7 @@ export const getServerSideProps: GetServerSideProps<
       writeKey: params?.writeKey as string,
     },
     data: {
-      token,
+      token: token.access_token,
     },
   });
 
