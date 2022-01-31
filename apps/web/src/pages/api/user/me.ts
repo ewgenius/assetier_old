@@ -1,9 +1,10 @@
 import { NotAllowedError, NotFoundError } from "@utils/httpErrors";
 import { withSession } from "@utils/withSession";
 import { prisma } from "@utils/prisma";
-import type { Auth0User, UserMe, UserWithOrganizations } from "@assetier/types";
+import type { UserMe, UserWithOrganizations } from "@assetier/types";
 import { OrganizationPlanType, OrganizationType, Role } from "@assetier/prisma";
-import { fetcher } from "@utils/fetcher";
+import { getAuth0ManagementToken } from "@utils/getAuth0ManagementToken";
+import { getAuth0User } from "@utils/getAuth0User";
 
 async function createPersonalOrganization(userId: string) {
   let hobbyPlan = await prisma.organizationPlan.findUnique({
@@ -45,37 +46,6 @@ async function createPersonalOrganization(userId: string) {
       },
     },
   });
-}
-
-export async function getAuth0ManagementToken() {
-  const data = new URLSearchParams();
-  data.set("grant_type", "client_credentials");
-  data.set("client_id", process.env.AUTH0_M2M_CLIENT_ID as string);
-  data.set("client_secret", process.env.AUTH0_M2M_CLIENT_SECRET as string);
-  data.set("audience", `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/`);
-  const managementToken = await fetcher(
-    `${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`,
-    {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: data,
-    }
-  );
-
-  return managementToken;
-}
-
-export async function getAuth0User(userId: string, managementToken: string) {
-  const user = fetcher<Auth0User>(
-    `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${userId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${managementToken}`,
-      },
-    }
-  );
-
-  return user;
 }
 
 export default withSession<UserMe>(async ({ method, session }, res) => {
