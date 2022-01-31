@@ -4,5 +4,12 @@
   "api": "1.0.0",
   "editorType": ["figma"],
   "main": "index.js",
-  "ui": "index.html"
+  "ui": "index.html",
+  "relaunchButtons": [
+    {
+      "command": "publish",
+      "name": "Publish Asset",
+      "multipleSelection": true
+    }
+  ]
 }
