@@ -16,7 +16,7 @@ export const SignInPage: FC = () => {
     token: string;
   } | null>(null);
 
-  function signIn() {
+  function signIn_() {
     setState("sent");
     fetch(`${process.env.API_URL}/api/figma/auth`)
       .then((r) => r.json())
@@ -29,6 +29,10 @@ export const SignInPage: FC = () => {
           "_blank"
         );
       });
+  }
+
+  function signIn() {
+    fetch(`oauth/device/code`);
   }
 
   const refresh = useCallback(() => {
