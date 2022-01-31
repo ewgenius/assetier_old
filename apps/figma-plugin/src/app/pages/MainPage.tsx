@@ -10,8 +10,7 @@ import { postMessage } from "../utils/postMessage";
 import { MessageType } from "../../types";
 
 export const MainPage: FC = () => {
-  const { accessToken, selectedNodes, organizationId, projectId } =
-    useAppContext();
+  const { accessToken, selectedNodes, accountId, projectId } = useAppContext();
   const { user } = useMe();
   const [exporting, setExporting] = useState(false);
   const [postfixSize, setPostfixSize] = useState(false);
@@ -28,7 +27,7 @@ export const MainPage: FC = () => {
     setExporting(true);
     if (accessToken) {
       authFetcher<Record<string, string>>(accessToken)(
-        `${process.env.API_URL}/api/organizations/${organizationId}/projects/${projectId}/figma/import`,
+        `${process.env.API_URL}/api/accounts/${accountId}/projects/${projectId}/figma/import`,
         {
           method: "POST",
           body: JSON.stringify({
@@ -50,7 +49,7 @@ export const MainPage: FC = () => {
           setExporting(false);
         });
     }
-  }, [selectedNodes, postfixSize, organizationId, projectId, accessToken]);
+  }, [selectedNodes, postfixSize, accountId, projectId, accessToken]);
 
   if (!user) {
     return (
@@ -60,7 +59,7 @@ export const MainPage: FC = () => {
     );
   }
 
-  // if (!organizationId || !projectId) {
+  // if (!accountId || !projectId) {
   //   return <SettingsPage />;
   // }
 

@@ -1,16 +1,16 @@
 import { createContext } from "react";
-import type { OrganizationWithPlan } from "@assetier/types";
+import type { AccountWithPlan } from "@assetier/types";
 
 export interface AppContextInterface {
-  organization: OrganizationWithPlan;
-  setOrganization: (organization: OrganizationWithPlan) => void;
+  account: AccountWithPlan;
+  setAccount: (account: AccountWithPlan) => void;
 }
 
 export const AppContext = createContext<AppContextInterface>({
-  organization: {
+  account: {
     id: "",
-  } as OrganizationWithPlan,
-  setOrganization: () => {
+  } as AccountWithPlan,
+  setAccount: () => {
     /* dummy */
   },
 });

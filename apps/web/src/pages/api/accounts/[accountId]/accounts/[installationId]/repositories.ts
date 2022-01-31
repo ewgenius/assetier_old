@@ -1,11 +1,11 @@
-import { withOrganization } from "@utils/withOrganization";
+import { withAccount } from "@utils/withAccount";
 import { getGithubApp } from "@utils/getGithubApp";
 import { NotAllowedError } from "@utils/httpErrors";
 
-export default withOrganization(async ({ method, query }, res) => {
+export default withAccount(async ({ method, query }, res) => {
   switch (method) {
     case "GET": {
-      const installationId = Number(query.accountId);
+      const installationId = Number(query.installationId);
 
       const app = await getGithubApp();
       const repositories = [];

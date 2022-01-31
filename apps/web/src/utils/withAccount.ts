@@ -1,15 +1,15 @@
 import type {
-  NextApiRequestWithOrganization,
   NextApiRequestWithSession,
-  NextApiHandlerWithOrganization,
   Middleware,
+  NextApiRequestWithAccount,
+  NextApiHandlerWithAccount,
 } from "@assetier/types";
 import { prisma } from "@utils/prisma";
 import { withSession } from "@utils/withSession";
 import { ForbiddenError, NotFoundError } from "./httpErrors";
 
-export const withOrganization = <T = any>(
-  handler: NextApiHandlerWithOrganization<T>,
+export const withAccount = <T = any>(
+  handler: NextApiHandlerWithAccount<T>,
   middleware?: Middleware
 ) =>
   withSession(async (req: NextApiRequestWithSession, res) => {
@@ -18,7 +18,7 @@ export const withOrganization = <T = any>(
         id: req.session.userId,
       },
       include: {
-        organizations: true,
+        accounts: true,
       },
     });
 
@@ -30,27 +30,29 @@ export const withOrganization = <T = any>(
       throw new ForbiddenError();
     }
 
-    const organization = await prisma.organization.findUnique({
+    const account = await prisma.account.findUnique({
       where: {
-        id: req.query.organizationId as string,
+        id: req.query.accountId as string,
       },
       include: {
-        organizationPlan: true,
+        subscription: {
+          include: {
+            subscriptionPlan: true,
+          },
+        },
       },
     });
 
-    if (!organization) {
-      throw new NotFoundError("Organization not found.");
+    if (!account) {
+      throw new NotFoundError("Account not found.");
     }
 
-    if (
-      !user.organizations.some((org) => org.organizationId === organization.id)
-    ) {
+    if (!user.accounts.some((acc) => acc.accountId === account.id)) {
       throw new ForbiddenError();
     }
 
-    (req as NextApiRequestWithOrganization).user = user;
-    (req as NextApiRequestWithOrganization).organization = organization;
+    (req as NextApiRequestWithAccount).user = user;
+    (req as NextApiRequestWithAccount).account = account;
 
-    return handler(req as NextApiRequestWithOrganization, res);
+    return handler(req as NextApiRequestWithAccount, res);
   }, middleware);

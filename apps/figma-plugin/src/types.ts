@@ -3,7 +3,7 @@ export enum MessageType {
   SetAuth = "set-auth",
   SetToken = "set-token",
   Setup = "setup",
-  SetOrgProject = "set-org-project",
+  SetAccountProject = "set-account-project",
   ExportNodes = "export-nodes",
 
   GetSelectedNodes = "get-selected-nodes",

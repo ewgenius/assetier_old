@@ -14,9 +14,9 @@ export interface AppState {
   accessToken: string | null;
   refreshToken: string | null;
   selectedNodes: NodeInfo[];
-  organizationId?: string | null;
+  accountId?: string | null;
   projectId?: string | null;
-  setOrgProject?: (organizationId: string, projectId: string) => void;
+  setAccountProject?: (accountId: string, projectId: string) => void;
 }
 
 export interface AppStateContext extends AppState {
@@ -29,7 +29,7 @@ export const AppContext = React.createContext<AppStateContext>({
   refreshToken: null,
   selectedNodes: [],
   dispatch: () => {},
-  setOrgProject: () => {},
+  setAccountProject: () => {},
 });
 
 export const useAppContext = () => {
@@ -68,7 +68,7 @@ export interface NextPageAction extends Action {
 }
 
 export interface SingedInAction
-  extends Action<{ token: string; organizationId: string; projectId: string }> {
+  extends Action<{ token: string; accountId: string; projectId: string }> {
   type: ActionType.SignedIn;
 }
 
@@ -121,7 +121,7 @@ export const appStateReducer: Reducer<AppState, Actions> = (
       return {
         ...state,
         token: payload.token,
-        organizationId: payload.organizationId,
+        accountId: payload.accountId,
         projectId: payload.projectId,
         page: AppPage.Main,
       };

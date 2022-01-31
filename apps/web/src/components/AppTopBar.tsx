@@ -4,9 +4,9 @@ import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import { useMe } from "@hooks/useMe";
-import { NewOrganizationSlideOver } from "@components/NewOrganizationSlideOver";
+import { NewAccountSlideOver } from "@components/NewAccountSlideOver";
 import { ProfileDropdown, userNavigation } from "@components/ProfileDropdown";
-import { OrganizationDropdown } from "@components/OrganizationDropdown";
+import { AccountDropdown } from "@components/AccountDropdown";
 
 export interface AppTopBarProps {
   currentNavId?: string;
@@ -34,9 +34,7 @@ export const AppTopBar: FC<AppTopBarProps> = () => {
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center sm:gap-2">
-                  <OrganizationDropdown
-                    onCreateOrganizationClick={() => setOpen(true)}
-                  />
+                  <AccountDropdown onCreateAccountClick={() => setOpen(true)} />
 
                   <ProfileDropdown />
                 </div>
@@ -56,12 +54,12 @@ export const AppTopBar: FC<AppTopBarProps> = () => {
 
             <Disclosure.Panel className="sm:hidden">
               <div className="border-t border-gray-200 pt-4 pb-3">
-                <OrganizationDropdown
-                  onCreateOrganizationClick={() => {
+                <AccountDropdown
+                  onCreateAccountClick={() => {
                     setOpen(true);
                     close();
                   }}
-                  onSelectOrganization={close}
+                  onSelectAccount={close}
                 />
 
                 <div className="mt-3 space-y-1">
@@ -83,7 +81,7 @@ export const AppTopBar: FC<AppTopBarProps> = () => {
         )}
       </Disclosure>
 
-      <NewOrganizationSlideOver open={open} onClose={() => setOpen(false)} />
+      <NewAccountSlideOver open={open} onClose={() => setOpen(false)} />
     </>
   );
 };

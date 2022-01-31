@@ -3,15 +3,15 @@ import useSWR, { useSWRConfig } from "swr";
 import type { Project } from "@assetier/prisma";
 
 import { fetcher } from "@utils/fetcher";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 import { useProjectForm } from "@hooks/useProjectForm";
 import { useProjects } from "./useProjects";
 
 export function useProjectUpdater(project: Partial<Project>) {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const apiKey = [
-    `/api/organizations/${organization.id}/projects/${project.id}`,
-    organization,
+    `/api/accounts/${account.id}/projects/${project.id}`,
+    account,
     project.id,
   ];
 
@@ -28,11 +28,11 @@ export function useProjectUpdater(project: Partial<Project>) {
 
     return mutate(
       [
-        `/api/organizations/${organization.id}/projects/${project.id}`,
-        organization,
+        `/api/accounts/${account.id}/projects/${project.id}`,
+        account,
         project.id,
       ],
-      fetch(`/api/organizations/${organization.id}/projects/${project.id}`, {
+      fetch(`/api/accounts/${account.id}/projects/${project.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -41,48 +41,39 @@ export function useProjectUpdater(project: Partial<Project>) {
       })
         .then((r) => r.json())
         .then((updatedProject: Project) => {
-          mutate(
-            [`/api/organizations/${organization.id}/projects`, organization],
-            {
-              ...projects,
-              [updatedProject.id]: updatedProject,
-            }
-          );
+          mutate([`/api/accounts/${account.id}/projects`, account], {
+            ...projects,
+            [updatedProject.id]: updatedProject,
+          });
           return updatedProject;
         })
         .finally(() => setUpdating(false))
     );
-  }, [organization, projects, form.projectData, project, mutate]);
+  }, [account, projects, form.projectData, project, mutate]);
 
   const deleteProject = useCallback(() => {
     setDeleting(true);
 
-    return fetcher(
-      `/api/organizations/${organization.id}/projects/${project.id}`,
-      {
-        method: "DELETE",
-      }
-    )
+    return fetcher(`/api/accounts/${account.id}/projects/${project.id}`, {
+      method: "DELETE",
+    })
       .then((deletedProject: Project) => {
         // mutate(
         //   [
-        //     `/api/organizations/${organization.id}/projects/${deletedProject.id}`,
-        //     organization,
+        //     `/api/accounts/${account.id}/projects/${deletedProject.id}`,
+        //     account,
         //     deletedProject.id,
         //   ],
         //   undefined,
         //   false
         // );
-        return mutate(
-          [`/api/organizations/${organization.id}/projects`, organization],
-          {
-            ...projects,
-            [deletedProject.id]: undefined,
-          }
-        );
+        return mutate([`/api/accounts/${account.id}/projects`, account], {
+          ...projects,
+          [deletedProject.id]: undefined,
+        });
       })
       .finally(() => setDeleting(false));
-  }, [organization, projects, project, data]);
+  }, [account, projects, project, data]);
 
   return {
     project: data,

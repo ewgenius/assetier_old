@@ -1,17 +1,17 @@
 import { prisma } from "@utils/prisma";
-import { withOrganization } from "@utils/withOrganization";
 import type {
   Middleware,
   NextApiHandlerWithProject,
   NextApiRequestWithProject,
 } from "@assetier/types";
 import { ForbiddenError, NotFoundError } from "./httpErrors";
+import { withAccount } from "./withAccount";
 
 export const withProject = <T = any>(
   handler: NextApiHandlerWithProject<T>,
   middleware?: Middleware
 ) =>
-  withOrganization(async (req, res) => {
+  withAccount(async (req, res) => {
     const project = await prisma.project.findUnique({
       where: {
         id: req.query.projectId as string,
@@ -22,7 +22,7 @@ export const withProject = <T = any>(
       throw new NotFoundError("Project not found.");
     }
 
-    if (project.organizationId !== req.organization.id) {
+    if (project.accountId !== req.account.id) {
       throw new ForbiddenError();
     }
 

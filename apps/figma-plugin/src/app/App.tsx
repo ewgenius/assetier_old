@@ -54,11 +54,11 @@ export const App: FC = () => {
               type: ActionType.StoredStateReceived,
               payload:
                 data.accessToken && data.refreshToken
-                  ? //  && data.organizationId && data.projectId
+                  ? //  && dataaccountId && data.projectId
                     {
                       accessToken: data.accessToken,
                       refreshToken: data.refreshToken,
-                      // organizationId: data.organizationId,
+                      // accountId: dataaccountId,
                       // projectId: data.projectId,
                       page: AppPage.Main,
                     }

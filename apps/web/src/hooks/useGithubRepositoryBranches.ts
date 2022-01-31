@@ -2,7 +2,7 @@ import useSWR from "swr";
 import type { Project } from "@assetier/prisma";
 import type { GithubBranch } from "@assetier/types";
 
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 import { fetcher } from "@utils/fetcher";
 
 export function useGithubRepositoryBranches(
@@ -10,12 +10,12 @@ export function useGithubRepositoryBranches(
   owner?: string,
   repository?: string
 ) {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { data, error } = useSWR<GithubBranch[]>(
     installationId && owner && repository
       ? [
-          `/api/organizations/${organization.id}/accounts/${installationId}/${owner}/${repository}/branches`,
-          organization,
+          `/api/accounts/${account.id}/accounts/${installationId}/${owner}/${repository}/branches`,
+          account,
           installationId,
           owner,
           repository,

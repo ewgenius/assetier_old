@@ -3,18 +3,18 @@ import Link from "next/link";
 import type { Project } from "@assetier/prisma";
 
 import { stringToColor } from "@utils/stringToColor";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 
 export interface ProjectCardProps {
   project: Project;
 }
 
 export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
 
   return (
     <li key={project.id} className="col-span-1 flex rounded-md shadow-sm">
-      <Link href={`/app/${organization.id}/projects/${project.id}`}>
+      <Link href={`/app/${account.id}/projects/${project.id}`}>
         <a className="group flex max-w-full flex-grow">
           <div
             className="flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium uppercase text-white"

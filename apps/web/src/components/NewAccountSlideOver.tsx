@@ -11,37 +11,33 @@ import {
 } from "@components/SlideOver";
 import { TextInput } from "@components/TextInput";
 
-import { useOrganizationCreator } from "@hooks/useOrganizationCreator";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccountCreator } from "@hooks/useAccountCreator";
+import { useAccount } from "@hooks/useAccount";
 
-export const NewOrganizationSlideOver: FC<SlideOverProps> = ({
-  open,
-  onClose,
-}) => {
-  const { setOrganization } = useOrganization();
-  const { name, setNameHandler, creating, createOrganization } =
-    useOrganizationCreator();
+export const NewAccountSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
+  const { setAccount } = useAccount();
+  const { name, setNameHandler, creating, createAccount } = useAccountCreator();
 
   const close = useCallback(() => {
     onClose();
   }, [onClose]);
 
   const submit = useCallback(() => {
-    createOrganization().then((org) => {
-      setOrganization(org);
+    createAccount().then((acc) => {
+      setAccount(acc);
       close();
     });
-  }, [createOrganization, close, setOrganization]);
+  }, [createAccount, close, setAccount]);
 
   return (
     <SlideOver open={open} onClose={close} onSubmit={submit}>
-      <SlideOverHeading onClose={close} title="New Organization" />
+      <SlideOverHeading onClose={close} title="New Account" />
 
       <SlideOverBody>
         <TextInput
-          id="organization-name"
-          name="organization-name"
-          label="Organization name"
+          id="account-name"
+          name="account-name"
+          label="Account name"
           placeholder="My Team"
           disabled={creating}
           value={name}

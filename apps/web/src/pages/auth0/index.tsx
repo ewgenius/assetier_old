@@ -3,7 +3,7 @@ import { getSession, useUser } from "@auth0/nextjs-auth0";
 import { GetServerSideProps, NextPage } from "next";
 import { withPageAuthRequired, getAccessToken } from "@auth0/nextjs-auth0";
 import { fetcher } from "@utils/fetcher";
-import { FigmaFile } from "../api/organizations/[organizationId]/projects/[projectId]/figma";
+import { FigmaFile } from "../api/accounts/[accountId]/projects/[projectId]/figma";
 
 export const Auth0Page: NextPage = () => {
   const user = useUser();

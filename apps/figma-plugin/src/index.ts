@@ -66,13 +66,13 @@ function setupAssetierGroup() {
     frame.cornerRadius = 4;
     frame.resize(320, 200);
 
-    const organizationId = figma.root.getPluginData("assetier-organization-id");
+    const accountId = figma.root.getPluginData("assetier-account-id");
     const projectId = figma.root.getPluginData("assetier-project-id");
     const assetierLink = figma.createText();
     assetierLink.characters = "assetier project ↗";
     assetierLink.hyperlink = {
       type: "URL",
-      value: `${process.env.API_URL}/app/${organizationId}/projects/${projectId}`,
+      value: `${process.env.API_URL}/app/${accountId}/projects/${projectId}`,
     };
     assetierLink.x = 16;
     assetierLink.y = 16;
@@ -114,13 +114,13 @@ figma.on("run", async () => {
   const refreshToken = await figma.clientStorage.getAsync(
     "assetier-refresh-token"
   );
-  const organizationId = figma.root.getPluginData("assetier-organization-id");
+  const accountId = figma.root.getPluginData("assetier-account-id");
   const projectId = figma.root.getPluginData("assetier-project-id");
 
   console.log({
     accessToken,
     refreshToken,
-    organizationId,
+    accountId,
     projectId,
   });
 
@@ -129,7 +129,7 @@ figma.on("run", async () => {
     data: {
       accessToken,
       refreshToken,
-      organizationId,
+      accountId,
       projectId,
     },
   });
@@ -164,8 +164,8 @@ figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
       break;
     }
 
-    case MessageType.SetOrgProject: {
-      figma.root.setPluginData("assetier-organization-id", data.organizationId);
+    case MessageType.SetAccountProject: {
+      figma.root.setPluginData("assetier-account-id", data.accountId);
       figma.root.setPluginData("assetier-project-id", data.projectId);
 
       break;

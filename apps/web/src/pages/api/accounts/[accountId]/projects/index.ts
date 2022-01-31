@@ -1,15 +1,15 @@
 import type { Project } from "@assetier/prisma";
 import { prisma } from "@utils/prisma";
-import { withOrganization } from "@utils/withOrganization";
+import { withAccount } from "@utils/withAccount";
 import { NotAllowedError } from "@utils/httpErrors";
 
-export default withOrganization<Project | Project[]>(
-  async ({ method, body, organization }, res) => {
+export default withAccount<Project | Project[]>(
+  async ({ method, body, account }, res) => {
     switch (method) {
       case "GET": {
         const projects = await prisma.project.findMany({
           where: {
-            organization,
+            account,
           },
         });
         return res.status(200).send(projects);
@@ -18,11 +18,14 @@ export default withOrganization<Project | Project[]>(
       case "POST": {
         const projectsCount = await prisma.project.count({
           where: {
-            organization,
+            account,
           },
         });
 
-        if (projectsCount >= organization.organizationPlan.projectsLimit) {
+        if (
+          !account.subscription ||
+          projectsCount >= account.subscription.subscriptionPlan.projectsLimit
+        ) {
           throw new NotAllowedError("You reached projects limit");
         }
 
@@ -33,7 +36,7 @@ export default withOrganization<Project | Project[]>(
             figmaFileUrl: body.figmaFileUrl,
             publicPageEnabled: body.publicPageEnabled,
             defaultBranch: body.defaultBranch,
-            organizationId: organization.id,
+            accountId: account.id,
             githubInstallationId: body.githubInstallationId,
             repositoryId: body.repositoryId,
           },

@@ -31,21 +31,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const userId = session.user.sub;
   const installationId = Number(context.query.installation_id as string);
-  const organizationId = context.query.state as string;
+  const accountId = context.query.state as string;
 
-  if (userId && installationId && organizationId) {
+  if (userId && installationId && accountId) {
     const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
       include: {
-        organizations: true,
+        accounts: true,
       },
     });
 
-    if (
-      !user?.organizations.some((org) => org.organizationId === organizationId)
-    ) {
+    if (!user?.accounts.some((acc) => acc.accountId === accountId)) {
       // TODO
     }
 
@@ -62,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     await prisma.githubInstallation.create({
       data: {
         installationId,
-        organizationId,
+        accountId,
         accountLogin: installation.data.account?.login || "",
         accountAvatarUrl: installation.data.account?.avatar_url || "",
         accountType:

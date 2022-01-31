@@ -1,6 +1,6 @@
 import { NotAllowedError, NotFoundError } from "@utils/httpErrors";
 import { prisma } from "@utils/prisma";
-import type { UserWithOrganizations } from "@assetier/types";
+import type { UserWithAccounts } from "@assetier/types";
 import { withJWTUser } from "@utils/withJWTUser";
 
 export default withJWTUser(async (req, res) => {
@@ -13,11 +13,15 @@ export default withJWTUser(async (req, res) => {
           id: req.user.sub,
         },
         include: {
-          organizations: {
+          accounts: {
             include: {
-              organization: {
+              account: {
                 include: {
-                  organizationPlan: true,
+                  subscription: {
+                    include: {
+                      subscriptionPlan: true,
+                    },
+                  },
                 },
               },
             },
@@ -29,18 +33,16 @@ export default withJWTUser(async (req, res) => {
         throw new NotFoundError();
       }
 
-      const personalOrganization = user.organizations.find(
-        (org) => org.isPersonal
-      );
+      const personalAccount = user.accounts.find((acc) => acc.isPersonal);
 
-      if (!personalOrganization) {
+      if (!personalAccount) {
         throw new NotFoundError();
       }
 
       return res.status(200).send({
-        user: user as UserWithOrganizations,
-        personalOrganization: personalOrganization.organization,
-        organizations: user.organizations.map((org) => org.organization),
+        user: user as UserWithAccounts,
+        personalAccount: personalAccount.account,
+        accounts: user.accounts.map((acc) => acc.account),
       });
     }
 

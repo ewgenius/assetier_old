@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
 import { useSWRConfig } from "swr";
 
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 import { useProjectForm } from "@hooks/useProjectForm";
 import { useProjects } from "@hooks/useProjects";
 import { fetcher } from "@utils/fetcher";
 
 export function useProjectCreator() {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { projects } = useProjects();
   const [creating, setCreating] = useState(false);
   const { mutate } = useSWRConfig();
@@ -18,8 +18,8 @@ export function useProjectCreator() {
     setCreating(true);
 
     return mutate(
-      [`/api/organizations/${organization.id}/projects`, organization],
-      fetcher(`/api/organizations/${organization.id}/projects`, {
+      [`/api/accounts/${account.id}/projects`, account],
+      fetcher(`/api/accounts/${account.id}/projects`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,8 +29,8 @@ export function useProjectCreator() {
         .then((newProject) =>
           mutate(
             [
-              `/api/organizations/${organization.id}/projects/${newProject.id}`,
-              organization,
+              `/api/accounts/${account.id}/projects/${newProject.id}`,
+              account,
               newProject.id,
             ],
             newProject,
@@ -51,7 +51,7 @@ export function useProjectCreator() {
         .finally(() => setCreating(false)),
       false
     );
-  }, [organization, form.projectData, projects, mutate]);
+  }, [account, form.projectData, projects, mutate]);
 
   return {
     createProject,

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { UserProvider, useUser } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
 
-import type { AppPropsExtended, OrganizationWithPlan } from "@assetier/types";
+import type { AppPropsExtended, AccountWithPlan } from "@assetier/types";
 import { LayoutBlock } from "@components/LayoutBlock";
 import { AppTopBar } from "@components/AppTopBar";
 import { Footer } from "@components/Footer";
@@ -15,14 +15,12 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   const { push, query } = useRouter();
   const user = useUser();
   const { user: me } = useMe();
-  const [organization, setOrganization] = useState(me?.personalOrganization);
+  const [account, setAccount] = useState(me?.personalAccount);
 
-  const selectOrganization = useCallback(
-    (org: OrganizationWithPlan) =>
-      push("/app/[organizationId]", `/app/${org.id}`).then(() =>
-        setOrganization(org)
-      ),
-    [setOrganization, push]
+  const selectAccount = useCallback(
+    (acc: AccountWithPlan) =>
+      push("/app/[accountId]", `/app/${acc.id}`).then(() => setAccount(acc)),
+    [setAccount, push, query.accountId]
   );
 
   useEffect(() => {
@@ -32,19 +30,19 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   }, [user, user.isLoading, push]);
 
   useEffect(() => {
-    if (me && !organization) {
-      if (query?.organizationId) {
-        const org = me.organizations.find((o) => o.id === query.organizationId);
-        if (org) {
-          selectOrganization(org);
+    if (me && !account) {
+      if (query?.accountId) {
+        const acc = me.accounts.find((o) => o.id === query.accountId);
+        if (acc) {
+          selectAccount(acc);
         }
       } else {
-        selectOrganization(me.personalOrganization);
+        selectAccount(me.personalAccount);
       }
     }
-  }, [me, query?.organizationId, selectOrganization, organization]);
+  }, [me, query?.accountId, selectAccount, account]);
 
-  if (!user || !me || !organization) {
+  if (!user || !me || !account) {
     return (
       <div className="min-h-screen">
         <div className="flex justify-center py-4">
@@ -65,8 +63,8 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   return (
     <AppContext.Provider
       value={{
-        organization: organization,
-        setOrganization: selectOrganization,
+        account: account,
+        setAccount: selectAccount,
       }}
     >
       <div className="min-h-screen">

@@ -2,15 +2,15 @@ import useSWR from "swr";
 import type { Project } from "@assetier/prisma";
 import type { GithubBranch } from "@assetier/types";
 
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 import { fetcher } from "@utils/fetcher";
 
 export function useProjectBranches(project: Project) {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { data, error } = useSWR<GithubBranch[]>(
     [
-      `/api/organizations/${organization.id}/projects/${project.id}/branches`,
-      organization,
+      `/api/accounts/${account.id}/projects/${project.id}/branches`,
+      account,
       project.id,
     ],
     fetcher

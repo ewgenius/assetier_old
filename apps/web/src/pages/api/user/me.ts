@@ -1,34 +1,47 @@
 import { NotAllowedError, NotFoundError } from "@utils/httpErrors";
 import { withSession } from "@utils/withSession";
 import { prisma } from "@utils/prisma";
-import type { UserMe, UserWithOrganizations } from "@assetier/types";
-import { OrganizationPlanType, OrganizationType, Role } from "@assetier/prisma";
+import type { UserMe, UserWithAccounts } from "@assetier/types";
+import { AccountType, Role, SubscriptionPlanType } from "@assetier/prisma";
 import { getAuth0ManagementToken } from "@utils/getAuth0ManagementToken";
 import { getAuth0User } from "@utils/getAuth0User";
 
-async function createPersonalOrganization(userId: string) {
-  let hobbyPlan = await prisma.organizationPlan.findUnique({
+async function createPersonalAccount(userId: string) {
+  let defaultPlan = await prisma.subscriptionPlan.findUnique({
     where: {
       planType_active: {
-        planType: OrganizationPlanType.HOBBY,
+        planType: SubscriptionPlanType.HOBBY,
         active: true,
       },
     },
   });
 
-  if (!hobbyPlan) {
-    hobbyPlan = await prisma.organizationPlan.create({
+  if (!defaultPlan) {
+    defaultPlan = await prisma.subscriptionPlan.create({
       data: {
-        name: "Hobby",
-        planType: OrganizationPlanType.HOBBY,
+        planType: SubscriptionPlanType.HOBBY,
+        // TODO: pass real sub id
+        paddleSubscriptionPlanId: 753376,
+
+        usersLimit: 1,
+        projectsLimit: 3,
+        allowGithubOrgs: false,
+        allowGithubPrivateRepos: false,
       },
     });
   }
 
-  const organization = await prisma.organization.create({
+  const subscription = await prisma.subscription.create({
     data: {
-      type: OrganizationType.PERSONAL,
-      organizationPlanId: hobbyPlan.name,
+      subscriptionPlanId: defaultPlan.id,
+      // paddleSubscriptionId: 0,
+    },
+  });
+
+  const account = await prisma.account.create({
+    data: {
+      type: AccountType.PERSONAL,
+      subscriptionId: subscription.id,
     },
   });
 
@@ -37,11 +50,11 @@ async function createPersonalOrganization(userId: string) {
       id: userId,
     },
     data: {
-      organizations: {
+      accounts: {
         create: {
           isPersonal: true,
           role: Role.ADMIN,
-          organizationId: organization.id,
+          accountId: account.id,
         },
       },
     },
@@ -56,11 +69,15 @@ export default withSession<UserMe>(async ({ method, session }, res) => {
           id: session.userId,
         },
         include: {
-          organizations: {
+          accounts: {
             include: {
-              organization: {
+              account: {
                 include: {
-                  organizationPlan: true,
+                  subscription: {
+                    include: {
+                      subscriptionPlan: true,
+                    },
+                  },
                 },
               },
             },
@@ -81,19 +98,23 @@ export default withSession<UserMe>(async ({ method, session }, res) => {
             },
           });
 
-          // preparing default personal organization
-          await createPersonalOrganization(newUser.id);
+          // preparing default personal account
+          await createPersonalAccount(newUser.id);
 
           user = await prisma.user.findUnique({
             where: {
               id: session.userId,
             },
             include: {
-              organizations: {
+              accounts: {
                 include: {
-                  organization: {
+                  account: {
                     include: {
-                      organizationPlan: true,
+                      subscription: {
+                        include: {
+                          subscriptionPlan: true,
+                        },
+                      },
                     },
                   },
                 },
@@ -133,18 +154,16 @@ export default withSession<UserMe>(async ({ method, session }, res) => {
         }
       }
 
-      const personalOrganization = user.organizations.find(
-        (org) => org.isPersonal
-      );
+      const personalAccount = user.accounts.find((acc) => acc.isPersonal);
 
-      if (!personalOrganization) {
+      if (!personalAccount) {
         throw new NotFoundError();
       }
 
       return res.status(200).send({
-        user: userPublic as UserWithOrganizations,
-        personalOrganization: personalOrganization.organization,
-        organizations: user.organizations.map((org) => org.organization),
+        user: userPublic as UserWithAccounts,
+        personalAccount: personalAccount.account,
+        accounts: user.accounts.map((acc) => acc.account),
       });
     }
 

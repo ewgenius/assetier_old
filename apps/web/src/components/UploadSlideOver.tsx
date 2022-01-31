@@ -67,13 +67,10 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
 
     data.set("merge", merge ? "true" : "false");
 
-    fetch(
-      `/api/organizations/${project.organizationId}/projects/${project.id}/upload`,
-      {
-        method: "POST",
-        body: data,
-      }
-    )
+    fetch(`/api/accounts/${projectaccountId}/projects/${project.id}/upload`, {
+      method: "POST",
+      body: data,
+    })
       .then(refresh)
       .finally(close);
   }, [files, merge, project, baseBranch, close, refresh]);

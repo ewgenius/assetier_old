@@ -13,13 +13,13 @@ import { TextInput } from "@components/TextInput";
 import { GithubConnector } from "@components/GithubConnector";
 import { Toggle } from "@components/Toggle";
 import { useProjectCreator } from "@hooks/useProjectCreator";
-import { useOrganization } from "@hooks/useOrganization";
+import { useAccount } from "@hooks/useAccount";
 import { useProjects } from "@hooks/useProjects";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { parseFigmaUrl } from "@utils/parseFigmaUrl";
 
 export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
-  const { organization } = useOrganization();
+  const { account } = useAccount();
   const { projects } = useProjects();
   const { createProject, creating, form } = useProjectCreator();
 
@@ -31,9 +31,10 @@ export const NewProjectSlideOver: FC<SlideOverProps> = ({ open, onClose }) => {
   const reachedLimit = useMemo(
     () =>
       projects &&
-      Object.keys(projects).length >=
-        organization.organizationPlan.projectsLimit,
-    [organization, projects]
+      (!account.subscription ||
+        Object.keys(projects).length >=
+          account.subscription.subscriptionPlan.projectsLimit),
+    [account, account.subscription, projects]
   );
 
   const close = useCallback(() => {
