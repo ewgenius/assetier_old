@@ -18,8 +18,13 @@ model User {
   createdAt     DateTime  @default(now())
   verified      Boolean   @default(false)
 
-  organizations        UserToOrganization[]
+  accounts             UserToAccount[]
   figmaAuthCredentials FigmaAuthCredentials?
+}
+
+enum Role {
+  ADMIN
+  MEMBER
 }
 
 // Figma Integration Auth
@@ -35,53 +40,39 @@ model FigmaAuthCredentials {
   user User @relation(fields: [userId], references: [id])
 }
 
-model FigmaReadWritePair {
-  readKey        String   @unique @default(cuid())
-  writeKey       String   @unique @default(cuid())
-  createdAt      DateTime @default(now())
-  token          String?
-  organizationId String?
-  projectId      String?
+// Account
+
+model UserToAccount {
+  userId     String
+  accountId  String
+  role       Role    @default(MEMBER)
+  isPersonal Boolean @default(true)
+
+  user    User    @relation(fields: [userId], references: [id])
+  account Account @relation(fields: [accountId], references: [id])
+
+  @@id([userId, accountId])
 }
 
-// Org
-
-enum Role {
-  ADMIN
-  MEMBER
-}
-
-model UserToOrganization {
-  userId         String
-  organizationId String
-  role           Role    @default(MEMBER)
-  isPersonal     Boolean @default(true)
-
-  user         User         @relation(fields: [userId], references: [id])
-  organization Organization @relation(fields: [organizationId], references: [id])
-
-  @@id([userId, organizationId])
-}
-
-enum OrganizationType {
+enum AccountType {
   PERSONAL
   TEAM
 }
 
-model Organization {
-  id                 String           @id @default(cuid())
-  type               OrganizationType @default(PERSONAL)
-  name               String           @default("")
-  createdAt          DateTime         @default(now())
-  organizationPlanId String
+model Account {
+  id             String      @id @default(cuid())
+  type           AccountType @default(PERSONAL)
+  name           String      @default("")
+  createdAt      DateTime    @default(now())
+  subscriptionId String?
 
-  users               UserToOrganization[]
   projects            Project[]
+  users               UserToAccount[]
   githubInstallations GithubInstallation[]
-  organizationPlan    OrganizationPlan     @relation(fields: [organizationPlanId], references: [name])
+  subscription        Subscription?        @relation(fields: [subscriptionId], references: [id])
 }
 
-enum OrganizationPlanType {
+enum SubscriptionPlanType {
   // only personal
   HOBBY
   PRO
@@ -90,20 +81,32 @@ enum OrganizationPlanType {
   TEAM_TRIAL
 }
 
-model OrganizationPlan {
-  name      String               @id
-  planType  OrganizationPlanType @default(HOBBY)
+model SubscriptionPlan {
+  id        String               @id @default(cuid())
+  planType  SubscriptionPlanType @default(HOBBY)
   active    Boolean              @default(true)
   createdAt DateTime             @default(now())
+
+  paddleSubscriptionPlanId Int @unique
 
   projectsLimit           Int     @default(1)
   usersLimit              Int     @default(1)
   allowGithubPrivateRepos Boolean @default(false)
   allowGithubOrgs         Boolean @default(false)
 
-  organizations Organization[]
+  subscriptions Subscription[]
 
   @@unique([planType, active])
+}
+
+model Subscription {
+  id                 String @id @default(cuid())
+  subscriptionPlanId String
+
+  paddleSubscriptionId Int @unique
+
+  subscriptionPlan SubscriptionPlan @relation(fields: [subscriptionPlanId], references: [id])
+  accounts         Account[]
 }
 
 // Github
@@ -116,21 +119,21 @@ enum GithubAccountType {
 model GithubInstallation {
   id               String            @id @default(cuid())
   installationId   Int               @unique
-  organizationId   String
   accountLogin     String            @default("")
   accountAvatarUrl String            @default("")
   accountType      GithubAccountType @default(USER)
   createdAt        DateTime          @default(now())
 
-  organization Organization @relation(fields: [organizationId], references: [id])
-  projects     Project[]
+  account   Account   @relation(fields: [accountId], references: [id])
+  projects  Project[]
+  accountId String
 }
 
 // Projects
 
 model Project {
   id                   String   @id @default(cuid())
-  organizationId       String
+  accountId            String
   name                 String
   createdAt            DateTime @default(now())
   repositoryId         Int
@@ -142,6 +145,6 @@ model Project {
   assetsPath        String  @default("")
   defaultBranch     String  @default("main")
 
-  organization       Organization       @relation(fields: [organizationId], references: [id])
+  account            Account            @relation(fields: [accountId], references: [id])
   githubInstallation GithubInstallation @relation(fields: [githubInstallationId], references: [id])
 }

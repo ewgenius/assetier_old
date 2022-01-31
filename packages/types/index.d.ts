@@ -9,14 +9,15 @@ import type { AppProps } from "next/app";
 import type { Session } from "@auth0/nextjs-auth0";
 import type {
   User,
-  Organization,
-  OrganizationPlan,
   Project,
+  Account,
+  Subscription,
+  SubscriptionPlan,
 } from "@assetier/prisma";
 import type { ComponentType } from "react";
 
 export type { User } from "@assetier/prisma";
-export type { Organization } from "@assetier/prisma";
+export type { Account } from "@assetier/prisma";
 export type { Project } from "@assetier/prisma";
 export type { FigmaReadWritePair } from "@assetier/prisma";
 
@@ -63,12 +64,12 @@ export type NextApiRequestWithSession = NextApiRequest & {
   session: AuthSession;
 };
 
-export type NextApiRequestWithOrganization = NextApiRequestWithSession & {
+export type NextApiRequestWithAccount = NextApiRequestWithSession & {
   user: User;
-  organization: OrganizationWithPlan;
+  account: AccountWithPlan;
 };
 
-export type NextApiRequestWithProject = NextApiRequestWithOrganization & {
+export type NextApiRequestWithProject = NextApiRequestWithAccount & {
   project: Project;
 };
 
@@ -86,8 +87,8 @@ export type NextApiHandlerWithJWTUser<T = any> = (
   res: NextApiResponse<T>
 ) => void | Promise<void>;
 
-export type NextApiHandlerWithOrganization<T = any> = (
-  req: NextApiRequestWithOrganization,
+export type NextApiHandlerWithAccount<T = any> = (
+  req: NextApiRequestWithAccount,
   res: NextApiResponse<T>
 ) => void | Promise<void>;
 
@@ -96,20 +97,24 @@ export type NextApiHandlerWithProject<T = any> = (
   res: NextApiResponse<T>
 ) => void | Promise<void>;
 
-export type UserWithOrganizations = User & {
-  organizations: {
-    organization: Organization;
+export type UserWithAccounts = User & {
+  accounts: {
+    account: Account;
   }[];
 };
 
-export type OrganizationWithPlan = Organization & {
-  organizationPlan: OrganizationPlan;
+export type SubscriptionWithPlan = Subscription & {
+  subscriptionPlan: SubscriptionPlan;
+};
+
+export type AccountWithPlan = Account & {
+  subscription: SubscriptionWithPlan | null;
 };
 
 export interface UserMe {
-  user: UserWithOrganizations;
-  personalOrganization: OrganizationWithPlan;
-  organizations: OrganizationWithPlan[];
+  user: UserWithAccounts;
+  personalAccount: AccountWithPlan;
+  accounts: AccountWithPlan[];
 }
 
 export interface OctokitError {
