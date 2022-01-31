@@ -10,7 +10,8 @@ import { postMessage } from "../utils/postMessage";
 import { MessageType } from "../../types";
 
 export const MainPage: FC = () => {
-  const { token, selectedNodes, organizationId, projectId } = useAppContext();
+  const { accessToken, selectedNodes, organizationId, projectId } =
+    useAppContext();
   const { user } = useMe();
   const [exporting, setExporting] = useState(false);
   const [postfixSize, setPostfixSize] = useState(false);
@@ -25,8 +26,8 @@ export const MainPage: FC = () => {
 
   const exportNodes = useCallback(() => {
     setExporting(true);
-    if (token) {
-      authFetcher<Record<string, string>>(token)(
+    if (accessToken) {
+      authFetcher<Record<string, string>>(accessToken)(
         `${process.env.API_URL}/api/organizations/${organizationId}/projects/${projectId}/figma/import`,
         {
           method: "POST",
@@ -49,7 +50,7 @@ export const MainPage: FC = () => {
           setExporting(false);
         });
     }
-  }, [selectedNodes, postfixSize, organizationId, projectId, token]);
+  }, [selectedNodes, postfixSize, organizationId, projectId, accessToken]);
 
   if (!user) {
     return (

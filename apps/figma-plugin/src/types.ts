@@ -1,5 +1,6 @@
 export enum MessageType {
   Init = "init",
+  SetAuth = "set-auth",
   SetToken = "set-token",
   Setup = "setup",
   SetOrgProject = "set-org-project",

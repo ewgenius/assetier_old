@@ -32,8 +32,9 @@ export const PageRouter: FC<PageRouterProps> = ({ page }) => {
 export const App: FC = () => {
   const [appState, dispatch] = useReducer(appStateReducer, {
     page: AppPage.Boot,
-    token: null,
     selectedNodes: [],
+    accessToken: null,
+    refreshToken: null,
   });
 
   useEffect(() => {
@@ -46,22 +47,24 @@ export const App: FC = () => {
         data: { pluginMessage },
       } = message;
       if (pluginMessage) {
-        console.log(pluginMessage);
         const { type, data } = pluginMessage;
         switch (type) {
           case MessageType.Init: {
             dispatch({
               type: ActionType.StoredStateReceived,
               payload:
-                data.token && data.organizationId && data.projectId
-                  ? {
-                      token: data.token,
-                      organizationId: data.organizationId,
-                      projectId: data.projectId,
+                data.accessToken && data.refreshToken
+                  ? //  && data.organizationId && data.projectId
+                    {
+                      accessToken: data.accessToken,
+                      refreshToken: data.refreshToken,
+                      // organizationId: data.organizationId,
+                      // projectId: data.projectId,
                       page: AppPage.Main,
                     }
                   : {
-                      token: null,
+                      accessToken: null,
+                      refreshToken: null,
                       page: AppPage.SignIn,
                     },
             });
