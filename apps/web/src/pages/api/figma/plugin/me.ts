@@ -23,10 +23,10 @@ const jwtCheck: Middleware = (req: NextApiRequest, res: NextApiResponse) =>
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri: "https://assetier-dev.us.auth0.com/.well-known/jwks.json",
+        jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
       }),
-      audience: "https://localhost:3000/api/figma",
-      issuer: "https://assetier-dev.us.auth0.com/",
+      audience: process.env.AUTH0_API_AUDIENCE,
+      issuer: process.env.AUTH0_ISSUER_BASE_URL,
       algorithms: ["RS256"],
     })(req as any, res as any, (err) => {
       if (err) {
