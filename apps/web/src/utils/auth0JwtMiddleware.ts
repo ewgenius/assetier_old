@@ -8,8 +8,6 @@ export const auth0JwtMiddleware: Middleware = (
   res: NextApiResponse
 ) =>
   new Promise((resolve, reject) => {
-    console.log(process.env.AUTH0_ISSUER_BASE_URL);
-    console.log(process.env.AUTH0_API_AUDIENCE);
     jwt({
       secret: expressJwtSecret({
         cache: true,
@@ -22,7 +20,13 @@ export const auth0JwtMiddleware: Middleware = (
       algorithms: ["RS256"],
     })(req as any, res as any, (err) => {
       if (err) {
-        reject(err);
+        reject({
+          details: {
+            AUTH0_API_AUDIENCE: process.env.AUTH0_API_AUDIENCE,
+            AUTH0_ISSUER_BASE_URL: process.env.AUTH0_ISSUER_BASE_URL,
+          },
+          ...err,
+        });
       } else {
         resolve({});
       }
