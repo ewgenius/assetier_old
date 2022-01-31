@@ -81,6 +81,11 @@ export type NextApiHandlerWithUser<T = any> = (
   res: NextApiResponse<T>
 ) => void | Promise<void>;
 
+export type NextApiHandlerWithJWTUser<T = any> = (
+  req: NextApiRequestWithJWTUser,
+  res: NextApiResponse<T>
+) => void | Promise<void>;
+
 export type NextApiHandlerWithOrganization<T = any> = (
   req: NextApiRequestWithOrganization,
   res: NextApiResponse<T>
