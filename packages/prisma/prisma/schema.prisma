@@ -87,7 +87,7 @@ model SubscriptionPlan {
   active    Boolean              @default(true)
   createdAt DateTime             @default(now())
 
-  paddleSubscriptionPlanId Int @unique
+  paddleSubscriptionPlanId Int? @unique
 
   projectsLimit           Int     @default(1)
   usersLimit              Int     @default(1)
@@ -103,7 +103,7 @@ model Subscription {
   id                 String @id @default(cuid())
   subscriptionPlanId String
 
-  paddleSubscriptionId Int @unique
+  paddleSubscriptionId Int? @unique
 
   subscriptionPlan SubscriptionPlan @relation(fields: [subscriptionPlanId], references: [id])
   accounts         Account[]
