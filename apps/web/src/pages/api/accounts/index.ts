@@ -20,6 +20,11 @@ export default withUser(async ({ method, user, body }, res) => {
           data: {
             planType: SubscriptionPlanType.TEAM_TRIAL,
             // paddleSubscriptionPlanId: -1,
+
+            usersLimit: 10,
+            projectsLimit: 100,
+            allowGithubPrivateRepos: true,
+            allowGithubOrgs: true,
           },
         });
       }
