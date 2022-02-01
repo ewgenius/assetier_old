@@ -67,7 +67,7 @@ export const UploadSlideOver: FC<UploadSlideOverProps> = ({
 
     data.set("merge", merge ? "true" : "false");
 
-    fetch(`/api/accounts/${projectaccountId}/projects/${project.id}/upload`, {
+    fetch(`/api/accounts/${project.accountId}/projects/${project.id}/upload`, {
       method: "POST",
       body: data,
     })
