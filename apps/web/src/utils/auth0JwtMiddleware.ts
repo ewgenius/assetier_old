@@ -20,7 +20,7 @@ export const auth0JwtMiddleware: Middleware = (
       algorithms: ["RS256"],
     })(req as any, res as any, (err) => {
       if (err) {
-        reject({
+        res.status(err.status).json({
           details: {
             AUTH0_API_AUDIENCE: process.env.AUTH0_API_AUDIENCE,
             AUTH0_ISSUER_BASE_URL: process.env.AUTH0_ISSUER_BASE_URL,
