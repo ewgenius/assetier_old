@@ -63,7 +63,7 @@ export const SignInPage: FC = () => {
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.log(JSON.stringify(err));
           });
       }, code.interval * 1000);
     }
