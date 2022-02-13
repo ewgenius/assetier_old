@@ -8,6 +8,8 @@ import { SignInPage } from "./pages/SignInPage";
 import { BootPage } from "./pages/BootPage";
 import { MainPage } from "./pages/MainPage";
 
+const showDevTools = false;
+
 export interface PageRouterProps {
   page: AppPage;
 }
@@ -104,7 +106,7 @@ export const App: FC = () => {
       <div className="h-full flex-grow">
         <PageRouter page={appState.page} />
       </div>
-      {process.env.NODE_ENV === "development" && (
+      {process.env.NODE_ENV === "development" && showDevTools && (
         <div className="flex flex-col gap-1 bg-red-500 p-2 font-mono text-xs text-white">
           <button
             className="flex items-center rounded border border-red-700 bg-red-600 px-2 py-1 text-center text-xs font-medium text-white shadow-sm hover:bg-red-700"
