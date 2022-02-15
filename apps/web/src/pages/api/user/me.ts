@@ -6,6 +6,30 @@ import { AccountType, Role, SubscriptionPlanType } from "@assetier/prisma";
 import { getAuth0ManagementToken } from "@utils/getAuth0ManagementToken";
 import { getAuth0User } from "@utils/getAuth0User";
 
+async function getUserMe(userId: string) {
+  return prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      accounts: {
+        include: {
+          account: {
+            include: {
+              subscription: {
+                include: {
+                  subscriptionPlan: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      figmaAuthCredentials: true,
+    },
+  });
+}
+
 async function createPersonalAccount(userId: string) {
   let defaultPlan = await prisma.subscriptionPlan.findUnique({
     where: {
@@ -64,27 +88,7 @@ async function createPersonalAccount(userId: string) {
 export default withSession<UserMe>(async ({ method, session }, res) => {
   switch (method) {
     case "GET": {
-      let user = await prisma.user.findUnique({
-        where: {
-          id: session.userId,
-        },
-        include: {
-          accounts: {
-            include: {
-              account: {
-                include: {
-                  subscription: {
-                    include: {
-                      subscriptionPlan: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-          figmaAuthCredentials: true,
-        },
-      });
+      let user = await getUserMe(session.userId);
 
       // first time login, creating user
       if (!user) {

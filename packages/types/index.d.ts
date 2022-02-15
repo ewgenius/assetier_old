@@ -58,6 +58,9 @@ export type NextApiRequestWithJWTUser = NextApiRequest & {
     sub: string;
     perimssions: string[];
   };
+  session: {
+    userId: string;
+  };
 };
 
 export type NextApiRequestWithSession = NextApiRequest & {

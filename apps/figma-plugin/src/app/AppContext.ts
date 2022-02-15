@@ -41,10 +41,10 @@ export const useAppContext = () => {
 export enum ActionType {
   Boot = "boot",
   Authorized = "authorized",
+  SetAccountProject = "set-account-project",
 
   StoredStateReceived = "stored-state-received",
   SelectedNodesUpdated = "selected-nodes-updated",
-  SignedIn = "signed-in",
   NextPage = "next-page",
 }
 
@@ -67,9 +67,9 @@ export interface NextPageAction extends Action {
   type: ActionType.NextPage;
 }
 
-export interface SingedInAction
-  extends Action<{ token: string; accountId: string; projectId: string }> {
-  type: ActionType.SignedIn;
+export interface SetAccountProject
+  extends Action<{ accountId: string; projectId: string }> {
+  type: ActionType.SetAccountProject;
 }
 
 export interface AuthorizedAction
@@ -90,7 +90,7 @@ export type Actions =
   | AuthorizedAction
   | StoredStateReceivedAction
   | NextPageAction
-  | SingedInAction
+  | SetAccountProject
   | SelectedNodesUpdatedAction;
 
 export const appStateReducer: Reducer<AppState, Actions> = (
@@ -117,10 +117,9 @@ export const appStateReducer: Reducer<AppState, Actions> = (
         page: AppPage.Main,
       };
 
-    case ActionType.SignedIn:
+    case ActionType.SetAccountProject:
       return {
         ...state,
-        token: payload.token,
         accountId: payload.accountId,
         projectId: payload.projectId,
         page: AppPage.Main,

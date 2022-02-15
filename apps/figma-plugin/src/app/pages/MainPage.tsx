@@ -8,6 +8,7 @@ import { useAppContext } from "../AppContext";
 import { Page } from "../components/Page";
 import { postMessage } from "../utils/postMessage";
 import { MessageType } from "../../types";
+import { SettingsPage } from "./SettingsPage";
 
 export const MainPage: FC = () => {
   const { accessToken, selectedNodes, accountId, projectId } = useAppContext();
@@ -27,7 +28,7 @@ export const MainPage: FC = () => {
     setExporting(true);
     if (accessToken) {
       authFetcher<Record<string, string>>(accessToken)(
-        `${process.env.API_URL}/api/accounts/${accountId}/projects/${projectId}/figma/import`,
+        `${process.env.API_URL}/api/figma/plugin/accounts/${accountId}/projects/${projectId}/import`,
         {
           method: "POST",
           body: JSON.stringify({
@@ -59,9 +60,9 @@ export const MainPage: FC = () => {
     );
   }
 
-  // if (!accountId || !projectId) {
-  //   return <SettingsPage />;
-  // }
+  if (!accountId || !projectId) {
+    return <SettingsPage />;
+  }
 
   return (
     <Page>

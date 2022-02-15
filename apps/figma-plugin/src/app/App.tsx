@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useReducer, useEffect } from "react";
 import type { FC } from "react";
 import { AppContext, AppPage, appStateReducer, ActionType } from "./AppContext";
@@ -37,7 +37,13 @@ export const App: FC = () => {
     selectedNodes: [],
     accessToken: null,
     refreshToken: null,
+    accountId: null,
+    projectId: null,
   });
+
+  const setAccountProject = useCallback(
+    (accountId: string, projectId: string) => {}
+  );
 
   useEffect(() => {
     function onMessage(
@@ -60,8 +66,8 @@ export const App: FC = () => {
                     {
                       accessToken: data.accessToken,
                       refreshToken: data.refreshToken,
-                      // accountId: dataaccountId,
-                      // projectId: data.projectId,
+                      accountId: data.accountId,
+                      projectId: data.projectId,
                       page: AppPage.Main,
                     }
                   : {

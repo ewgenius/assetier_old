@@ -3,17 +3,33 @@ import { FC, useState, useCallback } from "react";
 import { Spinner } from "../components/Spinner";
 import { ProfileTopbar } from "../components/ProfileTopbar";
 import { useMe } from "../hooks/useMe";
-import { useAppContext } from "../AppContext";
+import { ActionType, useAppContext } from "../AppContext";
+import { Page } from "../components/Page";
+import { postMessage } from "../utils/postMessage";
+import { MessageType } from "../../types";
 
 export const SettingsPage: FC = () => {
-  const { accountId, projectId, setAccountProject } = useAppContext();
+  const { accountId, projectId, dispatch } = useAppContext();
   const { user } = useMe();
 
   const [accId, setAccId] = useState(accountId || "");
   const [projId, setProjectId] = useState(projectId || "");
 
   const submit = useCallback(() => {
-    // setAccountProject(accId, projId);
+    if (accId && projectId) {
+      postMessage(MessageType.SetAccountProject, {
+        accountId: accId,
+        projectId: projId,
+      });
+
+      dispatch({
+        type: ActionType.SetAccountProject,
+        payload: {
+          accountId: accId,
+          projectId: projectId,
+        },
+      });
+    }
   }, [accId, projId]);
 
   if (!user) {
@@ -25,9 +41,9 @@ export const SettingsPage: FC = () => {
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <Page>
       <ProfileTopbar />
-      <div className="flex flex-col p-2">
+      <div className="flex flex-grow flex-col gap-2 overflow-y-auto p-4">
         <div>
           <label className="text-xs">org id</label>
           <input
@@ -53,6 +69,6 @@ export const SettingsPage: FC = () => {
           <span>Save</span>
         </button>
       </div>
-    </div>
+    </Page>
   );
 };

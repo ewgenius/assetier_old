@@ -14,6 +14,9 @@ export const withJWTUser = <T = any>(handler: NextApiHandlerWithJWTUser<T>) =>
       if (!req.user) {
         throw new ForbiddenError();
       }
+      req.session = {
+        userId: req.user.sub,
+      };
       return handler(req, res);
     },
     [runCors, auth0JwtMiddleware]

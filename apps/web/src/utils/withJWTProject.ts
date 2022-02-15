@@ -1,16 +1,14 @@
 import type {
-  Middleware,
   NextApiHandlerWithProject,
   NextApiRequestWithProject,
 } from "@assetier/types";
-import { withAccount } from "@utils/withAccount";
 import { getAccountProject } from "@utils/getAccountProject";
+import { withJWTAccount } from "./withJWTAccount";
 
-export const withProject = <T = any>(
-  handler: NextApiHandlerWithProject<T>,
-  middleware?: Middleware
+export const withJWTProject = <T = any>(
+  handler: NextApiHandlerWithProject<T>
 ) =>
-  withAccount(async (req, res) => {
+  withJWTAccount<T>(async (req, res) => {
     const project = await getAccountProject(
       req.account.id,
       req.query.projectId as string
@@ -19,4 +17,4 @@ export const withProject = <T = any>(
     (req as NextApiRequestWithProject).project = project;
 
     return handler(req as NextApiRequestWithProject, res);
-  }, middleware);
+  });
