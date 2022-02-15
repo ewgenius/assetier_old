@@ -144,7 +144,6 @@ figma.on("selectionchange", () => {
 });
 
 figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
-  console.log("[BACK]", type, data);
   switch (type) {
     case MessageType.SetAuth: {
       await figma.clientStorage.setAsync(
@@ -177,45 +176,54 @@ figma.ui.onmessage = async ({ type, data }: PluginMessage) => {
       ) as GroupNode;
       const exportedNodes = data as Record<string, AssetMetaInfo>;
 
-      Object.keys(exportedNodes).map((nodeId) => {
+      Object.keys(exportedNodes).forEach((nodeId) => {
+        console.log(nodeId);
+      });
+
+      Object.keys(exportedNodes).forEach((nodeId) => {
         const meta = exportedNodes[nodeId];
         const node = figma.getNodeById(nodeId);
+        console.log(nodeId, meta);
 
-        if (node && (node.type === "FRAME" || node.type === "COMPONENT")) {
-          node.setPluginData("assetier.repo.owner", meta.repoOwner);
-          node.setPluginData("assetier.repo.name", meta.repoName);
-          node.setPluginData("assetier.repo.sha", meta.repoSha);
-          node.setPluginData("assetier.repo.assetPath", meta.assetPath);
-          node.setPluginData("assetier.repo.url", meta.url);
+        try {
+          if (node && (node.type === "FRAME" || node.type === "COMPONENT")) {
+            node.setPluginData("assetier.repo.owner", meta.repoOwner);
+            node.setPluginData("assetier.repo.name", meta.repoName);
+            node.setPluginData("assetier.repo.sha", meta.repoSha);
+            node.setPluginData("assetier.repo.assetPath", meta.assetPath);
+            node.setPluginData("assetier.repo.url", meta.url);
 
-          if (
-            !node.getPluginData("assetier.node.link") ||
-            !figma.getNodeById(node.getPluginData("assetier.node.link"))
-          ) {
-            const link = figma.createText();
-            link.name = `[assetier]:link ${node.name}`;
-            link.characters = "github ↗";
-            link.fontSize = 8;
-            link.hyperlink = {
-              type: "URL",
-              value: meta.url,
-            };
-            link.locked = true;
-            link.x = node.x;
-            link.y = node.y + node.height + 8;
-            group.appendChild(link);
-            node.setPluginData("assetier.node.link", link.id);
-          } else {
-            const link = figma.getNodeById(
-              node.getPluginData("assetier.node.link")
-            ) as TextNode;
-            link.hyperlink = {
-              type: "URL",
-              value: meta.url,
-            };
-            link.x = node.x;
-            link.y = node.y + node.height + 8;
+            if (
+              !node.getPluginData("assetier.node.link") ||
+              !figma.getNodeById(node.getPluginData("assetier.node.link"))
+            ) {
+              const link = figma.createText();
+              link.name = `[assetier]:link ${node.name}`;
+              link.characters = "github ↗";
+              link.fontSize = 8;
+              link.hyperlink = {
+                type: "URL",
+                value: meta.url,
+              };
+              link.locked = true;
+              link.x = node.x;
+              link.y = node.y + node.height + 8;
+              group.appendChild(link);
+              node.setPluginData("assetier.node.link", link.id);
+            } else {
+              const link = figma.getNodeById(
+                node.getPluginData("assetier.node.link")
+              ) as TextNode;
+              link.hyperlink = {
+                type: "URL",
+                value: meta.url,
+              };
+              link.x = node.x;
+              link.y = node.y + node.height + 8;
+            }
           }
+        } catch (e) {
+          console.log(e);
         }
       });
       break;

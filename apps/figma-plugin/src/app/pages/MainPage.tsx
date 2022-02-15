@@ -69,13 +69,13 @@ export const MainPage: FC = () => {
       <ProfileTopbar />
 
       <div className="flex flex-grow flex-col gap-2 overflow-y-auto p-4">
-        <button
+        {/* <button
           type="button"
           className="focus:ring-zink-500 flex w-full items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
           onClick={setup}
         >
           <span>Setup</span>
-        </button>
+        </button> */}
         {selectedNodes && selectedNodes.length > 0 ? (
           <>
             <button
