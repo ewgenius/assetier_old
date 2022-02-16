@@ -17,6 +17,7 @@ import type { AssetMetaInfo } from "@assetier/types";
 import { v4 as uuidv4 } from "uuid";
 import { withJWTProject } from "@utils/withJWTProject";
 import { uploadSVGFiles } from "@utils/uploadSVGFiles";
+import { figma } from "@utils/figma";
 
 export const handler = withJWTProject(async (req, res) => {
   const { method, body, project, user } = req;
@@ -49,17 +50,14 @@ export const handler = withJWTProject(async (req, res) => {
         return map;
       }, {});
 
-      const svgs: { id: string; name: string; content: string }[] =
-        await fetcher(
-          `https://api.figma.com/v1/images/${
-            figmaFileDetails.key
-          }?ids=${selectedNodes.map((n) => n.id).join(",")}&format=svg`,
-          {
-            headers: {
-              Authorization: `Bearer ${credentials.accessToken}`,
-            },
-          }
-        ).then((results: { images: { [key: string]: string }; err: any }) => {
+      const svgs: { id: string; name: string; content: string }[] = await figma
+        .fetch(
+          `/v1/images/${figmaFileDetails.key}?ids=${selectedNodes
+            .map((n) => n.id)
+            .join(",")}&format=svg`,
+          credentials
+        )
+        .then((results: { images: { [key: string]: string }; err: any }) => {
           if (results.err) {
             throw results.err;
           }

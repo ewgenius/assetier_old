@@ -18,6 +18,7 @@ import type { AssetMetaInfo } from "@assetier/types";
 import { withProject } from "@utils/withProject";
 import { v4 as uuidv4 } from "uuid";
 import { uploadSVGFiles } from "@utils/uploadSVGFiles";
+import { figma } from "@utils/figma";
 
 export const handler = withProject(
   async ({ method, body, project, user }, res) => {
@@ -50,36 +51,36 @@ export const handler = withProject(
         }, {});
 
         const svgs: { id: string; name: string; content: string }[] =
-          await fetcher(
-            `https://api.figma.com/v1/images/${
-              figmaFileDetails.key
-            }?ids=${selectedNodes.map((n) => n.id).join(",")}&format=svg`,
-            {
-              headers: {
-                Authorization: `Bearer ${credentials.accessToken}`,
-              },
-            }
-          ).then((results: { images: { [key: string]: string }; err: any }) => {
-            if (results.err) {
-              throw results.err;
-            }
-            return Promise.all(
-              Object.keys(results.images).map((key) => {
-                const url = results.images[key];
-                const nodeName = nodesMap[key].name;
-                const name = nodeName.endsWith(".svg")
-                  ? nodeName
-                  : `${nodeName}.svg`;
-                return fetch(url)
-                  .then((r) => r.text())
-                  .then((content) => ({
-                    id: key,
-                    name,
-                    content,
-                  }));
-              })
+          await figma
+            .fetch(
+              `/v1/images/${figmaFileDetails.key}?ids=${selectedNodes
+                .map((n) => n.id)
+                .join(",")}&format=svg`,
+              credentials
+            )
+            .then(
+              (results: { images: { [key: string]: string }; err: any }) => {
+                if (results.err) {
+                  throw results.err;
+                }
+                return Promise.all(
+                  Object.keys(results.images).map((key) => {
+                    const url = results.images[key];
+                    const nodeName = nodesMap[key].name;
+                    const name = nodeName.endsWith(".svg")
+                      ? nodeName
+                      : `${nodeName}.svg`;
+                    return fetch(url)
+                      .then((r) => r.text())
+                      .then((content) => ({
+                        id: key,
+                        name,
+                        content,
+                      }));
+                  })
+                );
+              }
             );
-          });
 
         const installation = await getProjectInstallation(project);
         const octokit = await getOctokit(installation.installationId);
