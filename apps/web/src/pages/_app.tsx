@@ -17,7 +17,7 @@ function useFathom() {
 
   useEffect(() => {
     Fathom.load("CSHPPVVG", {
-      includedDomains: ["assetier.app"],
+      includedDomains: ["www.assetier.app"],
     });
 
     function onRouteChangeComplete() {
