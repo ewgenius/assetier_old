@@ -10,12 +10,35 @@ import { Footer } from "@components/Footer";
 import { useMe } from "@hooks/useMe";
 import { AppContext } from "../appContext";
 import { Spinner } from "@components/Spinner";
+import * as Fathom from "fathom-client";
+
+function useFathom() {
+  const router = useRouter();
+
+  useEffect(() => {
+    Fathom.load("IYQFNUUM", {
+      includedDomains: ["assetier.app"],
+    });
+
+    function onRouteChangeComplete() {
+      Fathom.trackPageview();
+    }
+
+    router.events.on("routeChangeComplete", onRouteChangeComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", onRouteChangeComplete);
+    };
+  }, []);
+}
 
 function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
   const { push, query } = useRouter();
   const user = useUser();
   const { user: me } = useMe();
   const [account, setAccount] = useState(me?.personalAccount);
+
+  useFathom();
 
   const selectAccount = useCallback(
     (acc: AccountWithPlan) =>
@@ -98,6 +121,8 @@ function AppAuth({ Component: Page, pageProps }: AppPropsExtended) {
 }
 
 function App(props: AppPropsExtended) {
+  useFathom();
+
   switch (props.Component.type) {
     case "app": {
       return (
