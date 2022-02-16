@@ -16,7 +16,7 @@ function useFathom() {
   const router = useRouter();
 
   useEffect(() => {
-    Fathom.load("IYQFNUUM", {
+    Fathom.load("CSHPPVVG", {
       includedDomains: ["assetier.app"],
     });
 
