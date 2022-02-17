@@ -31,5 +31,6 @@ export interface NodeInfo {
   id: string;
   name: string;
   size: number;
+  type: "FRAME" | "COMPONENT";
   meta?: any;
 }

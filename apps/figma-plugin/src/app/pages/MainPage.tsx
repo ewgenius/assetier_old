@@ -10,6 +10,9 @@ import { postMessage } from "../utils/postMessage";
 import { MessageType } from "../../types";
 import { SettingsPage } from "./SettingsPage";
 
+import { IconComponent } from "../assets/IconComponent";
+import { IconFrame } from "../assets/IconFrame";
+
 export const MainPage: FC = () => {
   const { accessToken, selectedNodes, accountId, projectId } = useAppContext();
   const { user } = useMe();
@@ -78,17 +81,47 @@ export const MainPage: FC = () => {
         </button> */}
         {selectedNodes && selectedNodes.length > 0 ? (
           <>
-            <button
-              type="button"
-              disabled={exporting}
-              className="focus:ring-zink-500 flex w-full items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
-              onClick={exportNodes}
-            >
-              <span>Export selected nodes</span>
-              <span className="flex-grow" />
-              {exporting && <Spinner className="ml-1" size={2} />}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                disabled={exporting}
+                className="focus:ring-zink-500 flex w-full items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                onClick={exportNodes}
+              >
+                <span>Export selected nodes</span>
+                <span className="flex-grow" />
+                {exporting && <Spinner className="ml-1" size={2} />}
+              </button>
 
+              <button
+                type="button"
+                disabled={exporting}
+                className="focus:ring-zink-500 flex  items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                onClick={exportNodes}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </button>
+            </div>
+            {/* 
             <div className="relative flex items-start">
               <div className="flex h-5 items-center">
                 <input
@@ -109,13 +142,23 @@ export const MainPage: FC = () => {
                 </label>
                 <p className="font-mono text-gray-500">icon-16.svg</p>
               </div>
-            </div>
+            </div> */}
 
             <div>
               {selectedNodes.map((node) => (
-                <div key={node.id} className="flex p-2 text-xs">
-                  #{node.id}{" "}
-                  {postfixSize ? `${node.name}-${node.size}` : node.name}
+                <div
+                  key={node.id}
+                  className="flex items-center gap-2 p-2 text-xs"
+                >
+                  {node.type === "COMPONENT" ? (
+                    <IconComponent />
+                  ) : (
+                    <IconFrame />
+                  )}
+                  <div className="flex-grow">
+                    {postfixSize ? `${node.name}-${node.size}` : node.name}
+                  </div>
+                  <div className="text-gray-400">#{node.id}</div>
                 </div>
               ))}
             </div>

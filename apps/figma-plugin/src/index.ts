@@ -14,6 +14,7 @@ function extractNodes(nodes: readonly SceneNode[]): NodeInfo[] {
         {
           id: node.id,
           name: node.name,
+          type: node.type,
           size: Math.max(node.width, node.height),
         },
       ];
