@@ -63,7 +63,7 @@ importers:
       '@octokit/app': ^12.0.5
       '@octokit/auth-app': ^3.6.1
       '@octokit/core': ^3.5.1
-      '@prisma/client': ^3.7.0
+      '@prisma/client': ^4.0.0
       '@tailwindcss/forms': ^0.4.0
       '@types/cors': ^2.8.12
       '@types/formidable': ^2.0.2
@@ -101,7 +101,7 @@ importers:
       '@octokit/app': 12.0.5
       '@octokit/auth-app': 3.6.1
       '@octokit/core': 3.5.1
-      '@prisma/client': 3.7.0_prisma@4.0.0
+      '@prisma/client': 4.0.0_prisma@4.0.0
       '@tailwindcss/forms': 0.4.0_tailwindcss@3.0.12
       cors: 2.8.5
       fathom-client: 3.4.1
@@ -154,11 +154,11 @@ importers:
     specifiers:
       '@assetier/config': workspace:*
       '@assetier/tsconfig': workspace:*
-      '@prisma/client': ^3.7.0
+      '@prisma/client': ^4.0.0
       prisma: ^4.0.0
       typescript: ^4.5.3
     dependencies:
-      '@prisma/client': 3.7.0_prisma@4.0.0
+      '@prisma/client': 4.0.0_prisma@4.0.0
     devDependencies:
       '@assetier/config': link:../config
       '@assetier/tsconfig': link:../tsconfig
@@ -1693,9 +1693,9 @@ packages:
       nullthrows: 1.1.1
     dev: true
 
-  /@prisma/client/3.7.0_prisma@4.0.0:
-    resolution: {integrity: sha512-fUJMvBOX5C7JPc0e3CJD6Gbelbu4dMJB4ScYpiht8HMUnRShw20ULOipTopjNtl6ekHQJ4muI7pXlQxWS9nMbw==}
-    engines: {node: '>=12.6'}
+  /@prisma/client/4.0.0_prisma@4.0.0:
+    resolution: {integrity: sha512-g1h2OGoRo7anBVQ9Cw3gsbjwPtvf7i0pkGxKeZICtwkvE5CZXW+xZF4FZdmrViYkKaAShbISL0teNpu9ecpf4g==}
+    engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:
       prisma: '*'
@@ -1703,12 +1703,12 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 3.7.0-31.8746e055198f517658c08a0c426c7eec87f5a85f
+      '@prisma/engines-version': 3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11
       prisma: 4.0.0
     dev: false
 
-  /@prisma/engines-version/3.7.0-31.8746e055198f517658c08a0c426c7eec87f5a85f:
-    resolution: {integrity: sha512-+qx2b+HK7BKF4VCa0LZ/t1QCXsu6SmvhUQyJkOD2aPpmOzket4fEnSKQZSB0i5tl7rwCDsvAiSeK8o7rf+yvwg==}
+  /@prisma/engines-version/3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11:
+    resolution: {integrity: sha512-PiZhdD624SrYEjyLboI0X7OugNbxUzDJx9v/6ldTKuqNDVUCmRH/Z00XwDi/dgM4FlqOSO+YiUsSiSKjxxG8cw==}
     dev: false
 
   /@prisma/engines/3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11:

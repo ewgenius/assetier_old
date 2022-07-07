@@ -10,7 +10,7 @@
     "prisma:push": "npx prisma db push"
   },
   "dependencies": {
-    "@prisma/client": "^3.7.0"
+    "@prisma/client": "^4.0.0"
   },
   "devDependencies": {
     "@assetier/config": "workspace:*",
