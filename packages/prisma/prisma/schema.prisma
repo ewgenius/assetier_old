@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 // auth
@@ -19,6 +21,7 @@ model User {
   verified      Boolean   @default(false)
 
   accounts             UserToAccount[]
+  // accounts             UserToAccount[]
   figmaAuthCredentials FigmaAuthCredentials?
 }
 
@@ -38,6 +41,8 @@ model FigmaAuthCredentials {
   refreshToken String
 
   user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 // Account
@@ -51,7 +56,8 @@ model UserToAccount {
   user    User    @relation(fields: [userId], references: [id])
   account Account @relation(fields: [accountId], references: [id])
 
-  @@id([userId, accountId])
+  @@unique([userId, accountId])
+  @@index([userId, accountId])
 }
 
 enum AccountType {
@@ -70,6 +76,8 @@ model Account {
   users               UserToAccount[]
   githubInstallations GithubInstallation[]
   subscription        Subscription?        @relation(fields: [subscriptionId], references: [id])
+
+  @@index([subscriptionId])
 }
 
 enum SubscriptionPlanType {
@@ -107,6 +115,8 @@ model Subscription {
 
   subscriptionPlan SubscriptionPlan @relation(fields: [subscriptionPlanId], references: [id])
   accounts         Account[]
+
+  @@index([subscriptionPlanId])
 }
 
 // Github
@@ -127,6 +137,8 @@ model GithubInstallation {
   account   Account   @relation(fields: [accountId], references: [id])
   projects  Project[]
   accountId String
+
+  @@index([accountId])
 }
 
 // Projects
@@ -147,4 +159,7 @@ model Project {
 
   account            Account            @relation(fields: [accountId], references: [id])
   githubInstallation GithubInstallation @relation(fields: [githubInstallationId], references: [id])
+
+  @@index([accountId])
+  @@index([githubInstallationId])
 }

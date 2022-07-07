@@ -5,10 +5,9 @@
   "types": "index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "npm run prisma:generate && npm run prisma:migrate:deploy",
+    "build": "npm run prisma:generate && npm run prisma:push",
     "prisma:generate": "npx prisma generate",
-    "prisma:migrate:dev": "npx prisma migrate dev",
-    "prisma:migrate:deploy": "npx prisma migrate deploy"
+    "prisma:push": "npx prisma push"
   },
   "dependencies": {
     "@prisma/client": "^3.7.0"
@@ -16,7 +15,7 @@
   "devDependencies": {
     "@assetier/config": "workspace:*",
     "@assetier/tsconfig": "workspace:*",
-    "prisma": "^3.7.0",
+    "prisma": "^4.0.0",
     "typescript": "^4.5.3"
   }
 }
