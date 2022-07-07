@@ -75,13 +75,13 @@ function AppWithAuth({ Component: Page, pageProps }: AppPropsExtended) {
     );
   }
 
-  if (!me.user.verified) {
-    return (
-      <div className="min-h-screen">
-        <LayoutBlock>Hello {me.user.name}, you are in waitlist</LayoutBlock>
-      </div>
-    );
-  }
+  // if (!me.user.verified) {
+  //   return (
+  //     <div className="min-h-screen">
+  //       <LayoutBlock>Hello {me.user.name}, you are in waitlist</LayoutBlock>
+  //     </div>
+  //   );
+  // }
 
   return (
     <AppContext.Provider
