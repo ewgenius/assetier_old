@@ -5,7 +5,7 @@
   "types": "index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "npm run prisma:generate && npm run prisma:push",
+    "build": "npm run prisma:generate",
     "prisma:generate": "npx prisma generate",
     "prisma:push": "npx prisma db push"
   },
