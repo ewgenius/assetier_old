@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npm run prisma:generate && npm run prisma:push",
     "prisma:generate": "npx prisma generate",
-    "prisma:push": "npx prisma push"
+    "prisma:push": "npx prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^3.7.0"
