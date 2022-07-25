@@ -14,4 +14,8 @@ Figma plugin + web service to publish icons and illustrations sets to GitHub:
 
 ![FL0OWjUXIAE_P5n](https://user-images.githubusercontent.com/827338/180807715-3d7efaee-1269-4f42-9da3-fdf8e67561ae.jpeg)
 
+## TODO:
 
+- [ ] Reanimate Auth0 + Figma api connections
+
+- [ ] Migrate to planetscale
